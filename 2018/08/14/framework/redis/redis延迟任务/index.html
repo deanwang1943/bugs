@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="redis," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="场景 在开发中，往往会遇到一些关于延时任务的需求。例如 生成订单30分钟未支付，则自动取消 生成订单60秒后,给用户发短信  对上述的任务，我们给一个专业的名字来形容，那就是延时任务。那么这里就会产生一个问题，这个延时任务和定时任务的区别究竟在哪里呢？一共有如下几点区别  定时任务有明确的触发时间，延时任务没有  定时任务有执行周期，而延时任务在某事件触发后一段时间内执行，没有执行周期  定时任务">
+<meta name="keywords" content="redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis延迟任务">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/08/14/framework/redis/redis延迟任务/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="场景 在开发中，往往会遇到一些关于延时任务的需求。例如 生成订单30分钟未支付，则自动取消 生成订单60秒后,给用户发短信  对上述的任务，我们给一个专业的名字来形容，那就是延时任务。那么这里就会产生一个问题，这个延时任务和定时任务的区别究竟在哪里呢？一共有如下几点区别  定时任务有明确的触发时间，延时任务没有  定时任务有执行周期，而延时任务在某事件触发后一段时间内执行，没有执行周期  定时任务">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-19T14:31:41.866Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis延迟任务">
+<meta name="twitter:description" content="场景 在开发中，往往会遇到一些关于延时任务的需求。例如 生成订单30分钟未支付，则自动取消 生成订单60秒后,给用户发短信  对上述的任务，我们给一个专业的名字来形容，那就是延时任务。那么这里就会产生一个问题，这个延时任务和定时任务的区别究竟在哪里呢？一共有如下几点区别  定时任务有明确的触发时间，延时任务没有  定时任务有执行周期，而延时任务在某事件触发后一段时间内执行，没有执行周期  定时任务">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/08/14/framework/redis/redis延迟任务/"/>
+
+
+
+
+
+  <title>Redis延迟任务 | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微笑的周末</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/08/14/framework/redis/redis延迟任务/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis延迟任务</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T00:36:03+00:00">
+                2018-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><blockquote>
+<p>在开发中，往往会遇到一些关于延时任务的需求。例如</p>
+<p>生成订单30分钟未支付，则自动取消</p>
+<p>生成订单60秒后,给用户发短信</p>
+</blockquote>
+<p>对上述的任务，我们给一个专业的名字来形容，那就是延时任务。那么这里就会产生一个问题，这个延时任务和定时任务的区别究竟在哪里呢？一共有如下几点区别</p>
+<ul>
+<li><p>定时任务有明确的触发时间，延时任务没有</p>
+</li>
+<li><p>定时任务有执行周期，而延时任务在某事件触发后一段时间内执行，没有执行周期</p>
+</li>
+<li><p>定时任务一般执行的是批处理操作是多个任务，而延时任务一般是单个任务</p>
+</li>
+</ul>
+<h3 id="案例分析"><a href="#案例分析" class="headerlink" title="案例分析"></a>案例分析</h3><blockquote>
+<p>判断订单是否超时为例，进行方案分析</p>
+</blockquote>
+<h4 id="JDK的延迟队列"><a href="#JDK的延迟队列" class="headerlink" title="JDK的延迟队列"></a>JDK的延迟队列</h4><p>思路</p>
+<p>该方案是利用JDK自带的DelayQueue来实现，这是一个无界阻塞队列，该队列只有在延迟期满的时候才能从中获取元素，放入DelayQueue中的对象，是必须实现Delayed接口的。</p>
+<p>其中Poll():获取并移除队列的超时元素，没有则返回空</p>
+<p>take():获取并移除队列的超时元素，如果没有则wait当前线程，直到有元素满足超时条件，返回结果。</p>
+<p>实现</p>
+<p>定义一个类OrderDelay实现Delayed，代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rjzheng.delay2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Delayed;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderDelay</span> <span class="keyword">implements</span> <span class="title">Delayed</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String orderId;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> timeout;</span><br><span class="line"></span><br><span class="line">    OrderDelay(String orderId, <span class="keyword">long</span> timeout) &#123;</span><br><span class="line">        <span class="keyword">this</span>.orderId = orderId;</span><br><span class="line">        <span class="keyword">this</span>.timeout = timeout + System.nanoTime();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Delayed other)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (other == <span class="keyword">this</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        OrderDelay t = (OrderDelay) other;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">long</span> d = (getDelay(TimeUnit.NANOSECONDS) - t</span><br><span class="line">                .getDelay(TimeUnit.NANOSECONDS));</span><br><span class="line">        <span class="keyword">return</span> (d == <span class="number">0</span>) ? <span class="number">0</span> : ((d &lt; <span class="number">0</span>) ? -<span class="number">1</span> : <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回距离你自定义的超时时间还有多少</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getDelay</span><span class="params">(TimeUnit unit)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> unit.convert(timeout - System.nanoTime(),TimeUnit.NANOSECONDS);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(orderId+<span class="string">"编号的订单要删除啦。。。。"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行的测试Demo为，我们设定延迟时间为3秒</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rjzheng.delay2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.DelayQueue;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DelayQueueDemo</span> </span>&#123;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;  </span><br><span class="line">            <span class="comment">// TODO Auto-generated method stub  </span></span><br><span class="line">            List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();  </span><br><span class="line">            list.add(<span class="string">"00000001"</span>);  </span><br><span class="line">            list.add(<span class="string">"00000002"</span>);  </span><br><span class="line">            list.add(<span class="string">"00000003"</span>);  </span><br><span class="line">            list.add(<span class="string">"00000004"</span>);  </span><br><span class="line">            list.add(<span class="string">"00000005"</span>);  </span><br><span class="line"></span><br><span class="line">            DelayQueue&lt;OrderDelay&gt; queue = newDelayQueue&lt;OrderDelay&gt;();  </span><br><span class="line">            <span class="keyword">long</span> start = System.currentTimeMillis();  </span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;<span class="number">5</span>;i++)&#123;  </span><br><span class="line">                <span class="comment">//延迟三秒取出</span></span><br><span class="line">                queue.put(<span class="keyword">new</span> OrderDelay(list.get(i),  </span><br><span class="line">                        TimeUnit.NANOSECONDS.convert(<span class="number">3</span>,TimeUnit.SECONDS)));  </span><br><span class="line">                    <span class="keyword">try</span> &#123;  </span><br><span class="line">                         queue.take().print();  </span><br><span class="line">                         System.out.println(<span class="string">"After "</span> +  </span><br><span class="line">                                 (System.currentTimeMillis()-start) + <span class="string">" MilliSeconds"</span>);  </span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;  </span><br><span class="line">                    <span class="comment">// TODO Auto-generated catch block  </span></span><br><span class="line">                    e.printStackTrace();  </span><br><span class="line">                &#125;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">00000001编号的订单要删除啦。。。。</span><br><span class="line">After 3003 MilliSeconds</span><br><span class="line">00000002编号的订单要删除啦。。。。</span><br><span class="line">After 6006 MilliSeconds</span><br><span class="line">00000003编号的订单要删除啦。。。。</span><br><span class="line">After 9006 MilliSeconds</span><br><span class="line">00000004编号的订单要删除啦。。。。</span><br><span class="line">After 12008 MilliSeconds</span><br><span class="line">00000005编号的订单要删除啦。。。。</span><br><span class="line">After 15009 MilliSeconds</span><br></pre></td></tr></table></figure>
+<p>可以看到都是延迟3秒，订单被删除</p>
+<p>优缺点</p>
+<ul>
+<li><p>优点:</p>
+<ol>
+<li>效率高,任务触发时间延迟低。</li>
+</ol>
+</li>
+<li><p>缺点:</p>
+<ol>
+<li>服务器重启后，数据全部消失，怕宕机</li>
+<li>集群扩展相当麻烦</li>
+<li>因为内存条件限制的原因，比如下单未付款的订单数太多，那么很容易就出现OOM异常</li>
+<li>代码复杂度较高</li>
+</ol>
+</li>
+</ul>
+<h4 id="redis缓存"><a href="#redis缓存" class="headerlink" title="redis缓存"></a>redis缓存</h4><p>思路</p>
+<p>利用redis的zset,zset是一个有序集合，每一个元素(member)都关联了一个score,通过score排序来取集合中的值</p>
+<ol>
+<li>添加元素:ZADD key score member [[score member] [score member] …]</li>
+<li>按顺序查询元素:ZRANGE key start stop [WITHSCORES]</li>
+<li>查询元素score:ZSCORE key member</li>
+<li>移除元素:ZREM key member [member …]</li>
+</ol>
+<p>测试如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 添加单个元素</span></span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash"> ZADD page_rank 10 google.com</span></span><br><span class="line">(integer) 1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加多个元素</span></span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash"> ZADD page_rank 9 baidu.com 8 bing.com</span></span><br><span class="line">(integer) 2</span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash"> ZRANGE page_rank 0 -1 WITHSCORES</span></span><br><span class="line">1) "bing.com"</span><br><span class="line">2) "8"</span><br><span class="line">3) "baidu.com"</span><br><span class="line">4) "9"</span><br><span class="line">5) "google.com"</span><br><span class="line">6) "10"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查询元素的score值</span></span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash"> ZSCORE page_rank bing.com</span></span><br><span class="line">"8"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 移除单个元素</span></span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash"> ZREM page_rank google.com</span></span><br><span class="line">(integer) 1</span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash"> ZRANGE page_rank 0 -1 WITHSCORES</span></span><br><span class="line">1) "bing.com"</span><br><span class="line">2) "8"</span><br><span class="line">3) "baidu.com"</span><br><span class="line">4) "9"</span><br></pre></td></tr></table></figure>
+<p>那么如何实现呢？我们将订单超时时间戳与订单号分别设置为score和member,系统扫描第一个元素判断是否超时</p>
+<p>实现一<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rjzheng.delay4;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Calendar;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.Jedis;</span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.JedisPool;</span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.Tuple;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String ADDR = <span class="string">"127.0.0.1"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PORT = <span class="number">6379</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> JedisPool jedisPool = <span class="keyword">new</span> JedisPool(ADDR, PORT);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Jedis <span class="title">getJedis</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> jedisPool.getResource();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//生产者,生成5个订单放进去</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">productionDelayMessage</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">            <span class="comment">//延迟3秒</span></span><br><span class="line">            Calendar cal1 = Calendar.getInstance();</span><br><span class="line">            cal1.add(Calendar.SECOND, <span class="number">3</span>);</span><br><span class="line">            <span class="keyword">int</span> second3later = (<span class="keyword">int</span>) (cal1.getTimeInMillis() / <span class="number">1000</span>);</span><br><span class="line">            AppTest.getJedis().zadd(<span class="string">"OrderId"</span>,second3later,<span class="string">"OID0000001"</span>+i);</span><br><span class="line">            System.out.println(System.currentTimeMillis()+<span class="string">"ms:redis生成了一个订单任务：订单ID为"</span>+<span class="string">"OID0000001"</span>+i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;    </span><br><span class="line"></span><br><span class="line">    <span class="comment">//消费者，取订单</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">consumerDelayMessage</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Jedis jedis = AppTest.getJedis();</span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">            Set&lt;Tuple&gt; items = jedis.zrangeWithScores(<span class="string">"OrderId"</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(items == <span class="keyword">null</span> || items.isEmpty())&#123;</span><br><span class="line">                System.out.println(<span class="string">"当前没有等待的任务"</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">500</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">int</span>  score = (<span class="keyword">int</span>) ((Tuple)items.toArray()[<span class="number">0</span>]).getScore();</span><br><span class="line">            Calendar cal = Calendar.getInstance();</span><br><span class="line">            <span class="keyword">int</span> nowSecond = (<span class="keyword">int</span>) (cal.getTimeInMillis() / <span class="number">1000</span>);</span><br><span class="line">            <span class="keyword">if</span>(nowSecond &gt;= score)&#123;</span><br><span class="line">                String orderId = ((Tuple)items.toArray()[<span class="number">0</span>]).getElement();</span><br><span class="line">                jedis.zrem(<span class="string">"OrderId"</span>, orderId);</span><br><span class="line">                System.out.println(System.currentTimeMillis() +<span class="string">"ms:redis消费了一个任务：消费的订单OrderId为"</span>+orderId);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;    </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        AppTest appTest =<span class="keyword">new</span> AppTest();</span><br><span class="line">        appTest.productionDelayMessage();</span><br><span class="line">        appTest.consumerDelayMessage();</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，几乎都是3秒之后，消费订单。</p>
+<p>然而，这一版存在一个致命的硬伤，在高并发条件下，多消费者会取到同一个订单号，我们上测试代码ThreadTest</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rjzheng.delay4;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.CountDownLatch;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> threadNum = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> CountDownLatch cdl = newCountDownLatch(threadNum);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">DelayMessage</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                cdl.await();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            AppTest appTest =<span class="keyword">new</span> AppTest();</span><br><span class="line">            appTest.consumerDelayMessage();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        AppTest appTest =<span class="keyword">new</span> AppTest();</span><br><span class="line">        appTest.productionDelayMessage();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;threadNum;i++)&#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="keyword">new</span> DelayMessage()).start();</span><br><span class="line">            cdl.countDown();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>显然，出现了多个线程消费同一个资源的情况。</p>
+<p>解决方案</p>
+<p>(1)用分布式锁，但是用分布式锁，性能下降了，该方案不细说。</p>
+<p>(2)对ZREM的返回值进行判断，只有大于0的时候，才消费数据，于是将consumerDelayMessage()方法里的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(nowSecond &gt;= score)&#123;</span><br><span class="line">    String orderId = ((Tuple)items.toArray()[<span class="number">0</span>]).getElement();</span><br><span class="line">    jedis.zrem(<span class="string">"OrderId"</span>, orderId);</span><br><span class="line">    System.out.println(System.currentTimeMillis()+<span class="string">"ms:redis消费了一个任务：消费的订单OrderId为"</span>+orderId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改为</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(nowSecond &gt;= score)&#123;</span><br><span class="line">    String orderId = ((Tuple)items.toArray()[<span class="number">0</span>]).getElement();</span><br><span class="line">    Long num = jedis.zrem(<span class="string">"OrderId"</span>, orderId);</span><br><span class="line">    <span class="keyword">if</span>( num != <span class="keyword">null</span> &amp;&amp; num&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        System.out.println(System.currentTimeMillis()+<span class="string">"ms:redis消费了一个任务：消费的订单OrderId为"</span>+orderId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这种修改后，重新运行ThreadTest类，发现输出正常了</p>
+<p>思路二</p>
+<blockquote>
+<p>该方案使用redis的Keyspace Notifications，中文翻译就是键空间机制，就是利用该机制可以在key失效之后，提供一个回调，实际上是redis会给客户端发送一个消息。是需要redis版本2.8以上。</p>
+</blockquote>
+<p>实现二</p>
+<p>在redis.conf中，加入一条配置</p>
+<blockquote>
+<p>notify-keyspace-events Ex</p>
+</blockquote>
+<p>运行代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rjzheng.delay5;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.Jedis;</span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.JedisPool;</span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.JedisPubSub;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String ADDR = <span class="string">"127.0.0.1"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PORT = <span class="number">6379</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> JedisPool jedis = <span class="keyword">new</span> JedisPool(ADDR, PORT);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> RedisSub sub = <span class="keyword">new</span> RedisSub();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                jedis.getResource().subscribe(sub, <span class="string">"__keyevent@0__:expired"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        init();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">            String orderId = <span class="string">"OID000000"</span>+i;</span><br><span class="line">            jedis.getResource().setex(orderId, <span class="number">3</span>, orderId);</span><br><span class="line">            System.out.println(System.currentTimeMillis()+<span class="string">"ms:"</span>+orderId+<span class="string">"订单生成"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisSub</span> <span class="keyword">extends</span> <span class="title">JedisPubSub</span> </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onMessage</span><span class="params">(String channel, String message)</span> </span>&#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis()+<span class="string">"ms:"</span>+message+<span class="string">"订单取消"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以明显看到3秒过后，订单取消了</p>
+<p>ps:redis的pub/sub机制存在一个硬伤，官网内容如下</p>
+<blockquote>
+<p>Redis的发布/订阅目前是即发即弃(fire and forget)模式的，因此无法实现事件的可靠通知。也就是说，如果发布/订阅的客户端断链之后又重连，则在客户端断链期间的所有事件都丢失了。<br>因此，方案二不是太推荐。当然，如果你对可靠性要求不高，可以使用。</p>
+</blockquote>
+<p>优缺点</p>
+<p>优点:</p>
+<p>(1)由于使用Redis作为消息通道，消息都存储在Redis中。如果发送程序或者任务处理程序挂了，重启之后，还有重新处理数据的可能性。</p>
+<p>(2)做集群扩展相当方便</p>
+<p>(3)时间准确度高</p>
+<p>缺点:</p>
+<p>(1)需要额外进行redis维护</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/redis/" rel="tag"><i class="fa fa-tag"></i> redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bugs/2018/08/09/语言/Python/Python面试题之一/" rel="next" title="Python面试题之一">
+                <i class="fa fa-chevron-left"></i> Python面试题之一
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/08/16/语言/Python/Python设计模式/" rel="prev" title="Python设计模式">
+                Python设计模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#场景"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例分析"><span class="nav-number">2.</span> <span class="nav-text">案例分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK的延迟队列"><span class="nav-number">2.1.</span> <span class="nav-text">JDK的延迟队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#redis缓存"><span class="nav-number">2.2.</span> <span class="nav-text">redis缓存</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

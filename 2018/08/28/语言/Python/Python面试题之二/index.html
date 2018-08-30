@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python，面试题," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Q1. Python支持什么数据类型？这是最基本的Python面试问题。Python支持5种数据类型：  Numbers（数字）——用于保存数值 12&amp;gt;&amp;gt;&amp;gt; a=7.0&amp;gt;&amp;gt;&amp;gt;  Strings（字符串）——字符串是一个字符序列。我们用单引号或双引号来声明字符串。 1&amp;gt;&amp;gt;&amp;gt; title=&quot;Ayushi&apos;s Book&quot;  Lists（列表）——列表">
+<meta name="keywords" content="Python，面试题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python面试题之二">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/08/28/语言/Python/Python面试题之二/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="Q1. Python支持什么数据类型？这是最基本的Python面试问题。Python支持5种数据类型：  Numbers（数字）——用于保存数值 12&amp;gt;&amp;gt;&amp;gt; a=7.0&amp;gt;&amp;gt;&amp;gt;  Strings（字符串）——字符串是一个字符序列。我们用单引号或双引号来声明字符串。 1&amp;gt;&amp;gt;&amp;gt; title=&quot;Ayushi&apos;s Book&quot;  Lists（列表）——列表">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-28T13:50:05.368Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python面试题之二">
+<meta name="twitter:description" content="Q1. Python支持什么数据类型？这是最基本的Python面试问题。Python支持5种数据类型：  Numbers（数字）——用于保存数值 12&amp;gt;&amp;gt;&amp;gt; a=7.0&amp;gt;&amp;gt;&amp;gt;  Strings（字符串）——字符串是一个字符序列。我们用单引号或双引号来声明字符串。 1&amp;gt;&amp;gt;&amp;gt; title=&quot;Ayushi&apos;s Book&quot;  Lists（列表）——列表">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/08/28/语言/Python/Python面试题之二/"/>
+
+
+
+
+
+  <title>Python面试题之二 | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微笑的周末</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/08/28/语言/Python/Python面试题之二/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python面试题之二</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-28T00:36:03+00:00">
+                2018-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Q1-Python支持什么数据类型？"><a href="#Q1-Python支持什么数据类型？" class="headerlink" title="Q1. Python支持什么数据类型？"></a>Q1. Python支持什么数据类型？</h3><p>这是最基本的Python面试问题。<br>Python支持5种数据类型：</p>
+<ol>
+<li><p>Numbers（数字）——用于保存数值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a=<span class="number">7.0</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Strings（字符串）——字符串是一个字符序列。我们用单引号或双引号来声明字符串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>title=<span class="string">"Ayushi's Book"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Lists（列表）——列表就是一些值的有序集合，我们用方括号声明列表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>colors=[<span class="string">'red'</span>,<span class="string">'green'</span>,<span class="string">'blue'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(colors)</span><br><span class="line"> &lt;<span class="class"><span class="keyword">class</span> '<span class="title">list</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Tuples（元组）——元组和列表一样，也是一些值的有序集合，区别是元组是不可变的，意味着我们无法改变元组内的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name=(<span class="string">'Ayushi'</span>,<span class="string">'Sharma'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>name[<span class="number">0</span>]=<span class="string">'Avery'</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">File <span class="string">"&lt;pyshell#129&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">name[<span class="number">0</span>]=<span class="string">'Avery'</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>TypeError：‘tuple’ 对象不支持数据项分配</p>
+<ol start="5">
+<li>Dictionary（字典）——字典是一种数据结构，含有键值对。我们用大括号声明字典。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares=&#123;<span class="number">1</span>:<span class="number">1</span>,<span class="number">2</span>:<span class="number">4</span>,<span class="number">3</span>:<span class="number">9</span>,<span class="number">4</span>:<span class="number">16</span>,<span class="number">5</span>:<span class="number">25</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(squares)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">dict</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">type</span><span class="params">(&#123;&#125;)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">dict</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</blockquote>
+<p>我们还可以使用字典引导式：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares=&#123;x:x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">6</span>)&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares</span><br><span class="line">&#123;<span class="number">1</span>: <span class="number">1</span>, <span class="number">2</span>: <span class="number">4</span>, <span class="number">3</span>: <span class="number">9</span>, <span class="number">4</span>: <span class="number">16</span>, <span class="number">5</span>: <span class="number">25</span>&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Q2-docstring是什么？"><a href="#Q2-docstring是什么？" class="headerlink" title="Q2. docstring是什么？"></a>Q2. docstring是什么？</h3><p>Docstring是一种文档字符串，用于解释构造的作用。我们在函数、类或方法中将它放在首位来描述其作用。我们用三个单引号或双引号来声明docstring。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">sayhi</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">用该函数打印Hi</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">  print(<span class="string">"Hi"</span>)   </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sayhi()</span><br><span class="line"></span><br><span class="line">Hi</span><br></pre></td></tr></table></figure></p>
+<p>要想获取一个函数的docstring，我们使用它的<em>doc</em>属性。<br>要想获取一个函数的docstring，我们使用它的<em>doc</em>属性。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sayhi.__doc__</span><br><span class="line">‘\n\tThis function prints Hi\n\t’</span><br></pre></td></tr></table></figure></p>
+<p>和注释不同，docstring在运行时会保留下来。</p>
+<h3 id="Q3-PYTHONPATH变量是什么？"><a href="#Q3-PYTHONPATH变量是什么？" class="headerlink" title="Q3. PYTHONPATH变量是什么？"></a>Q3. PYTHONPATH变量是什么？</h3><p>PYTHONPATH是Python中一个重要的环境变量，用于在导入模块的时候搜索路径。因此它必须包含Python源库目录以及含有Python源代码的目录。你可以手动设置PYTHONPATH，但通常Python安装程序会把它呈现出来。</p>
+<p>从Q 4到Q 20 都是Python面试基础题，是Python新手面试时常出现的问题。</p>
+<h3 id="Q4-什么是切片？"><a href="#Q4-什么是切片？" class="headerlink" title="Q4. 什么是切片？"></a>Q4. 什么是切片？</h3><p>切片是Python中的一种方法，能让我们只检索列表、元素或字符串的一部分。在切片时，我们使用切片操作符[]。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>)[<span class="number">2</span>:<span class="number">4</span>]</span><br><span class="line">(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[<span class="number">7</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">5</span>,<span class="number">9</span>][<span class="number">2</span>:]</span><br><span class="line">[<span class="number">8</span>, <span class="number">5</span>, <span class="number">9</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'Hello'</span>[:<span class="number">-1</span>]</span><br><span class="line">‘Hell’</span><br></pre></td></tr></table></figure></p>
+<h3 id="Q5-什么是namedtuple-？"><a href="#Q5-什么是namedtuple-？" class="headerlink" title="Q5. 什么是namedtuple ？"></a>Q5. 什么是namedtuple ？</h3><p>Namedtuple能让我们用名称/标签获取一个元组的元素，这里我们使用函数namedtuple()，将其从collections模块中导入。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>result=namedtuple(<span class="string">'result'</span>,<span class="string">'Physics Chemistry Maths'</span>) <span class="comment">#format</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Ayushi=result(Physics=<span class="number">86</span>,Chemistry=<span class="number">95</span>,Maths=<span class="number">86</span>) <span class="comment">#declaring the tuple</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Ayushi.Chemistry</span><br><span class="line"></span><br><span class="line"><span class="number">95</span></span><br></pre></td></tr></table></figure></p>
+<p>如上所示，它能让我们用对象Ayushi的Chemistry属性获取Chemistry中的符号。<br>更多关于namedtuples的知识，参考这里。</p>
+<h3 id="Q6-在Python中如何声明一条注释？"><a href="#Q6-在Python中如何声明一条注释？" class="headerlink" title="Q6. 在Python中如何声明一条注释？"></a>Q6. 在Python中如何声明一条注释？</h3><p>和C++等编程语言不同，Python并没有多行注释，只有散列字符（#）。在符号#后的内容都被视作注释，解释器会自动将其忽略。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment">#注释行1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment">#注释行2</span></span><br></pre></td></tr></table></figure></p>
+<p>实际上你可以在代码中任何位置插入注释，用以解释代码。</p>
+<h3 id="Q7-在Python中怎样将字符串转换为整型变量？"><a href="#Q7-在Python中怎样将字符串转换为整型变量？" class="headerlink" title="Q7. 在Python中怎样将字符串转换为整型变量？"></a>Q7. 在Python中怎样将字符串转换为整型变量？</h3><p>如果字符串只含有数字字符，可以用函数int()将其转换为整数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>int(<span class="string">'227'</span>)</span><br><span class="line"><span class="number">227</span></span><br></pre></td></tr></table></figure></p>
+<p>我们检查一下变量类型：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(<span class="string">'227'</span>)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">type</span><span class="params">(int<span class="params">(<span class="string">'227'</span>)</span>)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">int</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Q8-在Python中怎样获取输入？"><a href="#Q8-在Python中怎样获取输入？" class="headerlink" title="Q8. 在Python中怎样获取输入？"></a>Q8. 在Python中怎样获取输入？</h3><p>我们用函数input()从用户那里获取输入。在Python 2中，我们还有另一个函数raw_input()。<br>比如input()将文本获取为参数值展现出来：</p>
+<p><code>&gt;&gt;&gt; a=input(&#39;Enter a number&#39;)</code></p>
+<p>输入数字7</p>
+<p>但是如果你多加注意，会发现它以字符串形式获取输入。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(a)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>将之乘以2能得到：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a*=<span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">’<span class="number">77</span>’</span><br></pre></td></tr></table></figure></p>
+<p>那么如果需要使用整数时呢？</p>
+<p>我们使用int()函数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a=int(input(<span class="string">'Enter a number'</span>))</span><br></pre></td></tr></table></figure></p>
+<p>输入数字7.<br>现在当我们将之乘以2就会得到：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a*=<span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"></span><br><span class="line"><span class="number">14</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Q9-Python中的不可变集合（frozenset）是什么？"><a href="#Q9-Python中的不可变集合（frozenset）是什么？" class="headerlink" title="Q9. Python中的不可变集合（frozenset）是什么？"></a>Q9. Python中的不可变集合（frozenset）是什么？</h3><p>我们举例来回答此类Python面试问题。<br>首先，我们讨论一下什么是集合。集合就是一系列数据项的合集，不存在任何副本。另外，集合是无序的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>myset=&#123;<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">2</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>myset</span><br><span class="line">&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这就意味着我们无法索引它。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>myset[<span class="number">0</span>]</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">File <span class="string">"&lt;pyshell#197&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">myset[<span class="number">0</span>]</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>TypeError：‘set’不支持索引。</p>
+</blockquote>
+<p>不过，集合是可变的。而不可变集合却不可变，这意味着我们无法改变它的值，从而也使其无法作为字典的键值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>myset=frozenset([<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">2</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>myset</span><br><span class="line">frozenset(&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(myset)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">frozenset</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>更多关于集合的内容，查看这里。</p>
+<h3 id="Q-10-在Python中如何生成一个随机数？"><a href="#Q-10-在Python中如何生成一个随机数？" class="headerlink" title="Q 10. 在Python中如何生成一个随机数？"></a>Q 10. 在Python中如何生成一个随机数？</h3><p>要想生成随机数，我们可以从random模块中导入函数random()。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> random <span class="keyword">import</span> random</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>random()</span><br><span class="line"><span class="number">0.7931961644126482</span></span><br></pre></td></tr></table></figure></p>
+<p>这里我们调用help函数。<br><code>&gt;&gt;&gt; help(random)</code></p>
+<p>关于内置函数random的help运行结果：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">random(…) method of random.Random instance</span><br><span class="line">random() -&gt; x in the interval [0, 1).</span><br></pre></td></tr></table></figure></p>
+<p>这意味着random()会返回一个大于等于0且小于1 的随机数。<br>我们还可以使用函数randint()，它会用两个参数表示一个区间，返回该区间内的一个随机整数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> random <span class="keyword">import</span> randint</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>randint(<span class="number">2</span>,<span class="number">7</span>)</span><br><span class="line"><span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>randint(<span class="number">2</span>,<span class="number">7</span>)</span><br><span class="line"><span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>randint(<span class="number">2</span>,<span class="number">7</span>)</span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>randint(<span class="number">2</span>,<span class="number">7</span>)</span><br><span class="line"><span class="number">6</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Q11-怎样将字符串中第一个字母大写？"><a href="#Q11-怎样将字符串中第一个字母大写？" class="headerlink" title="Q11. 怎样将字符串中第一个字母大写？"></a>Q11. 怎样将字符串中第一个字母大写？</h3><p>最简单的方法就是用capitalize()方法。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'ayushi'</span>.capitalize()</span><br><span class="line">‘Ayushi’</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(str.capitalize)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">method_descriptor</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>不过这也会让其它字母变为大写。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'@yushi'</span>.capitalize()</span><br><span class="line">‘@yushi’</span><br></pre></td></tr></table></figure></p>
+<h3 id="Q-12-如何检查字符串中所有的字符都为字母数字？"><a href="#Q-12-如何检查字符串中所有的字符都为字母数字？" class="headerlink" title="Q 12. 如何检查字符串中所有的字符都为字母数字？"></a>Q 12. 如何检查字符串中所有的字符都为字母数字？</h3><p>对于这个问题，我们可以使用isalnum()方法。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'Ayushi123'</span>.isalnum()</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'Ayushi123!'</span>.isalnum()</span><br><span class="line"><span class="keyword">False</span></span><br></pre></td></tr></table></figure></p>
+<p>我们还可以用其它一些方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'123.3'</span>.isdigit()</span><br><span class="line"><span class="keyword">False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'123'</span>.isnumeric()</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'ayushi'</span>.islower()</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'Ayushi'</span>.isupper()</span><br><span class="line"><span class="keyword">False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'Ayushi'</span>.istitle()</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'   '</span>.isspace()</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'123F'</span>.isdecimal()</span><br><span class="line"><span class="keyword">False</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Q13-什么是Python中的连接（concatenation）？"><a href="#Q13-什么是Python中的连接（concatenation）？" class="headerlink" title="Q13. 什么是Python中的连接（concatenation）？"></a>Q13. 什么是Python中的连接（concatenation）？</h3><p>Python中的连接就是将两个序列连在一起，我们使用+运算符完成。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'32'</span>+<span class="string">'32'</span></span><br><span class="line">‘<span class="number">3232</span>’</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]+[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="number">2</span>,<span class="number">3</span>)+(<span class="number">4</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">File <span class="string">"&lt;pyshell#256&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">(<span class="number">2</span>,<span class="number">3</span>)+(<span class="number">4</span>)</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>TypeError：只能将元组（不是“整数”）连接到元组。</p>
+</blockquote>
+<p>这里4被看作一个整数，我们再来一次。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="number">2</span>,<span class="number">3</span>)+(<span class="number">4</span>,)</span><br><span class="line">(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="Q14-什么是函数？"><a href="#Q14-什么是函数？" class="headerlink" title="Q14. 什么是函数？"></a>Q14. 什么是函数？</h3><p>当我们想执行一系列语句时，我们可以为其赋予一个名字。我们来定义一个函数，让它取两个数返回一个更大的数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">greater</span><span class="params">(a,b)</span>:</span></span><br><span class="line">返回 a <span class="keyword">if</span> a&gt;b <span class="keyword">else</span> b</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>greater(<span class="number">3</span>,<span class="number">3.5</span>)</span><br><span class="line"><span class="number">3.5</span></span><br></pre></td></tr></table></figure></p>
+<p>你可以自己创建函数，也可以使用Python的很多内置函数，看这里。</p>
+<h3 id="Q15-解释拉姆达表达式，什么时候会用到它？"><a href="#Q15-解释拉姆达表达式，什么时候会用到它？" class="headerlink" title="Q15. 解释拉姆达表达式，什么时候会用到它？"></a>Q15. 解释拉姆达表达式，什么时候会用到它？</h3><p>如果我们需要一个只有单一表达式的函数，我们可以匿名定义它。拉姆达表达式通常是在需要一个函数，但是又不想费神去命名一个函数的场合下使用，也就是指匿名函数。<br>假如我们想将上面Q 14中的函数定义为拉姆达表达式，可以在解释器中输入如下代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="keyword">lambda</span> a,b:a <span class="keyword">if</span> a&gt;b <span class="keyword">else</span> b)(<span class="number">3</span>,<span class="number">3.5</span>)</span><br><span class="line"><span class="number">3.5</span></span><br></pre></td></tr></table></figure></p>
+<p>这里，a和b都是输入，a if a&gt;b else b就是返回的输入，参数为3和3.5.<br>当然，也有可能没有任何输入。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="keyword">lambda</span> :print(<span class="string">"Hi"</span>))()</span><br><span class="line">Hi</span><br></pre></td></tr></table></figure></p>
+<p>更多关于拉姆达表达式的内容，参考这里。</p>
+<h3 id="Q16-什么是递归？"><a href="#Q16-什么是递归？" class="headerlink" title="Q16. 什么是递归？"></a>Q16. 什么是递归？</h3><p>在调用一个函数的过程中，直接或间接地调用了函数本身这个就叫递归。但为了避免出现死循环，必须要有一个结束条件，举个例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">facto</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> n==<span class="number">1</span>: <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> n*facto(n<span class="number">-1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>facto(<span class="number">4</span>)</span><br><span class="line"><span class="number">24</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Q17-什么是生成器？"><a href="#Q17-什么是生成器？" class="headerlink" title="Q17. 什么是生成器？"></a>Q17. 什么是生成器？</h3><p>生成器会生成一系列的值用于迭代，这样看它又是一种可迭代对象。它是在for循环的过程中不断计算出下一个元素，并在适当的条件结束for循环。<br>我们定义一个能逐个“yield”值的函数，然后用一个for循环来迭代它。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">squares</span><span class="params">(n)</span>:</span></span><br><span class="line">    i=<span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span>(i&lt;=n):</span><br><span class="line">        <span class="keyword">yield</span> i**<span class="number">2</span></span><br><span class="line">        i+=<span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> squares(<span class="number">7</span>):</span><br><span class="line">    print(i)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="number">9</span></span><br><span class="line"></span><br><span class="line"><span class="number">16</span></span><br><span class="line"></span><br><span class="line"><span class="number">25</span></span><br><span class="line"></span><br><span class="line"><span class="number">36</span></span><br><span class="line"></span><br><span class="line"><span class="number">49</span></span><br></pre></td></tr></table></figure></p>
+<p>更多关于生成器的内容，参看这里。</p>
+<h3 id="Q18-什么是迭代器？"><a href="#Q18-什么是迭代器？" class="headerlink" title="Q18. 什么是迭代器？"></a>Q18. 什么是迭代器？</h3><p>迭代器是访问集合元素的一种方式。迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退。我们使用inter()函数创建迭代器。<br><code>odds=iter([1,3,5,7,9])</code></p>
+<p>每次想获取一个对象时，我们就调用next()函数。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(odds)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(odds)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(odds)</span><br><span class="line"><span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(odds)</span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(odds)</span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure></p>
+<p>现在我们再次调用它，会抛出StopIteration异常。这是因为它已经抵达需要迭代的值的尾部。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(odds)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">File <span class="string">"&lt;pyshell#295&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">next(odds)</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure></p>
+<p>更多关乎迭代器的内容，参看这里。</p>
+<h3 id="Q19-请说说生成器和迭代器之间的区别"><a href="#Q19-请说说生成器和迭代器之间的区别" class="headerlink" title="Q19. 请说说生成器和迭代器之间的区别"></a>Q19. 请说说生成器和迭代器之间的区别</h3><p>在使用生成器时，我们创建一个函数；在使用迭代器时，我们使用内置函数iter()和next()。</p>
+<p>在生成器中，我们使用关键字‘yield’来每次生成/返回一个对象。</p>
+<p>生成器中有多少‘yield’语句，你可以自定义。</p>
+<p>每次‘yield’暂停循环时，生成器会保存本地变量的状态。而迭代器并不会使用局部变量，它只需要一个可迭代对象进行迭代。</p>
+<p>使用类可以实现你自己的迭代器，但无法实现生成器。</p>
+<p>生成器运行速度快，语法简洁，更简单。</p>
+<p>迭代器更能节约内存。</p>
+<p>关于生成器和迭代器二者的对比，更多内容查看这里。</p>
+<h3 id="Q20-我们都知道现在Python很火，但是对于一门技术我们不光要知道它的优点，也要知道它的缺点，请谈谈Python的不足之处。"><a href="#Q20-我们都知道现在Python很火，但是对于一门技术我们不光要知道它的优点，也要知道它的缺点，请谈谈Python的不足之处。" class="headerlink" title="Q20. 我们都知道现在Python很火，但是对于一门技术我们不光要知道它的优点，也要知道它的缺点，请谈谈Python的不足之处。"></a>Q20. 我们都知道现在Python很火，但是对于一门技术我们不光要知道它的优点，也要知道它的缺点，请谈谈Python的不足之处。</h3><p>Python有以下缺陷：</p>
+<p>Python的可解释特征会拖累其运行速度。</p>
+<p>虽然Python在很多方面都性能良好，但在移动计算和浏览器方面表现不够好。</p>
+<p>由于是动态语言，Python使用鸭子类型，即duck-typing，这会增加运行时错误。</p>
+<blockquote>
+<p>从Q 21到Q 30都是进阶版Python面试问题，不过Python新手也可以参考。</p>
+</blockquote>
+<h3 id="Q21-函数zip-的是干嘛的？"><a href="#Q21-函数zip-的是干嘛的？" class="headerlink" title="Q21. 函数zip()的是干嘛的？"></a>Q21. 函数zip()的是干嘛的？</h3><p>Python新手可能对这个函数不是很熟悉，zip()可以返回元组的迭代器。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(zip([<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]))</span><br><span class="line">[(‘a’, <span class="number">1</span>), (‘b’, <span class="number">2</span>), (‘c’, <span class="number">3</span>)]</span><br></pre></td></tr></table></figure></p>
+<p>在这里zip()函数对两个列表中的数据项进行了配对，并用它们创建了元组。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(zip((<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>),(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)))</span><br><span class="line">[(‘a’, <span class="number">1</span>), (‘b’, <span class="number">2</span>), (‘c’, <span class="number">3</span>)]</span><br></pre></td></tr></table></figure></p>
+<h3 id="Q22-如果你困在了死循环里，怎么打破它？"><a href="#Q22-如果你困在了死循环里，怎么打破它？" class="headerlink" title="Q22. 如果你困在了死循环里，怎么打破它？"></a>Q22. 如果你困在了死循环里，怎么打破它？</h3><p>出现了这种问题时，我们可以按Ctrl+C，这样可以打断执行程序。我们创建一个死循环来解释一下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">counterfunc</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">while</span>(n==<span class="number">7</span>):print(n)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>counterfunc(<span class="number">7</span>)</span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span></span><br><span class="line"></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line"> File <span class="string">"&lt;pyshell#332&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">   counterfunc(<span class="number">7</span>)</span><br><span class="line"> File <span class="string">"&lt;pyshell#331&gt;"</span>, line <span class="number">2</span>, <span class="keyword">in</span> counterfunc</span><br><span class="line">   <span class="keyword">while</span>(n==<span class="number">7</span>):print(n)</span><br><span class="line">KeyboardInterrupt</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Q23-解释Python的参数传递机制"><a href="#Q23-解释Python的参数传递机制" class="headerlink" title="Q23. 解释Python的参数传递机制"></a>Q23. 解释Python的参数传递机制</h3><p>Python使用按引用传递（pass-by-reference）将参数传递到函数中。如果你改变一个函数内的参数，会影响到函数的调用。这是Python的默认操作。不过，如果我们传递字面参数，比如字符串、数字或元组，它们是按值传递，这是因为它们是不可变的。</p>
+<h3 id="Q24-如何用Python找出你目前在哪个目录？"><a href="#Q24-如何用Python找出你目前在哪个目录？" class="headerlink" title="Q24. 如何用Python找出你目前在哪个目录？"></a>Q24. 如何用Python找出你目前在哪个目录？</h3><p>我们可以使用函数/方法getcwd()，从模块os中将其导入。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> os</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.getcwd()</span><br><span class="line"><span class="string">'C:\\Users\\lifei\\AppData\\Local\\Programs\\Python\\Python36-32'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(os.getcwd)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">builtin_function_or_method</span>'&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>我们还可以用chdir()修改当前工作目录。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.chdir(<span class="string">'C:\\Users\\lifei\\Desktop'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.getcwd()</span><br><span class="line"><span class="string">'C:\\Users\\lifei\\Desktop'</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Q25-怎样发现字符串中与‘cake’押韵的第一个字？"><a href="#Q25-怎样发现字符串中与‘cake’押韵的第一个字？" class="headerlink" title="Q25. 怎样发现字符串中与‘cake’押韵的第一个字？"></a>Q25. 怎样发现字符串中与‘cake’押韵的第一个字？</h3><p>我们可以使用函数search()，然后用group()获取输出。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> re</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>rhyme=re.search(<span class="string">'.ake'</span>,<span class="string">'I would make a cake, but I hate to bake'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>rhyme.group()</span><br><span class="line"><span class="string">'make'</span></span><br></pre></td></tr></table></figure></p>
+<p>我们知道，函数search()会在第一次匹配时停止运行，这样我们就能得到第一个与‘cake’押韵的字。</p>
+<h3 id="Q26-如何以相反顺序展示一个文件的内容？"><a href="#Q26-如何以相反顺序展示一个文件的内容？" class="headerlink" title="Q26. 如何以相反顺序展示一个文件的内容？"></a>Q26. 如何以相反顺序展示一个文件的内容？</h3><p>我们首先回到桌面，使用模块os中的chdir()函数/方法。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> os</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.chdir(<span class="string">'C:\\Users\\lifei\\Desktop'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>这里我们要使用的文件时Today.txt，它的内容如下：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">OS, DBMS, DS, ADA</span><br><span class="line"></span><br><span class="line">HTML, CSS, jQuery, JavaScript</span><br><span class="line"></span><br><span class="line">Python, C++, Java</span><br><span class="line"></span><br><span class="line">This sem’s subjects</span><br><span class="line"></span><br><span class="line">Debugger</span><br><span class="line"></span><br><span class="line">itertools</span><br><span class="line"></span><br><span class="line">Container</span><br></pre></td></tr></table></figure></p>
+<p>我们将内容读取为一个列表，然后在上面调用reversed()函数：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> line <span class="keyword">in</span> reversed(list(open(<span class="string">'Today.txt'</span>))):</span><br><span class="line">   print(line.rstrip())</span><br><span class="line">container</span><br><span class="line"></span><br><span class="line">itertools</span><br><span class="line"></span><br><span class="line">Debugger</span><br><span class="line"></span><br><span class="line">This sem’s subjects</span><br><span class="line"></span><br><span class="line">Python, C++, Java</span><br><span class="line"></span><br><span class="line">HTML, CSS, jQuery, JavaScript</span><br><span class="line"></span><br><span class="line">OS, DBMS, DS, ADA</span><br></pre></td></tr></table></figure></p>
+<p>如果没有rstrip()，我们会在输出中得到空行。</p>
+<h3 id="Q27-什么是Tkinter-？"><a href="#Q27-什么是Tkinter-？" class="headerlink" title="Q27. 什么是Tkinter ？"></a>Q27. 什么是Tkinter ？</h3><p>TKinter是一款很知名的Python库，用它我们可以制作图形用户界面。其支持不同的GUI工具和窗口构件，比如按钮、标签、文本框等等。这些工具和构件均有不同的属性，比如维度、颜色、字体等。<br>我们也能导入Tkinter模块。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> tkinter</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>top=tkinter.Tk()</span><br></pre></td></tr></table></figure></p>
+<p>这会为你创建一个新窗口，然后可以在窗口上添加各个构件。</p>
+<h3 id="Q28-请谈谈-pyc文件和-py文件的不同之处"><a href="#Q28-请谈谈-pyc文件和-py文件的不同之处" class="headerlink" title="Q28. 请谈谈.pyc文件和.py文件的不同之处"></a>Q28. 请谈谈.pyc文件和.py文件的不同之处</h3><p>虽然这两种文件均保存字节代码，但.pyc文件是Python文件的编译版本，它有平台无关的字节代码，因此我们可以在任何支持.pyc格式文件的平台上执行它。Python会自动生成它以优化性能（加载时间，而非运行速度）。</p>
+<h3 id="Q29-如何在Python中创建自己的包？"><a href="#Q29-如何在Python中创建自己的包？" class="headerlink" title="Q29. 如何在Python中创建自己的包？"></a>Q29. 如何在Python中创建自己的包？</h3><p>Python中创建包是比较方便的，只需要在当前目录建立一个文件夹，文件夹中包含一个<strong>init</strong>.py文件和若干个模块文件，其中<strong>init</strong>.py可以是一个空文件，但还是建议将包中所有需要导出的变量放到<strong>all</strong>中，这样可以确保包的接口清晰明了，易于使用。</p>
+<h3 id="Q30-如何计算一个字符串的长度？"><a href="#Q30-如何计算一个字符串的长度？" class="headerlink" title="Q30. 如何计算一个字符串的长度？"></a>Q30. 如何计算一个字符串的长度？</h3><p>这个也比较简单，在我们想计算长度的字符串上调用函数len()即可。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(<span class="string">'Ayushi Sharma'</span>)</span><br><span class="line"><span class="number">13</span></span><br></pre></td></tr></table></figure></p>
+<p>结语</p>
+<p>本文我们紧接着上篇总结了另外一些常见的Python面试题，当然肯定无法涵盖所有的知识点，后面如有机会再另行补充，欢迎关注。</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/Python，面试题/" rel="tag"><i class="fa fa-tag"></i> Python，面试题</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bugs/2018/08/25/网络/https如何保证数据传输的安全性/" rel="next" title="https如何保证数据传输的安全性">
+                <i class="fa fa-chevron-left"></i> https如何保证数据传输的安全性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/08/29/语言/Java/Java基础面试/" rel="prev" title="Java基础面试">
+                Java基础面试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q1-Python支持什么数据类型？"><span class="nav-number">1.</span> <span class="nav-text">Q1. Python支持什么数据类型？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q2-docstring是什么？"><span class="nav-number">2.</span> <span class="nav-text">Q2. docstring是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q3-PYTHONPATH变量是什么？"><span class="nav-number">3.</span> <span class="nav-text">Q3. PYTHONPATH变量是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q4-什么是切片？"><span class="nav-number">4.</span> <span class="nav-text">Q4. 什么是切片？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q5-什么是namedtuple-？"><span class="nav-number">5.</span> <span class="nav-text">Q5. 什么是namedtuple ？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q6-在Python中如何声明一条注释？"><span class="nav-number">6.</span> <span class="nav-text">Q6. 在Python中如何声明一条注释？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q7-在Python中怎样将字符串转换为整型变量？"><span class="nav-number">7.</span> <span class="nav-text">Q7. 在Python中怎样将字符串转换为整型变量？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q8-在Python中怎样获取输入？"><span class="nav-number">8.</span> <span class="nav-text">Q8. 在Python中怎样获取输入？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q9-Python中的不可变集合（frozenset）是什么？"><span class="nav-number">9.</span> <span class="nav-text">Q9. Python中的不可变集合（frozenset）是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-10-在Python中如何生成一个随机数？"><span class="nav-number">10.</span> <span class="nav-text">Q 10. 在Python中如何生成一个随机数？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q11-怎样将字符串中第一个字母大写？"><span class="nav-number">11.</span> <span class="nav-text">Q11. 怎样将字符串中第一个字母大写？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-12-如何检查字符串中所有的字符都为字母数字？"><span class="nav-number">12.</span> <span class="nav-text">Q 12. 如何检查字符串中所有的字符都为字母数字？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q13-什么是Python中的连接（concatenation）？"><span class="nav-number">13.</span> <span class="nav-text">Q13. 什么是Python中的连接（concatenation）？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q14-什么是函数？"><span class="nav-number">14.</span> <span class="nav-text">Q14. 什么是函数？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q15-解释拉姆达表达式，什么时候会用到它？"><span class="nav-number">15.</span> <span class="nav-text">Q15. 解释拉姆达表达式，什么时候会用到它？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q16-什么是递归？"><span class="nav-number">16.</span> <span class="nav-text">Q16. 什么是递归？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q17-什么是生成器？"><span class="nav-number">17.</span> <span class="nav-text">Q17. 什么是生成器？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q18-什么是迭代器？"><span class="nav-number">18.</span> <span class="nav-text">Q18. 什么是迭代器？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q19-请说说生成器和迭代器之间的区别"><span class="nav-number">19.</span> <span class="nav-text">Q19. 请说说生成器和迭代器之间的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q20-我们都知道现在Python很火，但是对于一门技术我们不光要知道它的优点，也要知道它的缺点，请谈谈Python的不足之处。"><span class="nav-number">20.</span> <span class="nav-text">Q20. 我们都知道现在Python很火，但是对于一门技术我们不光要知道它的优点，也要知道它的缺点，请谈谈Python的不足之处。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q21-函数zip-的是干嘛的？"><span class="nav-number">21.</span> <span class="nav-text">Q21. 函数zip()的是干嘛的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q22-如果你困在了死循环里，怎么打破它？"><span class="nav-number">22.</span> <span class="nav-text">Q22. 如果你困在了死循环里，怎么打破它？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q23-解释Python的参数传递机制"><span class="nav-number">23.</span> <span class="nav-text">Q23. 解释Python的参数传递机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q24-如何用Python找出你目前在哪个目录？"><span class="nav-number">24.</span> <span class="nav-text">Q24. 如何用Python找出你目前在哪个目录？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q25-怎样发现字符串中与‘cake’押韵的第一个字？"><span class="nav-number">25.</span> <span class="nav-text">Q25. 怎样发现字符串中与‘cake’押韵的第一个字？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q26-如何以相反顺序展示一个文件的内容？"><span class="nav-number">26.</span> <span class="nav-text">Q26. 如何以相反顺序展示一个文件的内容？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q27-什么是Tkinter-？"><span class="nav-number">27.</span> <span class="nav-text">Q27. 什么是Tkinter ？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q28-请谈谈-pyc文件和-py文件的不同之处"><span class="nav-number">28.</span> <span class="nav-text">Q28. 请谈谈.pyc文件和.py文件的不同之处</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q29-如何在Python中创建自己的包？"><span class="nav-number">29.</span> <span class="nav-text">Q29. 如何在Python中创建自己的包？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q30-如何计算一个字符串的长度？"><span class="nav-number">30.</span> <span class="nav-text">Q30. 如何计算一个字符串的长度？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

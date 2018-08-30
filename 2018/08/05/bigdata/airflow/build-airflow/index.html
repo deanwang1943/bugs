@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="大数据,airflow,docker," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="构建基于Apache airflow调度开发环境下载python 本文基于ubuntu 18的版本搭建，虽然自带python考虑从新安装python到3.6.6的版本 安装pyenv,使用git安装 1git clone git://github.com/yyuu/pyenv.git ~/.pyenv  配置pyenv 12345vim ~/.bashrcexport PYENV_ROOT=&quot;$H">
+<meta name="keywords" content="大数据,airflow,docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="构建Apache airflow开发环境">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/08/05/bigdata/airflow/build-airflow/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="构建基于Apache airflow调度开发环境下载python 本文基于ubuntu 18的版本搭建，虽然自带python考虑从新安装python到3.6.6的版本 安装pyenv,使用git安装 1git clone git://github.com/yyuu/pyenv.git ~/.pyenv  配置pyenv 12345vim ~/.bashrcexport PYENV_ROOT=&quot;$H">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-19T14:31:41.866Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="构建Apache airflow开发环境">
+<meta name="twitter:description" content="构建基于Apache airflow调度开发环境下载python 本文基于ubuntu 18的版本搭建，虽然自带python考虑从新安装python到3.6.6的版本 安装pyenv,使用git安装 1git clone git://github.com/yyuu/pyenv.git ~/.pyenv  配置pyenv 12345vim ~/.bashrcexport PYENV_ROOT=&quot;$H">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/08/05/bigdata/airflow/build-airflow/"/>
+
+
+
+
+
+  <title>构建Apache airflow开发环境 | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微笑的周末</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/08/05/bigdata/airflow/build-airflow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">构建Apache airflow开发环境</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-05T00:36:03+00:00">
+                2018-08-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="构建基于Apache-airflow调度开发环境"><a href="#构建基于Apache-airflow调度开发环境" class="headerlink" title="构建基于Apache airflow调度开发环境"></a>构建基于Apache airflow调度开发环境</h2><h3 id="下载python"><a href="#下载python" class="headerlink" title="下载python"></a>下载python</h3><ol>
+<li>本文基于<code>ubuntu 18</code>的版本搭建，虽然自带python考虑从新安装python到3.6.6的版本</li>
+<li><p>安装pyenv,使用git安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git://github.com/yyuu/pyenv.git ~/.pyenv</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置pyenv</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br><span class="line"></span><br><span class="line">export PYENV_ROOT="$HOME/.pyenv"</span><br><span class="line">export PATH="$PYENV_ROOT/bin:$PATH"</span><br><span class="line">eval "$(pyenv init -)"</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启用配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装python</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pyenv install 3.6.6</span><br><span class="line">pyenv global 3.6.6</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>因各种原因, 下载速度可能只有几KB, 甚至超时, 可将下载地址替换成国内镜像后在下载.<br>cd  ~/.pyenv/plugins/python-build/share/python-build/<br>vim 3.6.6 (如果你下载别的版本, 你就改别的文件)</p>
+</blockquote>
+<blockquote>
+<p>将里面下载地址改成sohu的镜像地址：</p>
+<p><a href="https://www.python.org/ftp/python/3.5.2/Python-3.6.6.tar.xz" target="_blank" rel="noopener">https://www.python.org/ftp/python/3.5.2/Python-3.6.6.tar.xz</a><br><a href="http://mirrors.sohu.com/python/3.5.2/Python-3.6.6.tar.xz" target="_blank" rel="noopener">http://mirrors.sohu.com/python/3.5.2/Python-3.6.6.tar.xz</a></p>
+<p>附搜狐镜像地址：<a href="http://mirrors.sohu.com/python/" target="_blank" rel="noopener">http://mirrors.sohu.com/python/</a></p>
+</blockquote>
+</li>
+</ol>
+<h3 id="安装pip"><a href="#安装pip" class="headerlink" title="安装pip"></a>安装pip</h3><ol>
+<li><p>使用系统安装工具安装pip</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install pip3</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置pip的仓库地址为国内的仓库加速</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/.pip</span><br><span class="line">touch ~/.pip/pip.config</span><br><span class="line"></span><br><span class="line">vim ~/.pip/pip.config</span><br><span class="line"></span><br><span class="line">[global]</span><br><span class="line">index-url = http://pypi.douban.com/simple</span><br><span class="line">[install]</span><br><span class="line">trusted-host=pypi.douban.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>升级pip到最新版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install --upgrade pip</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="安装apache-airflow"><a href="#安装apache-airflow" class="headerlink" title="安装apache airflow"></a>安装apache airflow</h3><ol>
+<li><p>配置airflow，编辑/etc/profile</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export AIRFLOW_HOME=/home/airflow</span><br><span class="line">PATH=$PATH:$AIRFLOW_HOME</span><br><span class="line">export PATH</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>启动 <code>source /etc/profile</code></p>
+</blockquote>
+</li>
+<li><p>使用pip安装apache airflow</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install apache-airflow</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="配置airflow"><a href="#配置airflow" class="headerlink" title="配置airflow"></a>配置airflow</h3><p>[默认版本]<br>airflow有很多个版本的，包含不同数据库的。<br>目前采用默认的sqllit3作为数据库为实例。</p>
+<h3 id="airflow使用"><a href="#airflow使用" class="headerlink" title="airflow使用"></a>airflow使用</h3><ol>
+<li><p>初始化airflow的数据库，其他版本数据库也需要先初始化后在配置再次的初始化，主要是数据库和配置文件，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">airflow initdb</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>第一次执行该命令时，在/home/airflow目录下生产airflow的相关配置文件</p>
+</blockquote>
+</li>
+<li><p>创建dags目录存储调度脚本</p>
+</li>
+<li><p>修改airflow配置文件,默认版本sqllit3,不需要修改配置</p>
+<p>[MYSQL]</p>
+<p><code>vi /home/airflow/airflow.cfg</code></p>
+<p>配置Execotr：</p>
+<p>executor = CeleryExecutor</p>
+<p>配置元数据库</p>
+<p>sql_alchemy_conn = mysql://{USERNAME}:{PASSWORD}@{MYSQL_HOST}:3306/airflow</p>
+<p>配置Broker URL</p>
+<p>broker_url = amqp://guest:guest@{RABBITMQ_HOST}:5672</p>
+<p>配置Celery元数据库</p>
+<p>celery_result_backend = db+mysql://{USERNAME}:{PASSWORD}@{MYSQL_HOST}:3306/airflow</p>
+<p>初始化Mysql</p>
+<p>新建airflow数据库</p>
+<p>CREATE DATABASE airflow CHARACTER SET utf8 COLLATE utf8_unicode_ci;</p>
+<p>创建airflow用户</p>
+<p>grant all on airflow.* TO ‘airflow‘@’%’ IDENTIFIED BY ‘airflow’;</p>
+<p><code>airflow initdb</code></p>
+</li>
+<li><p>启动UI命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">airflow webserver -p 8081</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定时任务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">airflow scheduler</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>监控命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">airflow worker</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>访问地址：<a href="http://ip:8081" target="_blank" rel="noopener">http://ip:8081</a></p>
+<p><a href="http://ip:5555" target="_blank" rel="noopener">http://ip:5555</a>  #flower位celery的监控</p>
+</blockquote>
+<h3 id="airflow实例"><a href="#airflow实例" class="headerlink" title="airflow实例"></a>airflow实例</h3><ol>
+<li><p>测试一个dag中一个task</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">Test a task instance. This will run a task without checking <span class="keyword">for</span> dependencies or recording it’s state <span class="keyword">in</span> the database.</span></span><br><span class="line">airflow test [-h] [-sd SUBDIR] [-dr] [-tp TASK_PARAMS]</span><br><span class="line">           dag_id task_id execution_date</span><br><span class="line">airflow test dag_id task_id 2018-08-08</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>特定运行一个dag</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">Run subsections of a DAG <span class="keyword">for</span> a specified date range</span></span><br><span class="line">airflow backfill [-h] [-t TASK_REGEX] [-s START_DATE] [-e END_DATE] [-m] [-l]</span><br><span class="line">               [-x] [-a] [-i] [-I] [-sd SUBDIR] [--pool POOL]</span><br><span class="line">               [--delay_on_limit DELAY_ON_LIMIT] [-dr]</span><br><span class="line">               dag_id</span><br><span class="line">airflow backfill dag_id</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Run a single task instance</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">airflow run [-h] [-sd SUBDIR] [-m] [-f] [--pool POOL] [--cfg_path CFG_PATH]</span><br><span class="line">          [-l] [-A] [-i] [-I] [--ship_dag] [-p PICKLE]</span><br><span class="line">          dag_id task_id execution_date</span><br><span class="line">airflow run dag_id task_id 2018-08-08</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/大数据/" rel="tag"><i class="fa fa-tag"></i> 大数据</a>
+          
+            <a href="/bugs/tags/airflow/" rel="tag"><i class="fa fa-tag"></i> airflow</a>
+          
+            <a href="/bugs/tags/docker/" rel="tag"><i class="fa fa-tag"></i> docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bugs/2018/08/05/Idea/" rel="next" title="Idea快捷键">
+                <i class="fa fa-chevron-left"></i> Idea快捷键
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/08/06/语言/Java/高并发编程(三)/" rel="prev" title="Java高并发-线程池">
+                Java高并发-线程池 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构建基于Apache-airflow调度开发环境"><span class="nav-number">1.</span> <span class="nav-text">构建基于Apache airflow调度开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载python"><span class="nav-number">1.1.</span> <span class="nav-text">下载python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装pip"><span class="nav-number">1.2.</span> <span class="nav-text">安装pip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装apache-airflow"><span class="nav-number">1.3.</span> <span class="nav-text">安装apache airflow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置airflow"><span class="nav-number">1.4.</span> <span class="nav-text">配置airflow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#airflow使用"><span class="nav-number">1.5.</span> <span class="nav-text">airflow使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#airflow实例"><span class="nav-number">1.6.</span> <span class="nav-text">airflow实例</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

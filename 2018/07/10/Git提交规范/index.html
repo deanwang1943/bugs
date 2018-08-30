@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="git," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、为什么需要规范？无规矩不成方圆，编程也一样。 如果你有一个项目，从始至终都是自己写，那么你想怎么写都可以，没有人可以干预你。可是如果在团队协作中，大家都张扬个性，那么代码将会是一团糟，好好的项目就被糟践了。不管是开发还是日后维护，都将是灾难。 这时候，有人提出了何不统一标准，大家都按照这个标准来。于是 ESLint，JSHint 等代码工具如雨后春笋般涌现，成为了项目构建的必备良品。 Git">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git提交规范">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/07/10/Git提交规范/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="一、为什么需要规范？无规矩不成方圆，编程也一样。 如果你有一个项目，从始至终都是自己写，那么你想怎么写都可以，没有人可以干预你。可是如果在团队协作中，大家都张扬个性，那么代码将会是一团糟，好好的项目就被糟践了。不管是开发还是日后维护，都将是灾难。 这时候，有人提出了何不统一标准，大家都按照这个标准来。于是 ESLint，JSHint 等代码工具如雨后春笋般涌现，成为了项目构建的必备良品。 Git">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-19T14:31:41.866Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git提交规范">
+<meta name="twitter:description" content="一、为什么需要规范？无规矩不成方圆，编程也一样。 如果你有一个项目，从始至终都是自己写，那么你想怎么写都可以，没有人可以干预你。可是如果在团队协作中，大家都张扬个性，那么代码将会是一团糟，好好的项目就被糟践了。不管是开发还是日后维护，都将是灾难。 这时候，有人提出了何不统一标准，大家都按照这个标准来。于是 ESLint，JSHint 等代码工具如雨后春笋般涌现，成为了项目构建的必备良品。 Git">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/07/10/Git提交规范/"/>
+
+
+
+
+
+  <title>Git提交规范 | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微笑的周末</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/07/10/Git提交规范/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Git提交规范</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T00:36:03+00:00">
+                2018-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/规范/" itemprop="url" rel="index">
+                    <span itemprop="name">规范</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、为什么需要规范？"><a href="#一、为什么需要规范？" class="headerlink" title="一、为什么需要规范？"></a>一、为什么需要规范？</h3><p>无规矩不成方圆，编程也一样。</p>
+<p>如果你有一个项目，从始至终都是自己写，那么你想怎么写都可以，没有人可以干预你。可是如果在团队协作中，大家都张扬个性，那么代码将会是一团糟，好好的项目就被糟践了。不管是开发还是日后维护，都将是灾难。</p>
+<p>这时候，有人提出了何不统一标准，大家都按照这个标准来。于是 ESLint，JSHint 等代码工具如雨后春笋般涌现，成为了项目构建的必备良品。</p>
+<p>Git Commit 规范可能并没有那么夸张，但如果你在版本回退的时候看到一大段糟心的 Commit，恐怕会懊恼不已吧。所以，严格遵守规范，利人利己。</p>
+<h3 id="二、具体规则"><a href="#二、具体规则" class="headerlink" title="二、具体规则"></a>二、具体规则</h3><p>先来看看公式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>type</p>
+<p>用于说明 commit 的类别，只允许使用下面7个标识。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">feat：新功能（feature）</span><br><span class="line">fix：修补bug</span><br><span class="line">docs：文档（documentation）</span><br><span class="line">style： 格式（不影响代码运行的变动）</span><br><span class="line">refactor：重构（即不是新增功能，也不是修改bug的代码变动）</span><br><span class="line">test：增加测试</span><br><span class="line">chore：构建过程或辅助工具的变动</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>scope</p>
+<p>用于说明 commit 影响的范围，比如数据层、控制层、视图层等等，视项目不同而不同。</p>
+</li>
+<li><p>subject</p>
+<p>是 commit 目的的简短描述，不超过50个字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.以动词开头，使用第一人称现在时，比如change，而不是changed或changes</span><br><span class="line">2.第一个字母小写</span><br><span class="line">3.结尾不加句号（.）</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="三、如何修改之前的-commit-信息？"><a href="#三、如何修改之前的-commit-信息？" class="headerlink" title="三、如何修改之前的 commit 信息？"></a>三、如何修改之前的 commit 信息？</h3><p>其实并不复杂，我们只需要这样做:</p>
+<p>1、将当前分支无关的工作状态进行暂存<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git stash</span><br></pre></td></tr></table></figure></p>
+<p>2、将 HEAD 移动到需要修改的 commit 上<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase 9633cf0919^ --interactive</span><br></pre></td></tr></table></figure></p>
+<p>3、找到需要修改的 commit ,将首行的 pick 改成 edit<br>4、开始着手解决你的 bug<br>5、 git add 将改动文件添加到暂存<br>6、 git commit –amend 追加改动到提交<br>7、git rebase –continue 移动 HEAD 回最新的 commit<br>8、恢复之前的工作状态<code>git stash pop</code></p>
+<p>大功告成，是不是想把整个 Commit 都修改一遍，逃～</p>
+<p>此处参考自：修改 Commit 日志和内容</p>
+<h3 id="四、项目中使用"><a href="#四、项目中使用" class="headerlink" title="四、项目中使用"></a>四、项目中使用</h3><p>这时候问题又来了，为什么我提交的时候会有警告，这个又是如何做到的呢？</p>
+<p>这时候，我们需要一款 Node 插件 validate-commit-msg 来检查项目中 Commit message 是否规范。</p>
+<ol>
+<li>首先，安装插件：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev validate-commit-msg</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>使用方式一，建立 .vcmrc 文件：</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  "types": ["feat", "fix", "docs", "style", "refactor", "perf", "test", "build", "ci", "chore", "revert"],</span><br><span class="line">  "scope": &#123;</span><br><span class="line">    "required": false,</span><br><span class="line">    "allowed": ["*"],</span><br><span class="line">    "validate": false,</span><br><span class="line">    "multiple": false</span><br><span class="line">  &#125;,</span><br><span class="line">  "warnOnFail": false,</span><br><span class="line">  "maxSubjectLength": 100,</span><br><span class="line">  "subjectPattern": ".+",</span><br><span class="line">  "subjectPatternErrorMsg": "subject does not match subject pattern!",</span><br><span class="line">  "helpMessage": "",</span><br><span class="line">  "autoFix": false</span><br><span class="line">&#125;复制代码</span><br><span class="line">3.使用方式二：写入 package.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  "config": &#123;</span><br><span class="line">    "validate-commit-msg": &#123;</span><br><span class="line">      /* your config here */</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;复制代码</span><br><span class="line">4.可是我们如果想自动使用 ghooks 钩子函数呢？</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  …</span><br><span class="line">  "config": &#123;</span><br><span class="line">    "ghooks": &#123;</span><br><span class="line">      "pre-commit": "gulp lint",</span><br><span class="line">      "commit-msg": "validate-commit-msg",</span><br><span class="line">      "pre-push": "make test",</span><br><span class="line">      "post-merge": "npm install",</span><br><span class="line">      "post-rewrite": "npm install",</span><br><span class="line">      …</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 ghooks 中我们可以做很多事情，当然不只是 validate-commit-msg 哦。<br>更多细节请参考：validate-commit-msg</p>
+<h3 id="五、Commit-规范的作用"><a href="#五、Commit-规范的作用" class="headerlink" title="五、Commit 规范的作用"></a>五、Commit 规范的作用</h3><ol>
+<li>提供更多的信息，方便排查与回退；</li>
+<li>过滤关键字，迅速定位；</li>
+<li>方便生成文档；</li>
+</ol>
+<h3 id="六、生成-Change-log"><a href="#六、生成-Change-log" class="headerlink" title="六、生成 Change log"></a>六、生成 Change log</h3><p>正如上文提到的生成文档，如果我们的提交都按照规范的话，那就很简单了。生成的文档包括以下三个部分：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">New features</span><br><span class="line">Bug fixes</span><br><span class="line">Breaking changes.</span><br></pre></td></tr></table></figure></p>
+<p>每个部分都会罗列相关的 commit ，并且有指向这些 commit 的链接。当然，生成的文档允许手动修改，所以发布前，你还可以添加其他内容。</p>
+<p>这里需要使用工具 Conventional Changelog 生成 Change log ：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install -g conventional-changelog</span><br><span class="line">cd jartto-domo</span><br><span class="line">conventional-changelog -p angular -i CHANGELOG.md -w</span><br></pre></td></tr></table></figure></p>
+<p>为了方便使用，可以将其写入 package.json 的 scripts 字段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;changelog&quot;: &quot;conventional-changelog -p angular -i CHANGELOG.md -w -r 0&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样，使用起来就很简单了：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run changelog</span><br></pre></td></tr></table></figure>
+<p>到这里，我们所有的问题都搞明白了，🍻Cheers～</p>
+<h3 id="七、总结"><a href="#七、总结" class="headerlink" title="七、总结"></a>七、总结</h3><p>看完文章，你还会如此放荡不羁吗？你还会随心所欲的编写 Commit 吗？你还会如此 <code>git commit -m &quot;hello jartto&quot;</code>提交吗？</p>
+<p>答案是否定的，因为使用了钩子函数，你没有机会了，否则将是无穷无尽的恢复 Commit。这倒可以养成良好的提交习惯，🙈～</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/git/" rel="tag"><i class="fa fa-tag"></i> git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/" rel="prev" title="Hadoop 一">
+                Hadoop 一 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、为什么需要规范？"><span class="nav-number">1.</span> <span class="nav-text">一、为什么需要规范？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、具体规则"><span class="nav-number">2.</span> <span class="nav-text">二、具体规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、如何修改之前的-commit-信息？"><span class="nav-number">3.</span> <span class="nav-text">三、如何修改之前的 commit 信息？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、项目中使用"><span class="nav-number">4.</span> <span class="nav-text">四、项目中使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、Commit-规范的作用"><span class="nav-number">5.</span> <span class="nav-text">五、Commit 规范的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、生成-Change-log"><span class="nav-number">6.</span> <span class="nav-text">六、生成 Change log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、总结"><span class="nav-number">7.</span> <span class="nav-text">七、总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
