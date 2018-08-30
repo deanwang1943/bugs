@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java,面试题," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1、自我介绍、自己做的项目和技术领域 2、项目中的监控：那个监控指标常见的哪些？ 3、微服务涉及到的技术以及需要注意的问题有哪些？ 4、注册中心你了解了哪些？   Zookeeper:历史悠久，数据存储格式类似文件系统，通过私有协议访问，集群式架构。优点是成熟稳定，缺点是系统复杂，资源占用高   Consul:Consul 提供了高可用的kv存储，集群架构，这点和etcd zookeeper类似。">
+<meta name="keywords" content="java,面试题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蚂蚁金服面试一">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/08/29/语言/Java/蚂蚁金服/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="1、自我介绍、自己做的项目和技术领域 2、项目中的监控：那个监控指标常见的哪些？ 3、微服务涉及到的技术以及需要注意的问题有哪些？ 4、注册中心你了解了哪些？   Zookeeper:历史悠久，数据存储格式类似文件系统，通过私有协议访问，集群式架构。优点是成熟稳定，缺点是系统复杂，资源占用高   Consul:Consul 提供了高可用的kv存储，集群架构，这点和etcd zookeeper类似。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-30T16:28:33.719Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="蚂蚁金服面试一">
+<meta name="twitter:description" content="1、自我介绍、自己做的项目和技术领域 2、项目中的监控：那个监控指标常见的哪些？ 3、微服务涉及到的技术以及需要注意的问题有哪些？ 4、注册中心你了解了哪些？   Zookeeper:历史悠久，数据存储格式类似文件系统，通过私有协议访问，集群式架构。优点是成熟稳定，缺点是系统复杂，资源占用高   Consul:Consul 提供了高可用的kv存储，集群架构，这点和etcd zookeeper类似。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/08/29/语言/Java/蚂蚁金服/"/>
+
+
+
+
+
+  <title>蚂蚁金服面试一 | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微笑的周末</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/08/29/语言/Java/蚂蚁金服/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">蚂蚁金服面试一</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T00:36:03+00:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>1、自我介绍、自己做的项目和技术领域</p>
+<p>2、项目中的监控：那个监控指标常见的哪些？</p>
+<p>3、微服务涉及到的技术以及需要注意的问题有哪些？</p>
+<p>4、注册中心你了解了哪些？</p>
+<p>  Zookeeper:历史悠久，数据存储格式类似文件系统，通过私有协议访问，集群式架构。优点是成熟稳定，缺点是系统复杂，资源占用高</p>
+<p>  Consul:Consul 提供了高可用的kv存储，集群架构，这点和etcd zookeeper类似。 另外也提供了自动服务发现注册的套件，并且能否对服务进行健康检查。 结合consul-template可以实现服务提供方信息更新(比如增加了API服务器)时，自动生成配置文件给服务使用方自动更新配置。<br>  Consul支持跨数据中心</p>
+<p>  Eureka</p>
+<p>5、consul 的可靠性你了解吗？</p>
+<p>6、consul 的机制你有没有具体深入过？有没有和其他的注册中心对比过？</p>
+<p>7、项目用 Spring 比较多，有没有了解 Spring 的原理？AOP 和 IOC 的原理</p>
+<p>  Spring的两个核心概念是IOC（控制反转）和AOP（面向切面编程）.</p>
+<p>  IOC: IOC（控制翻转）是一种编程范式，可以在一定程度上解决复杂系统对象耦合度太高的问题，并不是Spring的专利。IOC最常见的方式是DI（依赖注入），可以通过一个容器，将Bean维护起来，方便在其他地方直接使用，而不是重新new。可以说，IOC是Spring最基本的概念，没有IOC就没有Spring。</p>
+<p>  为什么DI可以起到解耦的作用？</p>
+<p>  一个软件系统包含了大量的对象，每个对象之间都有依赖关系，在普通的软件编写过程中，对象的定义分布在各个文件之中，对象之间的依赖，只能通过类的构造器传参，方法传参的形式来完成。当工程变大之后，复杂的逻辑会让对象之间的依赖梳理变得异常困难。</p>
+<p>  beans包实现的核心关注点是BeanFactory，BeanFactory也叫作Bean容器，顾名思义，是用来盛放、管理bean的。</p>
+<p>  context包实现的核心关注是ApplicationContext，ApplicationContext也是用来获取Bean的，但是它更高层，它的面向用户是Spring的使用者，而BeanFactory面向的用户更多是Spring开发者。BeanFactory定义了Bean初始化的流程，ApplicationContext定义了从XML读取，到Bean初始化，再到使用的过程。</p>
+<p>  AOP:Spring内部的声明式事务和拦截器都是利用了AOP的强大威力，才得以优雅的实现。<br>  它可以让编程人员在不修改对象代码的情况下，为这个对象添加额外的功能或者限制。<br>  很熟悉吧，这就是代理模式！</p>
+<p>  因为AOP涉及的知识较为复杂，所以我先将背景知识介绍一下。</p>
+<p>  Java动态代理，就是Java本身提供的代理实现，要求对象必须实现某一个接口。<br>  CGLib库，为Java提供了，为普通类提供代理的功能。<br>  aspectj包，实现了，通过一种固定的编程语言，通过这种简单的编程语言，我们可以定位到被代理的类，自动完成代理。</p>
+<p>  Spring AOP之所以能够为动态生成的Bean提供代理，得益于PostProcessor接口。我们会议IOC初始化流程中，最后一部，就是得到BeanFactory之中所有继承了PostProcessor接口的bean，调用它们的postProcessBeforeInitilization、postProcessAfterInitilization方法，来代理bean，生成新的bean。</p>
+<p>  在这里，我们的对象是AspectJAwareAdvisorAutoProxyCreator。<br>  在这个对象的方法中，逻辑是这样的，找到xml里面所有切面bean，然后在这些bean里面，找到符合被代理类的切面bean，找到切面bean之后，就可以获得增强，切点等，于是可有构造一个AdvisorSupport，知道了AdvisorSupport，我们就能够通过proxyFactory来获取代理了。</p>
+<p>  至于如何这个类切面是用来切入代理类的，这个就要交给PointCut来实现了，pointcut有很多实现方式，这里我们用的是aspectj。具体这个类我就不细讲了。</p>
+<p>  ApplicationContext-用户与BeanFactory之间的桥梁</p>
+<p>  beans.context包有三个类、接口，完成了ApplicationContext的基本功能。</p>
+<ul>
+<li>ApplicationContext接口，没有任何方法，只是继承了BeanFactory接口，暗示ApplicationContext与BeanFactory都是获取Bean的地方。</li>
+<li>AbstractApplicationContext抽象类，首先，它的构造函数接收入参BeanFactory，所以说ApplicationContext内部具有一个BeanFactory。类似于一种装饰器模式，但不是装饰器模式，类似于代理模式，但也不是代理模式。fresh方法分为三个步骤：1.loadBeanDefinitions，这个是一个模板方法，需要子类实现，它的作用就是从某一个地方读取BeanDefinition，然后写入到ApplicationContext自己的BeanFactory里面，这就是ApplicationContext与BeanFactory之间的联系，也就是ApplicationContext还负责了读取定义。2. registerBeanPostProcessors，这个就是在BeanFactory里面找到BeanPostProcessor，然后将他们放到BeanFactory的beanPostProcessors容器里面，方便BeanFactory初始化使用。3. onRefresh初始化一遍所有的bean。</li>
+<li><p>ClassPathXmlApplicationContext实现了loadBeanDefinitions的方法，将xml文件和BeanFactory结合在一起。</p>
+<p>Spring Aop 中 Jdk 动态代理就是利用代理模式技术实现的</p>
+</li>
+</ul>
+<p>8、Spring Boot除了自动配置，相比传统的 Spring 有什么其他的区别？</p>
+<ul>
+<li>Spring Boot可以建立独立的Spring应用程序；</li>
+<li>内嵌了如Tomcat，Jetty和Undertow这样的容器，也就是说可以直接跑起来，用不着再做部署工作了。</li>
+<li>无需再像Spring那样搞一堆繁琐的xml文件的配置；</li>
+<li>可以自动配置Spring；</li>
+<li>提供了一些现有的功能，如量度工具，表单数据验证以及一些外部配置这样的一些第三方功能；</li>
+<li>提供的POM可以简化Maven的配置；</li>
+</ul>
+<p>9、Spring Cloud 有了解多少？</p>
+<p>10、Spring Bean 的生命周期</p>
+<ol>
+<li>getBean, 在beanDefinitionMap里面得到bean，如果没有的话，先初始化。（为什么会没有，因为ApplicationContext读取xml文件时候，只是给BeanDefinition服了类类型，并没有赋值对象，这个对象还是需要BeanFactory通过反射生成的）。</li>
+<li>createBeanInstance，通过反射，根据BeanDefinition的类对象新建实体对象-&gt;将得到的bean对象赋值给beandefinition，然后将BeanDefinition里面的属性都注入到Bean里面，这就完成了doCreateBean。</li>
+<li>initializeBean就是调用BeanPostProcessor的postProcessBeforeInitilizztion方法和postProcessAfterIntilizatin方法，获取新的bean，这里会在aop中用到。</li>
+</ol>
+<p>11、HashMap 和 hashTable 区别？</p>
+<p>12、Object 的 hashcode 方法重写了，equals 方法要不要改？</p>
+<p>  在我们的业务系统中判断对象时有时候需要的不是一种严格意义上的相等，而是一种业务上的对象相等。在这种情况下，原生的equals方法就不能满足我们的需求了</p>
+<p>  所以这个时候我们需要重写equals方法，来满足我们的业务系统上的需求，重写hashCode只是技术要求（为了提高效率）为什么要重写equals呢？因为在java的集合框架中，是通过equals来判断两个对象是否相等的</p>
+<p>  Hash碰撞：通过合理的利用各个属性对象的散列码进行组合，使得hash更加均匀，或者增加hash桶的大小</p>
+<p>13、Hashmap 线程不安全的出现场景</p>
+<p>14、线上服务 CPU 很高该怎么做？有哪些措施可以找到问题</p>
+<ul>
+<li>检查是否有死循环。</li>
+<li>频繁的GC.或者有大量的线程。</li>
+<li>算法太复杂或者太多</li>
+<li>数据库连接的资源未释放或未关闭，</li>
+<li><p>数据库connection过于频繁。</p>
+<p>在top监控页面，按shift+h切换到线程监控状态</p>
+<p>jstack java进程 |grep -A 30 3005</p>
+</li>
+</ul>
+<p>15、JDK 中有哪几个线程池？顺带把线程池讲了个遍</p>
+<p>16、SQL 优化的常见方法有哪些</p>
+<p>17、SQL 索引的顺序，字段的顺序</p>
+<p>  为什么要创建组合索引呢？这么简单的情况直接创建一个order_id的索引不就行了吗？<br>  如果只有一个order_id索引，没什么问题，会用到这个索引，然后mysql要去磁盘上的表里面取到product_id。</p>
+<p>  如果有组合索引的话，mysql可以完全从索引中取到product_id，速度自然会快。</p>
+<p>  再多说几句组合索引的最左优先原则：<br>  组合索引的第一个字段必须出现在查询组句中，这个索引才会被用到。</p>
+<p>  多列索引,由于索引文件以B－Tree格式保存，所以我们不用扫描任何记录，即可得到最终结果。</p>
+<p>  最左前缀：顾名思义，就是最左优先，上例中我们创建了lname_fname_age多列索引,相当于创建了(lname)单列索引，(lname,fname)组合索引以及(lname,fname,age)组合索引。</p>
+<p>18、查看 SQL 是不是使用了索引？（有什么工具）</p>
+<p>19、TCP 和 UDP 的区别？TCP 数据传输过程中怎么做到可靠的？</p>
+<p>  UDP 与 TCP 的主要区别在于 UDP 不一定提供可靠的数据传输。</p>
+<p>  TCP的目的是提供可靠的数据传输，并在相互进行通信的设备或服务之间保持一个虚拟连接。TCP在数据包接收无序、丢失或在交付期间被破坏时，负责数据恢复。它通过为其发送的每个数据包提供一个序号来完成此恢复。</p>
+<p>20、说下你知道的排序算法吧</p>
+<p>21、查找一个数组的中位数？</p>
+<p>  基本思路是：任意挑一个元素，以该元素为支点，将数组分成两部分，左部分是小于等于支点的，右部分是大于支点的。如果你的运气爆棚，左部分正好是（n－1）／2个元素，那么支点的那个数就是中位数。如果左侧长度&lt;(n-1)/2, 那么中位点在右侧，反之，中位数在左侧。 进入相应的一侧继续寻找中位点。<br>  这种方法很快，但是在最坏的情况下时间复杂度为O(N^2), 不过平均时间复杂度好像是O(N)。</p>
+<p>22、你有什么问题想问我的吗？</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+          
+            <a href="/bugs/tags/面试题/" rel="tag"><i class="fa fa-tag"></i> 面试题</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bugs/2018/08/28/语言/Python/Python面试题之二/" rel="next" title="Python面试题之二">
+                <i class="fa fa-chevron-left"></i> Python面试题之二
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/08/29/语言/Java/Java基础面试/" rel="prev" title="Java基础面试">
+                Java基础面试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
