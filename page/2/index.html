@@ -260,7 +260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/08/23/数据库/MySQL/MySql-日常指导-大表优化思路/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/08/22/语言/Java/HashMapAndConcurrentHashMap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -279,7 +279,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/08/23/数据库/MySQL/MySql-日常指导-大表优化思路/" itemprop="url">MySql 日常指导，及大表优化思路</a></h1>
+                <a class="post-title-link" href="/bugs/2018/08/22/语言/Java/HashMapAndConcurrentHashMap/" itemprop="url">Java-基础-容器-hashmap分析</a></h1>
         
 
         <div class="post-meta">
@@ -291,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T08:36:03+08:00">
-                2018-08-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T16:36:03+08:00">
+                2018-08-22
               </time>
             
 
@@ -314,8 +314,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
+                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -353,27 +353,30 @@
       
         
           
-          
-当MySQL单表记录数过大时，增删改查性能都会急剧下降
+          HashMap? ConcurrentHashMap? 相信看完这篇没人能难住你！
+前言Map 这样的 Key Value 在软件开发中是非常经典的结构，常用于在内存中存放数据。
+本篇主要想讨论 ConcurrentHashMap 这样一个并发容器，在正式开始之前我觉得有必要谈谈 HashMap，没有它就不会有后面的 ConcurrentHashMap。
+HashMap众所周知 HashMap 底层是基于 数组 + 链表 组成的，不过在 jdk1.7 和 1.8 中具体实现稍有不同。
+Base 1.71.7 中的数据结构图：
 
-单表优化除非单表数据未来会一直不断上涨，否则不要一开始就考虑拆分，拆分会带来逻辑、部署、运维的各种复杂度，一般以整型值为主的表在千万级以下，字符串为主的表在五百万以下是没有太大问题的。
-而事实上很多时候 MySQL 单表的性能依然有不少优化空间，甚至能正常支撑千万级以上的数据量。
-字段
-尽量使用 TINYINT、 SMALLINT、 MEDIUM_INT 作为整数类型而非 INT，如果非负则加上 UNSIGNED
-VARCHAR 的长度只分配真正需要的空间
-使用枚举或整数代替字符串类型
-尽量使用 TIMESTAMP 而非 DATETIME
-单表不要有太多字段，建议在 20 以内
-避免使用 NULL 字段，很难查询优化且占用额外索引空间
-用整型来存 IP
+先来看看 1.7 中的实现。
 
-索引
-索引并不是越多越好，要根据查询有针对性的创建，考虑在 WHERE 和 ORDER BY命令上涉及的列建立索引，可根据 EXPLAIN 来查看是否用了索引还是全表扫描
-应尽
+这是 HashMap 中比较核心的几个成员变量；看看分别是什么意思？
+
+初始化桶大小，因为底层是数组，所以这是数组默认的大小。
+桶最大值。
+默认的负载因子（0.75）
+table 真正存放数据的数组。
+Map 存放数量的大小。
+桶大小，可在初始化时显式指定。
+负载因子，可在初始化时显式指定。
+
+重点解释下负载因子：
+由于给定的 Ha
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/08/23/数据库/MySQL/MySql-日常指导-大表优化思路/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/08/22/语言/Java/HashMapAndConcurrentHashMap/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1218,6 +1221,158 @@ take():获取并移除队列的超时元素，如果没有则wait当前线程，
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/08/09/语言/Java/高并发编程(零)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/08/09/语言/Java/高并发编程(零)/" itemprop="url">Java高并发-基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-09T08:36:03+08:00">
+                2018-08-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          线程同步
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/08/09/语言/Java/高并发编程(零)/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/08/09/语言/Python/Python面试题之一/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1331,158 +1486,6 @@ Q 2：深拷贝和浅拷贝之间的区别是什么？
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/bugs/2018/08/09/语言/Python/Python面试题之一/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/08/09/语言/Java/高并发编程(零)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/08/09/语言/Java/高并发编程(零)/" itemprop="url">Java高并发-基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-09T08:36:03+08:00">
-                2018-08-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          线程同步
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/08/09/语言/Java/高并发编程(零)/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
