@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="缓存,Caffeine," />
 
 
 
@@ -87,10 +87,10 @@
 
 
 <meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b8df63c6fb9a019e04ebaf4?utm_source=gold_browser_extension  1. 前言读这篇文章之前希望你能好好的阅读: 你应该知道的缓存进化史 和 如何优雅的设计和使用缓存？ 。这两篇文章主要从一些实战上面去介绍如何去使用缓存。在这两篇文章中我都比较推荐">
-<meta name="keywords" content="Java Python 大数据">
+<meta name="keywords" content="缓存,Caffeine">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Bugs">
-<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/09/05/framework/Caffeine/simpread-深入剖析未来的缓存 - Caffeine/index.html">
+<meta property="og:title" content="深入剖析未来的缓存 - Caffeine">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/09/05/framework/Caffeine/深入剖析未来的缓存 - Caffeine/index.html">
 <meta property="og:site_name" content="Bugs">
 <meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b8df63c6fb9a019e04ebaf4?utm_source=gold_browser_extension  1. 前言读这篇文章之前希望你能好好的阅读: 你应该知道的缓存进化史 和 如何优雅的设计和使用缓存？ 。这两篇文章主要从一些实战上面去介绍如何去使用缓存。在这两篇文章中我都比较推荐">
 <meta property="og:locale" content="zh-Hans">
@@ -121,9 +121,9 @@
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/4/165a3c9464740424?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/4/165a3cd0c2623dff?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/4/165a3ec20b9f460a?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:updated_time" content="2018-09-05T05:13:09.182Z">
+<meta property="og:updated_time" content="2018-09-05T05:45:00.850Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Bugs">
+<meta name="twitter:title" content="深入剖析未来的缓存 - Caffeine">
 <meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b8df63c6fb9a019e04ebaf4?utm_source=gold_browser_extension  1. 前言读这篇文章之前希望你能好好的阅读: 你应该知道的缓存进化史 和 如何优雅的设计和使用缓存？ 。这两篇文章主要从一些实战上面去介绍如何去使用缓存。在这两篇文章中我都比较推荐">
 <meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/8/16/165406d9fff73da6?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 
@@ -155,13 +155,13 @@
 
 
 
-  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/09/05/framework/Caffeine/simpread-深入剖析未来的缓存 - Caffeine/"/>
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/09/05/framework/Caffeine/深入剖析未来的缓存 - Caffeine/"/>
 
 
 
 
 
-  <title> | Bugs</title>
+  <title>深入剖析未来的缓存 - Caffeine | Bugs</title>
   
 
 
@@ -288,7 +288,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/05/framework/Caffeine/simpread-深入剖析未来的缓存 - Caffeine/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/05/framework/Caffeine/深入剖析未来的缓存 - Caffeine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -305,7 +305,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">深入剖析未来的缓存 - Caffeine</h1>
         
 
         <div class="post-meta">
@@ -317,7 +317,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T05:13:09+00:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T05:36:03+00:00">
                 2018-09-05
               </time>
             
@@ -327,6 +327,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/缓存/" itemprop="url" rel="index">
+                    <span itemprop="name">缓存</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -513,6 +535,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/缓存/" rel="tag"><i class="fa fa-tag"></i> 缓存</a>
+          
+            <a href="/bugs/tags/Caffeine/" rel="tag"><i class="fa fa-tag"></i> Caffeine</a>
+          
+        </div>
+      
 
       
       
@@ -522,8 +552,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/bugs/2018/09/05/framework/simpread-如何优雅的设计和使用缓存？/" rel="next" title="">
-                <i class="fa fa-chevron-left"></i> 
+              <a href="/bugs/2018/09/05/framework/如何优雅的设计和使用缓存？/" rel="next" title="simpread-如何优雅的设计和使用缓存？">
+                <i class="fa fa-chevron-left"></i> simpread-如何优雅的设计和使用缓存？
               </a>
             
           </div>
@@ -618,7 +648,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/bugs/categories/index.html">
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -629,7 +659,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/bugs/tags/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
