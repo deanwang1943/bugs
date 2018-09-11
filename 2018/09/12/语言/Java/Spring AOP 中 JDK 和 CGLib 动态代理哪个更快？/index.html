@@ -95,7 +95,6 @@
 <meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/entry/5b95be3a6fb9a05d06732ec2?utm_source=gold_browser_extension   一、背景昨天一位知识星球的小伙伴面试的时候被问到：Spring AOP 中 JDK 和 CGLib 动态代理哪个效率更高？在知识星球整理了一下，今天特分享出来，供大家参考！对知识">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/10/165c0ef2a8f581b4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/10/165c0ef2a90db0dd?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/10/165c0ef2a8feb86c?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/10/165c0ef2a8ee4a3c?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/10/165c0ef3b8bd1f77?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
@@ -113,8 +112,7 @@
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/10/165c0ef5d81d775d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/10/165c0ef5d96f602c?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/10/165c0ef5db4bcf50?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/10/165c0ef5eca72dc9?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:updated_time" content="2018-09-11T15:19:35.463Z">
+<meta property="og:updated_time" content="2018-09-11T15:26:02.217Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring AOP 中 JDK 和 CGLib 动态代理哪个更快？">
 <meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/entry/5b95be3a6fb9a05d06732ec2?utm_source=gold_browser_extension   一、背景昨天一位知识星球的小伙伴面试的时候被问到：Spring AOP 中 JDK 和 CGLib 动态代理哪个效率更高？在知识星球整理了一下，今天特分享出来，供大家参考！对知识">
@@ -375,7 +373,6 @@
 </blockquote>
 <p><img src="https://user-gold-cdn.xitu.io/2018/9/10/165c0ef2a8f581b4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
 <h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a><strong>一、背景</strong></h2><p>昨天一位知识星球的小伙伴面试的时候被问到：Spring AOP 中 JDK 和 CGLib 动态代理哪个效率更高？在知识星球整理了一下，今天特分享出来，供大家参考！对知识星球有兴趣的可以了解一下：</p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/9/10/165c0ef2a90db0dd?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
 <h2 id="二、基本概念"><a href="#二、基本概念" class="headerlink" title="二、基本概念"></a><strong>二、基本概念</strong></h2><p>首先，我们知道 Spring AOP 的底层实现有两种方式：一种是 JDK 动态代理，另一种是 CGLib 的方式。</p>
 <p>自 Java 1.3 以后，Java 提供了动态代理技术，允许开发者在运行期创建接口的代理实例，后来这项技术被用到了 Spring 的很多地方。</p>
 <p>JDK 动态代理主要涉及 java.lang.reflect 包下边的两个类：Proxy 和 InvocationHandler。其中，InvocationHandler 是一个接口，可以通过实现该接口定义横切逻辑，并通过反射机制调用目标类的代码，动态地将横切逻辑和业务逻辑编织在一起。</p>
@@ -451,7 +448,6 @@
 <p></p></section><p></p>
 <p></p></section><p></p>
 <p></p></section><p></p>
-<section><br><br><img src="https://user-gold-cdn.xitu.io/2018/9/10/165c0ef5eca72dc9?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""><br><br></section>
 
       
     </div>
