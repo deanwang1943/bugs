@@ -1082,7 +1082,7 @@ Driver OOM
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/07/11/bigdata/hadoop/Hadoop全排序中的Sampler采样器/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -1101,7 +1101,7 @@ Driver OOM
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/07/11/bigdata/hadoop/Hadoop全排序中的Sampler采样器/" itemprop="url">Hadoop全排序中的Sampler采样器</a></h1>
+                <a class="post-title-link" href="/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/" itemprop="url">Hadoop 一</a></h1>
         
 
         <div class="post-meta">
@@ -1175,15 +1175,46 @@ Driver OOM
       
         
           
-          Hadoop全排序中的Sampler采样器我们已经了解过Partitioner组件的其中一个和全排序相关的实现类—-TotalOrderPartitioner。
-我们知道，在Hadoop中，最终的处理结果集中的数据，除非就由一个Reduce Task处理，否则结果数据集只是局部有序而非全排序。
-这节我们来学习在Hadoop中进行全排序操作中除了TotalOrderPartitioner之外的另一个组件—-采样器Sampler。
-在新版本的Hadoop中，内置了三个采样器： SplitSampler，RandomSampler和IntervalSampler。这三个采样器都是InputSampler类的静态内部类，并且都实现了InputSampler类的内部接口Sampler，涉及的相关代码如下：
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849/** * Ut
-          ...
+          简介
+三大组件：HDFS, MR, YARN，相互不关联
+HDFS：存储大数据文件，可以分成多份存储，采用类似bash的命令方式管理HDFS
+MR：用于离线数据计算，主要过程：输入-&gt;默认分割按行-&gt;进行自定义Map操作-&gt;shiffe分割-&gt;自定义reduce合并-&gt;输出
+YARN：调度框架，根据配置进行job和资源的调度操作
+
+
+物理架构/逻辑架构
+Master / Salve
+NameNode / DataNode(N)
+
+
+运行模式
+单机模式
+伪分布式
+分布式
+
+
+配置文件
+
+核心配置文件
+1core-site.xml
+
+HDFS配置文件
+1hdfs-site.xml
+
+MR配置文件
+1mapred-site.xml
+
+YARN调度配置文件
+1yarn-site.xml
+
+
+
+
+
+          
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/07/11/bigdata/hadoop/Hadoop全排序中的Sampler采样器/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1403,7 +1434,7 @@ ssh-keygen -t rsa
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/07/11/bigdata/hadoop/Hadoop全排序中的Sampler采样器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -1422,7 +1453,7 @@ ssh-keygen -t rsa
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/" itemprop="url">Hadoop 一</a></h1>
+                <a class="post-title-link" href="/bugs/2018/07/11/bigdata/hadoop/Hadoop全排序中的Sampler采样器/" itemprop="url">Hadoop全排序中的Sampler采样器</a></h1>
         
 
         <div class="post-meta">
@@ -1496,46 +1527,15 @@ ssh-keygen -t rsa
       
         
           
-          简介
-三大组件：HDFS, MR, YARN，相互不关联
-HDFS：存储大数据文件，可以分成多份存储，采用类似bash的命令方式管理HDFS
-MR：用于离线数据计算，主要过程：输入-&gt;默认分割按行-&gt;进行自定义Map操作-&gt;shiffe分割-&gt;自定义reduce合并-&gt;输出
-YARN：调度框架，根据配置进行job和资源的调度操作
-
-
-物理架构/逻辑架构
-Master / Salve
-NameNode / DataNode(N)
-
-
-运行模式
-单机模式
-伪分布式
-分布式
-
-
-配置文件
-
-核心配置文件
-1core-site.xml
-
-HDFS配置文件
-1hdfs-site.xml
-
-MR配置文件
-1mapred-site.xml
-
-YARN调度配置文件
-1yarn-site.xml
-
-
-
-
-
-          
+          Hadoop全排序中的Sampler采样器我们已经了解过Partitioner组件的其中一个和全排序相关的实现类—-TotalOrderPartitioner。
+我们知道，在Hadoop中，最终的处理结果集中的数据，除非就由一个Reduce Task处理，否则结果数据集只是局部有序而非全排序。
+这节我们来学习在Hadoop中进行全排序操作中除了TotalOrderPartitioner之外的另一个组件—-采样器Sampler。
+在新版本的Hadoop中，内置了三个采样器： SplitSampler，RandomSampler和IntervalSampler。这三个采样器都是InputSampler类的静态内部类，并且都实现了InputSampler类的内部接口Sampler，涉及的相关代码如下：
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849/** * Ut
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/07/11/bigdata/hadoop/Hadoop全排序中的Sampler采样器/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
