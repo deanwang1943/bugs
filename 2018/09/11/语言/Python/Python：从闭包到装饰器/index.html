@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b93deb2f265da0a8f35a3b1?utm_source=gold_browser_extension  闭包闭包的概念在一个外函数中定义了一个内函数，内函数里运用了外函数的临时变量，并且外函数的返回值是内函数的引用。这样就构成了一个闭包。[1] 以下给出一个闭包的例子： 1234567">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python从闭包到装饰器">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/09/11/语言/Python/Python：从闭包到装饰器/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b93deb2f265da0a8f35a3b1?utm_source=gold_browser_extension  闭包闭包的概念在一个外函数中定义了一个内函数，内函数里运用了外函数的临时变量，并且外函数的返回值是内函数的引用。这样就构成了一个闭包。[1] 以下给出一个闭包的例子： 1234567">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-11T15:18:13.303Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python从闭包到装饰器">
+<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b93deb2f265da0a8f35a3b1?utm_source=gold_browser_extension  闭包闭包的概念在一个外函数中定义了一个内函数，内函数里运用了外函数的临时变量，并且外函数的返回值是内函数的引用。这样就构成了一个闭包。[1] 以下给出一个闭包的例子： 1234567">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/09/11/语言/Python/Python：从闭包到装饰器/"/>
+
+
+
+
+
+  <title>Python从闭包到装饰器 | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微笑的周末</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/11/语言/Python/Python：从闭包到装饰器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python从闭包到装饰器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-11T00:36:03+00:00">
+                2018-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="https://juejin.im/post/5b93deb2f265da0a8f35a3b1?utm_source=gold_browser_extension" target="_blank" rel="noopener">https://juejin.im/post/5b93deb2f265da0a8f35a3b1?utm_source=gold_browser_extension</a></p>
+</blockquote>
+<h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><h3 id="闭包的概念"><a href="#闭包的概念" class="headerlink" title="闭包的概念"></a>闭包的概念</h3><p>在一个外函数中定义了一个内函数，内函数里运用了外函数的临时变量，并且外函数的返回值是内函数的引用。这样就构成了一个闭包。[1]</p>
+<p>以下给出一个闭包的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def outer():</span><br><span class="line">    a = 10</span><br><span class="line">    def inner():</span><br><span class="line">        b= 10</span><br><span class="line">        print(b)</span><br><span class="line">        print(a)</span><br><span class="line">    return inner</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    inner_func = outer()</span><br><span class="line">    inner_func()</span><br><span class="line"></span><br><span class="line">  &gt;&gt; 10</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>在这里 a 作为 outer 的局部变量，一般情况下会在函数结束的时候释放为 a 分配到的内存。但是在闭包中，如果外函数在结束的时候发现有自己的临时变量将来会在内部函数中用到，就把这个临时变量绑定给了内部函数，然后自己再结束。[1]</p>
+<blockquote>
+<p>在 inner 中，a 是一个自由变量 (free variable). 这是一个技术术语，指未在本地作用域绑定的变量。[2]</p>
+</blockquote>
+<p>在 python 中，<strong>code</strong>属性中保存着局部变量的和自由变量的名称，对于 inner 函数，其局部变量和自由变量为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">inner_func = outer()</span><br><span class="line">inner_func.__code__.co_freevars</span><br><span class="line">&gt;&gt; (&apos;a&apos;,)</span><br><span class="line">inner_func.__code__.co_varnames</span><br><span class="line">&gt;&gt; (&apos;b&apos;,)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>那么，既然外部函数会把内部变量要用到的变量 (即内部函数的自由变量) 绑定给内部函数，那么 a 的绑定在哪里？a 的绑定在返回函数的 inner 的<strong>closure</strong>属性中，其中的 cell_contents 保存着真正的值。[2]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">inner_func.__closure__[0].cell_contents</span><br><span class="line">&gt;&gt; 10</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>综上，闭包是一种函数，它会保留定义函数时存在的自由变量的绑定，这样调用函数时，虽然定义作用域不可用了，但是仍能使用那些绑定。[2]</p>
+</blockquote>
+<h3 id="更进一步"><a href="#更进一步" class="headerlink" title="更进一步"></a>更进一步</h3><p>当我们尝试在 inner 改变 a 的值的时候</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">def outer():</span><br><span class="line">    a = 10</span><br><span class="line"></span><br><span class="line">    def inner():</span><br><span class="line">        # nonlocal a</span><br><span class="line">        b = 10</span><br><span class="line">        print(b)</span><br><span class="line">        a += 1</span><br><span class="line">        print(a)</span><br><span class="line">    return inner</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    inner_func = outer()</span><br><span class="line">    inner_func()</span><br><span class="line"></span><br><span class="line">&gt;&gt; UnboundLocalError: local variable &apos;a&apos; referenced before assignment</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>之所以会出现这个错误的关键在于：当 a 是数字或任何不可变类型时，a += 1 等价于 a = a+1，这会把 a 变为局部变量。对于不可变类型如数字，字符串，元组来说，<strong>只能读取，不能更新</strong>。在 a += 1 中，等价于于 a = a + 1，这里隐式创建了一个局部变量 a，这样 a 就不再是自由变量了，也不存在在闭包中了。</p>
+<p>解决方法：加入 nonlocal 声明。它的作用是把变量标记为自由变量，这样即使在函数中为变量赋予新值，也会变成自由变量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">def outer():</span><br><span class="line">    a = 10</span><br><span class="line"></span><br><span class="line">    def inner():</span><br><span class="line">        nonlocal a</span><br><span class="line">        b = 10</span><br><span class="line">        print(b)</span><br><span class="line">        a += 1</span><br><span class="line">        print(a)</span><br><span class="line">    return inner</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    inner_func = outer()</span><br><span class="line">    inner_func()</span><br><span class="line">&gt;&gt; 10</span><br><span class="line">   11</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>BINGO!</p>
+<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>在装饰器这一部分主要讲解以下几种情形：</p>
+<ul>
+<li><p>函数装饰器</p>
+</li>
+<li><p>类装饰器</p>
+</li>
+<li><p>装饰器链</p>
+</li>
+<li><p>带参数的装饰器</p>
+</li>
+</ul>
+<h3 id="装饰器的作用"><a href="#装饰器的作用" class="headerlink" title="装饰器的作用"></a>装饰器的作用</h3><p>装饰器本质上是一个 Python 函数或类，它可以让其他函数或类在不需要做任何代码修改的前提下增加额外功能，装饰器的返回值也是一个函数 / 类对象。它经常用于有切面需求的场景，比如：插入日志、性能测试、事务处理、缓存、权限校验等场景，装饰器是解决这类问题的绝佳设计。有了装饰器，我们就可以抽离出大量与函数功能本身无关的雷同代码到装饰器中并继续重用。[3]</p>
+<p>在网上，各种用的比较多的案例的是，如果我们有非常多的函数，我们现在希望统计每一个函数的运行时间以及打印其参数应该怎么做。</p>
+<p>比较智障的方法是: 修改函数原来的内容，加上统计时间的代码和打印参数代码。但结合前面的闭包的知识，我们应该可以提出这样一种方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">def count_time(func):</span><br><span class="line">    def wrapper(*args, **kwargs):</span><br><span class="line">        tic = time.clock()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        toc = time.clock()</span><br><span class="line">        print(&apos;函数 %s 的运行时间为 %.4f&apos; %(func.__name__, toc-tic))</span><br><span class="line">        print(&apos;参数为:&apos;+str(args)+str(kwargs))</span><br><span class="line">    return wrapper</span><br><span class="line"></span><br><span class="line">def test_func(*args, **kwargs):</span><br><span class="line">    time.sleep(1)</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    f = count_time(test_func)</span><br><span class="line">    f([&apos;hello&apos;, &apos;world&apos;], hello=1, world=2)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>在这里 func 会绑定给 wrapper 函数，所以即使 count_time 函数结束了，其中传入的 func 也会绑定给 wrapper. 下述代码可验证之。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f.__code__.co_freevars</span><br><span class="line">&gt;&gt; (&apos;func&apos;,)</span><br><span class="line">f.__closure__[0].cell_contents</span><br><span class="line">&gt;&gt; &lt;function test_func at 0x0000014234165AE8&gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>而上述的代码就是 python 装饰器的原理，只不过在我们可以使用 <code>@</code>语法糖简化代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">def count_time(func):</span><br><span class="line">    def wrapper(*args, **kwargs):</span><br><span class="line">        tic = time.clock()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        toc = time.clock()</span><br><span class="line">        print(&apos;函数 %s 的运行时间为 %.4f&apos; %(func.__name__, toc-tic))</span><br><span class="line">        print(&apos;参数为:&apos;+str(args)+str(kwargs))</span><br><span class="line">    return wrapper</span><br><span class="line"></span><br><span class="line">@count_time</span><br><span class="line">def test_func(*args, **kwargs):</span><br><span class="line">    time.sleep(1)</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    test_func([&apos;hello&apos;, &apos;world&apos;], hello=1, world=2)</span><br><span class="line"></span><br><span class="line">&gt;&gt; 函数 test_func 的运行时间为 1.9999</span><br><span class="line">    参数为:([&apos;hello&apos;, &apos;world&apos;],)&#123;&apos;hello&apos;: 1, &apos;world&apos;: 2&#125;</span><br><span class="line"></span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>一个函数同样也可以被多个装饰器装饰，其原理于单个装饰器相同。重要的是理解装饰器实际上的调用顺序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">def count_time(func):</span><br><span class="line">    print(&apos;count_time_func&apos;)</span><br><span class="line"></span><br><span class="line">    def wrapper_in_count_time(*args, **kwargs):</span><br><span class="line">        tic = time.clock()</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        toc = time.clock()</span><br><span class="line">        running_time = toc - tic</span><br><span class="line">        print(&apos;函数 %s 运行时间 %f&apos;% (func.__name__, running_time))</span><br><span class="line">    return wrapper_in_count_time</span><br><span class="line"></span><br><span class="line">def show_args(func):</span><br><span class="line">    print(&apos;show_args func&apos;)</span><br><span class="line"></span><br><span class="line">    def wrapper_in_show_args(*args, **kwargs):</span><br><span class="line">        print(&apos;函数参数为&apos;+str(args)+str(kwargs))</span><br><span class="line">        return func()</span><br><span class="line">    return wrapper_in_show_args</span><br><span class="line"></span><br><span class="line">@count_time</span><br><span class="line">@show_args</span><br><span class="line">def test_func(*args, **kwargs):</span><br><span class="line">    print(&apos;test_func&apos;)</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    f = test_func([&apos;hello&apos;, &apos;world&apos;], hello=1, world=2)</span><br><span class="line"></span><br><span class="line">&gt;&gt; show_args func</span><br><span class="line">    count_time_func</span><br><span class="line">    函数参数为([&apos;hello&apos;, &apos;world&apos;],)&#123;&apos;hello&apos;: 1, &apos;world&apos;: 2&#125;</span><br><span class="line">    test_func</span><br><span class="line">    函数 wrapper_in_show_args 运行时间 0.000025</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>先忽视 @count_time 装饰器，假如只有 @show_args 装饰器。 那么，装饰器背后其实是这样的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">f = show_args(test func)</span><br><span class="line">f(...)</span><br><span class="line"></span><br><span class="line"># 加上@count_time后</span><br><span class="line">f = show_args(test func)</span><br><span class="line">g = count_time(f)</span><br><span class="line">g(...)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>我们可以打印下 f,g 看下返回的是什么。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f.__name__</span><br><span class="line">&gt;&gt; wrapper_in_show_args</span><br><span class="line">g.__name__</span><br><span class="line">&gt;&gt; wrapper_in_count_time</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>所以整个函数的运行流程是： 首先调用了 show_args，show_args 打印了’show_args_func’, 之后返回 wrapper_in_show_args。接着调用 count_time, 并把 wrapper_in_show_args 传给了 count_time，首先打印’count_time_func’, 之后返回 wrapper_in_count_time. 最后用户调用 wrapper_in_count_time 函数，并传入了相关参数。在 wrapper_in_count_time 函数里，首先调用了 func 函数，这里的 func 是一个自由变量，即之前传入的 wrapper_in_show_args, 所以打印函数参数。在 wrapper_in_show_args 里，调用了 func(), 这里的 func 又是之前传入的 test_func，所以打印’test_func’。最后打印函数运行时间，整个调用过程结束。</p>
+<p>总而言之，装饰器的核心就是<strong>闭包</strong>, 只要理解了闭包，就能理解透彻装饰器。</p>
+<p>另外装饰器不仅可以是函数，还可以是类，相比函数装饰器，类装饰器具有灵活度大、高内聚、封装性等优点。使用类装饰器主要依靠类的<strong>call</strong>方法，当使用 @ 形式将装饰器附加到函数上时，就会调用此方法。[3]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class deco_class(object):</span><br><span class="line">    def __init__(self, func):</span><br><span class="line">        self.func = func</span><br><span class="line"></span><br><span class="line">    def __call__(self, *args, **kwargs):</span><br><span class="line">        print(&apos;初始化装饰器&apos;)</span><br><span class="line">        self.func(*args, **kwargs)</span><br><span class="line">        print(&apos;中止装饰器&apos;)</span><br><span class="line"></span><br><span class="line">@deco_class</span><br><span class="line">def klass(*args, **kwargs):</span><br><span class="line">    print(args, kwargs)</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    klass([&apos;hello&apos;, &apos;world&apos;], hello=1, world=2)</span><br><span class="line">&gt;&gt; 初始化装饰器</span><br><span class="line">    ([&apos;hello&apos;, &apos;world&apos;],) &#123;&apos;hello&apos;: 1, &apos;world&apos;: 2&#125;</span><br><span class="line">    中止装饰器</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1] <a href="https://link.juejin.im?target=https%3A%2F%2Fwww.cnblogs.com%2FLin-Yi%2Fp%2F7305364.html" target="_blank" rel="noopener">www.cnblogs.com/Lin-Yi/p/73…</a></p>
+<p>[2] Fluent Python, Luciano Ramalho</p>
+<p>[3] <a href="https://link.juejin.im?target=https%3A%2F%2Ffoofish.net%2Fpython-decorator.html" target="_blank" rel="noopener">foofish.net/python-deco…</a></p>
+<p>[4] <a href="https://link.juejin.im?target=https%3A%2F%2Fblog.apcelent.com%2Fpython-decorator-tutorial-with-example.html" target="_blank" rel="noopener">blog.apcelent.com/python-deco…</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bugs/2018/09/07/framework/springcloud/面试/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/09/12/语言/Java/Spring AOP 中 JDK 和 CGLib 动态代理哪个更快？/" rel="prev" title="Spring AOP 中 JDK 和 CGLib 动态代理哪个更快？">
+                Spring AOP 中 JDK 和 CGLib 动态代理哪个更快？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#闭包"><span class="nav-number">1.</span> <span class="nav-text">闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包的概念"><span class="nav-number">1.1.</span> <span class="nav-text">闭包的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更进一步"><span class="nav-number">1.2.</span> <span class="nav-text">更进一步</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器"><span class="nav-number">2.</span> <span class="nav-text">装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰器的作用"><span class="nav-number">2.1.</span> <span class="nav-text">装饰器的作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

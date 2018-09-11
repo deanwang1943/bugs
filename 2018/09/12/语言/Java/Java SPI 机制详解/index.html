@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 http://blueskykong.com/2018/05/14/java-spi/  SPI 全称为 (Service Provider Interface) ，是 JDK 内置的一种服务提供发现机制。SPI 是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是 java.sql.Dr">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java SPI 机制详解">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/09/12/语言/Java/Java SPI 机制详解/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 http://blueskykong.com/2018/05/14/java-spi/  SPI 全称为 (Service Provider Interface) ，是 JDK 内置的一种服务提供发现机制。SPI 是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是 java.sql.Dr">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ovci1ihdy.bkt.clouddn.com/spi-uml.jpg">
+<meta property="og:image" content="http://ovci1ihdy.bkt.clouddn.com/java-spi.jpg">
+<meta property="og:updated_time" content="2018-09-11T15:22:59.629Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java SPI 机制详解">
+<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 http://blueskykong.com/2018/05/14/java-spi/  SPI 全称为 (Service Provider Interface) ，是 JDK 内置的一种服务提供发现机制。SPI 是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是 java.sql.Dr">
+<meta name="twitter:image" content="http://ovci1ihdy.bkt.clouddn.com/spi-uml.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/09/12/语言/Java/Java SPI 机制详解/"/>
+
+
+
+
+
+  <title>Java SPI 机制详解 | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微笑的周末</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/12/语言/Java/Java SPI 机制详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java SPI 机制详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-12T08:36:03+00:00">
+                2018-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="http://blueskykong.com/2018/05/14/java-spi/" target="_blank" rel="noopener">http://blueskykong.com/2018/05/14/java-spi/</a></p>
+</blockquote>
+<p>SPI 全称为 (Service Provider Interface) ，是 JDK 内置的一种服务提供发现机制。SPI 是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是 java.sql.Driver 接口，其他不同厂商可以针对同一接口做出不同的实现，mysql 和 postgresql 都有不同的实现提供给用户，而 Java 的 SPI 机制可以为某个接口寻找服务实现。</p>
+<p><a href="http://ovci1ihdy.bkt.clouddn.com/spi-uml.jpg" target="_blank" rel="noopener"><img src="http://ovci1ihdy.bkt.clouddn.com/spi-uml.jpg" alt=""></a></p>
+<p>类图中，接口对应定义的抽象 SPI 接口；实现方实现 SPI 接口；调用方依赖 SPI 接口。</p>
+<p>SPI 接口的定义在调用方，在概念上更依赖调用方；组织上位于调用方所在的包中；实现位于独立的包中。</p>
+<p>当接口属于实现方的情况，实现方提供了接口和实现，这个用法很常见，属于 API 调用。我们可以引用接口来达到调用某实现类的功能。</p>
+<h2 id="Java-SPI-应用实例"><a href="#Java-SPI-应用实例" class="headerlink" title="Java SPI 应用实例"></a><a href="#Java-SPI-应用实例" title="Java SPI 应用实例"></a>Java SPI 应用实例</h2><p>当服务的提供者提供了一种接口的实现之后，需要在 classpath 下的 META-INF/services / 目录里创建一个以服务接口命名的文件，这个文件里的内容就是这个接口的具体的实现类。当其他的程序需要这个服务的时候，就可以通过查找这个 jar 包（一般都是以 jar 包做依赖）的 META-INF/services / 中的配置文件，配置文件中有接口的具体实现类名，可以根据这个类名进行加载实例化，就可以使用该服务了。JDK 中查找服务实现的工具类是：java.util.ServiceLoader。</p>
+<h3 id="SPI-接口"><a href="#SPI-接口" class="headerlink" title="SPI 接口"></a><a href="#SPI接口" title="SPI接口"></a>SPI 接口</h3><p>|</p>
+<pre>12345678</pre>
+
+<p> |</p>
+<pre>public interface ObjectSerializer {    byte[] serialize(Object obj) throws ObjectSerializerException;    <t> T deSerialize(byte[] param, Class<t> clazz) throws ObjectSerializerException;    String getSchemeName();}</t></t></pre>
+
+<p> |</p>
+<p>定义了一个对象序列化接口，内有三个方法：序列化方法、反序列化方法和序列化名称。</p>
+<h3 id="SPI-具体实现"><a href="#SPI-具体实现" class="headerlink" title="SPI 具体实现"></a><a href="#SPI具体实现" title="SPI具体实现"></a>SPI 具体实现</h3><p>|</p>
+<pre>12345678910111213141516171819202122232425262728293031323334353637383940414243444546</pre>
+
+<p> |</p>
+<pre>public class KryoSerializer implements ObjectSerializer {    @Override    public byte[] serialize(Object obj) throws ObjectSerializerException {        byte[] bytes;        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();        try {            //获取kryo对象            Kryo kryo = new Kryo();            Output output = new Output(outputStream);            kryo.writeObject(output, obj);            bytes = output.toBytes();            output.flush();        } catch (Exception ex) {            throw new ObjectSerializerException("kryo serialize error" + ex.getMessage());        } finally {            try {                outputStream.flush();                outputStream.close();            } catch (IOException e) {            }        }        return bytes;    }    @Override    public <t> T deSerialize(byte[] param, Class<t> clazz) throws ObjectSerializerException {        T object;        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(param)) {            Kryo kryo = new Kryo();            Input input = new Input(inputStream);            object = kryo.readObject(input, clazz);            input.close();        } catch (Exception e) {            throw new ObjectSerializerException("kryo deSerialize error" + e.getMessage());        }        return object;    }    @Override    public String getSchemeName() {        return "kryoSerializer";    }}</t></t></pre>
+
+<p> |</p>
+<p>使用 Kryo 的序列化方式。Kryo 是一个快速高效的 Java 对象图形序列化框架，它原生支持 java，且在 java 的序列化上甚至优于 google 著名的序列化框架 protobuf。</p>
+<p>|</p>
+<pre>123456789101112131415161718192021222324252627282930313233</pre>
+
+<p> |</p>
+<pre>public class JavaSerializer implements ObjectSerializer {    @Override    public byte[] serialize(Object obj) throws ObjectSerializerException {        ByteArrayOutputStream arrayOutputStream;        try {            arrayOutputStream = new ByteArrayOutputStream();            ObjectOutput objectOutput = new ObjectOutputStream(arrayOutputStream);            objectOutput.writeObject(obj);            objectOutput.flush();            objectOutput.close();        } catch (IOException e) {            throw new ObjectSerializerException("JAVA serialize error " + e.getMessage());        }        return arrayOutputStream.toByteArray();    }    @Override    public <t> T deSerialize(byte[] param, Class<t> clazz) throws ObjectSerializerException {        ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(param);        try {            ObjectInput input = new ObjectInputStream(arrayInputStream);            return (T) input.readObject();        } catch (IOException | ClassNotFoundException e) {            throw new ObjectSerializerException("JAVA deSerialize error " + e.getMessage());        }    }    @Override    public String getSchemeName() {        return "javaSerializer";    }}</t></t></pre>
+
+<p> |</p>
+<p>Java 原生的序列化方式。</p>
+<h3 id="增加-META-INF-目录文件"><a href="#增加-META-INF-目录文件" class="headerlink" title="增加 META-INF 目录文件"></a><a href="#增加META-INF目录文件" title="增加META-INF目录文件"></a>增加 META-INF 目录文件</h3><p>Resource 下面创建 META-INF/services 目录里创建一个以服务接口命名的文件<br><a href="http://ovci1ihdy.bkt.clouddn.com/java-spi.jpg" target="_blank" rel="noopener"><img src="http://ovci1ihdy.bkt.clouddn.com/java-spi.jpg" alt=""></a></p>
+<p>|</p>
+<pre>12</pre>
+
+<p> |</p>
+<pre>com.blueskykong.javaspi.serializer.KryoSerializercom.blueskykong.javaspi.serializer.JavaSerializer</pre>
+
+<p> |</p>
+<h3 id="Service-类"><a href="#Service-类" class="headerlink" title="Service 类"></a><a href="#Service类" title="Service类"></a>Service 类</h3><p>|</p>
+<pre>12345678910111213</pre>
+
+<p> |</p>
+<p><pre>@Servicepublic class SerializerService {    public ObjectSerializer getObjectSerializer() {        ServiceLoader<objectserializer> serializers = ServiceLoader.load(ObjectSerializer.class);        final Optional<objectserializer> serializer = StreamSupport.stream(serializers.spliterator(), false)                .findFirst();        return serializer.orElse(new JavaSerializer());    }}</objectserializer></objectserializer></pre></p>
+<p> |</p>
+<p>获取定义的序列化方式，且只取第一个（我们在配置中写了两个），如果找不到则返回 Java 原生序列化方式。</p>
+<h3 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a><a href="#测试类" title="测试类"></a>测试类</h3><p>|</p>
+<pre>1234567891011</pre>
+
+<p> |</p>
+<p><pre>@Autowiredprivate SerializerService serializerService;@Testpublic void serializerTest() throws ObjectSerializerException {    ObjectSerializer objectSerializer = serializerService.getObjectSerializer();    System.out.println(objectSerializer.getSchemeName());    byte[] arrays = objectSerializer.serialize(Arrays.asList(“1”, “2”, “3”));    ArrayList list = objectSerializer.deSerialize(arrays, ArrayList.class);    Assert.assertArrayEquals(Arrays.asList(“1”, “2”, “3”).toArray(), list.toArray());}</pre></p>
+<p> |</p>
+<p>测试用例通过，且输出<code>kryoSerializer</code>。</p>
+<h2 id="SPI-的用途"><a href="#SPI-的用途" class="headerlink" title="SPI 的用途"></a><a href="#SPI的用途" title="SPI的用途"></a>SPI 的用途</h2><p>数据库 DriverManager、Spring、ConfigurableBeanFactory 等都用到了 SPI 机制，这里以数据库 DriverManager 为例，看一下其实现的内幕。</p>
+<p>DriverManager 是 jdbc 里管理和注册不同数据库 driver 的工具类。针对一个数据库，可能会存在着不同的数据库驱动实现。我们在使用特定的驱动实现时，不希望修改现有的代码，而希望通过一个简单的配置就可以达到效果。<br>在使用 mysql 驱动的时候，会有一个疑问，DriverManager 是怎么获得某确定驱动类的？我们在运用 Class.forName(“com.mysql.jdbc.Driver”) 加载 mysql 驱动后，就会执行其中的静态代码把 driver 注册到 DriverManager 中，以便后续的使用。</p>
+<p>在 JDBC4.0 之前，连接数据库的时候，通常会用<code>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</code>这句先加载数据库相关的驱动，然后再进行获取连接等的操作。而 JDBC4.0 之后不需要<code>Class.forName</code>来加载驱动，直接获取连接即可，这里使用了 Java 的 SPI 扩展机制来实现。</p>
+<p>在 java 中定义了接口 java.sql.Driver，并没有具体的实现，具体的实现都是由不同厂商来提供的。</p>
+<h3 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a><a href="#mysql" title="mysql"></a>mysql</h3><p>在 mysql-connector-java-5.1.45.jar 中，META-INF/services 目录下会有一个名字为 java.sql.Driver 的文件：</p>
+<p>|</p>
+<pre>12</pre>
+
+<p> |</p>
+<pre>com.mysql.jdbc.Drivercom.mysql.fabric.jdbc.FabricMySQLDriver</pre>
+
+<p> |</p>
+<h3 id="pg"><a href="#pg" class="headerlink" title="pg"></a><a href="#pg" title="pg"></a>pg</h3><p>而在 postgresql-42.2.2.jar 中，META-INF/services 目录下会有一个名字为 java.sql.Driver 的文件：</p>
+<p>|</p>
+<pre>1</pre>
+
+<p> |</p>
+<pre>org.postgresql.Driver</pre>
+
+<p> |</p>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a><a href="#用法" title="用法"></a>用法</h3><p>|</p>
+<pre>12</pre>
+
+<p> |</p>
+<pre>String url = "jdbc:mysql://localhost:3306/test";Connection conn = DriverManager.getConnection(url,username,password);</pre>
+
+<p> |</p>
+<p>上面展示的是 mysql 的用法，pg 用法也是类似。不需要使用<code>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</code>来加载驱动。</p>
+<h3 id="Mysql-DriverManager-实现"><a href="#Mysql-DriverManager-实现" class="headerlink" title="Mysql DriverManager 实现"></a><a href="#Mysql-DriverManager实现" title="Mysql DriverManager实现"></a>Mysql DriverManager 实现</h3><p>上面代码没有了加载驱动的代码，我们怎么去确定使用哪个数据库连接的驱动呢？这里就涉及到使用 Java 的 SPI 扩展机制来查找相关驱动的东西了，关于驱动的查找其实都在 DriverManager 中，DriverManager 是 Java 中的实现，用来获取数据库连接，在 DriverManager 中有一个静态代码块如下：</p>
+<p>|</p>
+<pre>1234</pre>
+
+<p> |</p>
+<pre>static {    loadInitialDrivers();    println("JDBC DriverManager initialized");}</pre>
+
+<p> |</p>
+<p>可以看到其内部的静态代码块中有一个<code>loadInitialDrivers</code>方法，<code>loadInitialDrivers</code>用法用到了上文提到的 spi 工具类<code>ServiceLoader</code>:</p>
+<p>|</p>
+<pre>1234567891011121314151617181920212223242526</pre>
+
+<p> |</p>
+<pre>public Void run() {    ServiceLoader<driver> loadedDrivers = ServiceLoader.load(Driver.class);    Iterator<driver> driversIterator = loadedDrivers.iterator();    /* Load these drivers, so that they can be instantiated.     * It may be the case that the driver class may not be there     * i.e. there may be a packaged driver with the service class     * as implementation of java.sql.Driver but the actual class     * may be missing. In that case a java.util.ServiceConfigurationError     * will be thrown at runtime by the VM trying to locate     * and load the service.     *     * Adding a try catch block to catch those runtime errors     * if driver not available in classpath but it's     * packaged as service and that service is there in classpath.     */    try{        while(driversIterator.hasNext()) {            driversIterator.next();        }    } catch(Throwable t) {    // Do nothing    }    return null;}</driver></driver></pre>
+
+<p> |</p>
+<p>遍历使用 SPI 获取到的具体实现，实例化各个实现类。在遍历的时候，首先调用<code>driversIterator.hasNext()</code>方法，这里会搜索 classpath 下以及 jar 包中所有的 META-INF/services 目录下的 java.sql.Driver 文件，并找到文件中的实现类的名字，此时并没有实例化具体的实现类。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><a href="#总结" title="总结"></a>总结</h2><p>SPI 机制在实际开发中使用得场景也有很多。特别是统一标准的不同厂商实现，当有关组织或者公司定义标准之后，具体厂商或者框架开发者实现，之后提供给开发者使用。</p>
+<p><strong>本文代码：</strong> <a href="https://github.com/keets2012/Spring-Boot-Samples/tree/master/java-spi" target="_blank" rel="noopener">https://github.com/keets2012/Spring-Boot-Samples/tree/master/java-spi</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a><a href="#参考" title="参考"></a>参考</h3><ol>
+<li><a href="https://cxis.me/2017/04/17/Java%E4%B8%ADSPI%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%85%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" target="_blank" rel="noopener">Java 中 SPI 机制深入及源码解析</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/28909673" target="_blank" rel="noopener">Java SPI 思想梳理</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bugs/2018/09/12/语言/Java/Spring AOP 中 JDK 和 CGLib 动态代理哪个更快？/" rel="next" title="Spring AOP 中 JDK 和 CGLib 动态代理哪个更快？">
+                <i class="fa fa-chevron-left"></i> Spring AOP 中 JDK 和 CGLib 动态代理哪个更快？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-SPI-应用实例"><span class="nav-number">1.</span> <span class="nav-text">Java SPI 应用实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SPI-接口"><span class="nav-number">1.1.</span> <span class="nav-text">SPI 接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SPI-具体实现"><span class="nav-number">1.2.</span> <span class="nav-text">SPI 具体实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加-META-INF-目录文件"><span class="nav-number">1.3.</span> <span class="nav-text">增加 META-INF 目录文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service-类"><span class="nav-number">1.4.</span> <span class="nav-text">Service 类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试类"><span class="nav-number">1.5.</span> <span class="nav-text">测试类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SPI-的用途"><span class="nav-number">2.</span> <span class="nav-text">SPI 的用途</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql"><span class="nav-number">2.1.</span> <span class="nav-text">mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pg"><span class="nav-number">2.2.</span> <span class="nav-text">pg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用法"><span class="nav-number">2.3.</span> <span class="nav-text">用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mysql-DriverManager-实现"><span class="nav-number">2.4.</span> <span class="nav-text">Mysql DriverManager 实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

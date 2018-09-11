@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据库," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b90cbf4e51d450e84776d27?utm_source=gold_browser_extension  之前对于数据库事务概念的理解有很多不到位的地方，今天用简单的实例再来阐述一下数据库事务和隔离级别的概念，也方便以后温故而知新。 1. 什么是事务事务（Transaction）是并发控">
+<meta name="keywords" content="数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库事务隔离级别">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/08/23/数据库/数据库事务隔离级别/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b90cbf4e51d450e84776d27?utm_source=gold_browser_extension  之前对于数据库事务概念的理解有很多不到位的地方，今天用简单的实例再来阐述一下数据库事务和隔离级别的概念，也方便以后温故而知新。 1. 什么是事务事务（Transaction）是并发控">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/6/165ad9f0d6d6b87b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:updated_time" content="2018-09-11T15:21:11.858Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库事务隔离级别">
+<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b90cbf4e51d450e84776d27?utm_source=gold_browser_extension  之前对于数据库事务概念的理解有很多不到位的地方，今天用简单的实例再来阐述一下数据库事务和隔离级别的概念，也方便以后温故而知新。 1. 什么是事务事务（Transaction）是并发控">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/9/6/165ad9f0d6d6b87b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/08/23/数据库/数据库事务隔离级别/"/>
+
+
+
+
+
+  <title>数据库事务隔离级别 | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微笑的周末</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/08/23/数据库/数据库事务隔离级别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据库事务隔离级别</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T00:36:03+00:00">
+                2018-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="https://juejin.im/post/5b90cbf4e51d450e84776d27?utm_source=gold_browser_extension" target="_blank" rel="noopener">https://juejin.im/post/5b90cbf4e51d450e84776d27?utm_source=gold_browser_extension</a></p>
+</blockquote>
+<p>之前对于数据库事务概念的理解有很多不到位的地方，今天用简单的实例再来阐述一下数据库事务和隔离级别的概念，也方便以后温故而知新。</p>
+<h3 id="1-什么是事务"><a href="#1-什么是事务" class="headerlink" title="1. 什么是事务"></a>1. 什么是事务</h3><p>事务（Transaction）是并发控制的基本单位。所谓的事务，它是一个操作序列，这些操作要么都执行，要么都不执行，它是一个不可分割的工作单位。例如，银行转账工作：从一个账号扣款并使另一个账号增款，这两个操作要么都执行，要么都不执行。所以，应该把它们看成一个事务。事务是数据库维护数据一致性的单位，在每个事务结束时，都能保 持数据一致性。<br>我们以 Msql 数据库的操作为例，再进一步解释一下数据库事务： 首先我们用以下命令查看该 Mysql 会话的事务隔离级别，关于事务隔离级别及其作用，我们在后面的章节中会进行详细介绍，这里只要简单知道数据库可以设置不同的事务隔离级别，不同的隔离级别会对事务的操作产生不同的效果即可。使用以下命令可以查询当前 Mysql 会话的事务隔离级别，可以看到，Mysql 默认的事务隔离级别是 REPEATABLE-READ。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select @@tx_isolation;</span><br><span class="line">+-----------------+</span><br><span class="line">| @@tx_isolation  |</span><br><span class="line">+-----------------+</span><br><span class="line">| REPEATABLE-READ |</span><br><span class="line">+-----------------+</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>为了用实例来解释事务，我们创建了如下的 bank 数据表，并插入一条数据，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; describe bank;</span><br><span class="line">+---------+---------------+------+-----+---------+----------------+</span><br><span class="line">| Field   | Type          | Null | Key | Default | Extra          |</span><br><span class="line">+---------+---------------+------+-----+---------+----------------+</span><br><span class="line">| id      | int(11)       | NO   | PRI | NULL    | auto_increment |</span><br><span class="line">| name    | varchar(40)   | NO   |     | NULL    |                |</span><br><span class="line">| balance | decimal(10,2) | YES  |     | NULL    |                |</span><br><span class="line">+---------+---------------+------+-----+---------+----------------+</span><br><span class="line">mysql&gt; select * from bank;</span><br><span class="line">+----+------+---------+</span><br><span class="line">| id | name | balance |</span><br><span class="line">+----+------+---------+</span><br><span class="line">|  3 | fufu | 2000.00 |</span><br><span class="line">+----+------+---------+</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>使用 start transaction 命令开启数据库事务，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; start transaction;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>更新 id 为 3 的行的 balance 值为 3000.00，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update bank set balance = 3000 where id = 3;</span><br><span class="line">Query OK, 1 row affected (0.09 sec)</span><br><span class="line">Rows matched: 1  Changed: 1  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from bank;</span><br><span class="line">+----+------+---------+</span><br><span class="line">| id | name | balance |</span><br><span class="line">+----+------+---------+</span><br><span class="line">|  3 | fufu | 3000.00 |</span><br><span class="line">+----+------+---------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>此时我们可以看到，select 语句查询到的 id 为 3 的行的 balance 值已经修改为 3000.00，接下来我们再尝试插入一条新数据，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into bank (name, balance) values (&apos;melo&apos;, 1000);</span><br><span class="line">Query OK, 1 row affected (0.06 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from bank;</span><br><span class="line">+----+------+---------+</span><br><span class="line">| id | name | balance |</span><br><span class="line">+----+------+---------+</span><br><span class="line">|  3 | fufu | 3000.00 |</span><br><span class="line">|  4 | melo | 1000.00 |</span><br><span class="line">+----+------+---------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>由于以上的 update 和 insert 操作都是在 start transaction 命令开启事务之后，所以直到事务结束，这些操作都属于同一事务，假设我们在 insert 操作时产生了错误，可以根据事务的定义得知，这些属于同一事务的所有操作要么都执行要么都不执行，我们可以验证一下，使用 rollback 命令，模拟事务失败回滚，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; rollback;</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>此时我们在查询数据库中的所有数据，发现数据恢复到了 update 命令执行前的状态，id 为 3 的行的 balance 值等于 2000 没有变化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from bank;</span><br><span class="line">+----+------+---------+</span><br><span class="line">| id | name | balance |</span><br><span class="line">+----+------+---------+</span><br><span class="line">|  3 | fufu | 2000.00 |</span><br><span class="line">+----+------+---------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>到此，我们阐述了数据库事务的定义并用简单的 Mysql 操作说明了事务的操作方式，我们可以总结出数据库事务的生命周期如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/6/165ad9f0d6d6b87b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""> 可以看出事务的边界包括：</p>
+<ul>
+<li>事务的开始边界</li>
+<li>事务的正常结束边界（COMMIT），提交事务，永久保存被事务更新后的数据库状态。</li>
+<li>事务的异常结束边界（ROLLBACK）：撤销事务，使数据库退回到执行事务前的初始状态。</li>
+</ul>
+<p>现在我们回过头来思考一下上述示例，示例中的所有操作都是在一个 Mysql 会话中进行的，也就是没有其他用户在同时连接数据库进行操作，在这种没有并发会话的使用场景中，无论事务是正常结束还是异常结束，对于该单独用户读取数据不会造成任何影响，因为他的所有操作都是串行的。但是在实际应用场景中，数据库每时每刻都服务于很多会话，假设用户 A 的事务 A 开始后更新了数据库数据，此时用户 B 开始读取该数据，用户 B 将会读取到了新的值。但是如果紧接着事务 A 在下一条 SQL 语句操作时产生了错误，将事务 A 回滚了，那么用户 B 读取到的数据就是错误的无效数据了。这只是数据库事务在并发环境下会产生的一个简单的问题，所以接下来详细阐述并发事务会产生的问题。</p>
+<h3 id="2-并发事务会产生的问题"><a href="#2-并发事务会产生的问题" class="headerlink" title="2. 并发事务会产生的问题"></a>2. 并发事务会产生的问题</h3><p>这节我们主要说明并发事务时可能会出现的问题，我们用时间点和事务操作表格的方式来举例。</p>
+<h4 id="2-1-丢失更新"><a href="#2-1-丢失更新" class="headerlink" title="2.1 丢失更新"></a>2.1 丢失更新</h4><h5 id="2-1-1-第一类丢失更新"><a href="#2-1-1-第一类丢失更新" class="headerlink" title="2.1.1 第一类丢失更新"></a>2.1.1 第一类丢失更新</h5><p>定义：A 事务撤销时，把已经提交的 B 事务的更新数据覆盖了。</p>
+<table>
+<thead>
+<tr>
+<th>时间点</th>
+<th>事务 A</th>
+<th>事务 B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T1</td>
+<td><strong>开始事务</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>T2</td>
+<td></td>
+<td><strong>开始事务</strong></td>
+</tr>
+<tr>
+<td>T3</td>
+<td>查询账户余额为 1000 元</td>
+<td></td>
+</tr>
+<tr>
+<td>T4</td>
+<td></td>
+<td>查询账户余额为 1000 元</td>
+</tr>
+<tr>
+<td>T5</td>
+<td></td>
+<td>存入 100 元把余额改为 1100 元</td>
+</tr>
+<tr>
+<td>T6</td>
+<td></td>
+<td><strong>提交事务</strong></td>
+</tr>
+<tr>
+<td>T7</td>
+<td>取出 100 元把余额改为 900 元</td>
+<td></td>
+</tr>
+<tr>
+<td>T8</td>
+<td><strong>撤销事务</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>T9</td>
+<td>余额恢复为 1000 元（丢失更新）</td>
+</tr>
+</tbody>
+</table>
+<p>以上的示例演示了第一类丢失更新问题，事务 B 虽然成功了，但是它所做的更新没有被永久存储，这种并发问题是由于完全没有隔离事务造成的。当两个事务更新相同的数据时，如果一个事务被提交，另一个事务却撤销，那么会连同第一个事务所做的更新也被撤销了。（这是绝对避免出现的事情） 事务 A 的开始时间和结束时间包含事务 B 的开始和结束时间, 事务 A 回滚事务的同时, 把 B 的已经提交的事务也回滚的, 这是避免的, 这就是第一类丢失更新.</p>
+<h5 id="2-1-2-第二类丢失更新"><a href="#2-1-2-第二类丢失更新" class="headerlink" title="2.1.2 第二类丢失更新"></a>2.1.2 第二类丢失更新</h5><p>定义：A 事务提交时，把已经提交的 B 事务的更新数据覆盖了。</p>
+<table>
+<thead>
+<tr>
+<th>时间点</th>
+<th>事务 A</th>
+<th>事务 B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T1</td>
+<td></td>
+<td><strong>开始事务</strong></td>
+</tr>
+<tr>
+<td>T2</td>
+<td><strong>开始事务</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>T3</td>
+<td></td>
+<td>查询账户余额为 1000 元</td>
+</tr>
+<tr>
+<td>T4</td>
+<td>查询账户余额为 1000 元</td>
+<td></td>
+</tr>
+<tr>
+<td>T5</td>
+<td></td>
+<td>取出 100 元把余额改为 900 元</td>
+</tr>
+<tr>
+<td>T6</td>
+<td></td>
+<td><strong>提交事务</strong></td>
+</tr>
+<tr>
+<td>T7</td>
+<td>存入 100 元把余额改为 1100</td>
+<td></td>
+</tr>
+<tr>
+<td>T8</td>
+<td><strong>提交事务</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>T9</td>
+<td>余额恢复为 1100 元（丢失更新）</td>
+</tr>
+</tbody>
+</table>
+<p>第二类丢失更新和第一类的区别实际上是对数据的影响是由 A 事务的撤销还是提交造成的，它和不可重复读 (下面介绍) 本质上是同一类并发问题，通常把它看做是不可重复读的一个特例。两个或多个事务查询同一数据。然后都基于自己的查询结果更新数据，这时会造成最后一个提交的更新事务，将覆盖其它已经提交的更新事务。</p>
+<h4 id="2-2-脏读"><a href="#2-2-脏读" class="headerlink" title="2.2 脏读"></a>2.2 脏读</h4><p>定义：读到未提交更新的数据</p>
+<table>
+<thead>
+<tr>
+<th>时间点</th>
+<th>事务 A</th>
+<th>事务 B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T1</td>
+<td></td>
+<td><strong>开始事务</strong></td>
+</tr>
+<tr>
+<td>T2</td>
+<td><strong>开始事务</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>T3</td>
+<td></td>
+<td>查询账户余额为 1000 元</td>
+</tr>
+<tr>
+<td>T4</td>
+<td></td>
+<td>取出 500 元把余额改为 500 元</td>
+</tr>
+<tr>
+<td>T5</td>
+<td>查询账户余额为 500 元（脏读）</td>
+<td></td>
+</tr>
+<tr>
+<td>T6</td>
+<td></td>
+<td><strong>撤销事务</strong>，余额恢复为 1000 元</td>
+</tr>
+<tr>
+<td>T7</td>
+<td>存入 100 元把余额改为 600 元</td>
+<td></td>
+</tr>
+<tr>
+<td>T8</td>
+<td><strong>提交事务</strong></td>
+</tr>
+</tbody>
+</table>
+<p>A 事务查询到了 B 事务未提交的更新数据，A 事务依据这个查询结果继续执行相关操作。但是接着 B 事务撤销了所做的更新，这会导致 A 事务操作的是脏数据，以上的示例中 T5 时刻产生了脏读，最终导致 A 事务提交时账户余额的不正确，可能有人会有疑问，B 事务还没有提交或撤销，T5 时刻 A 事务为什么能读到已经改变的数据，这里要说的是，数据表中的数据是实时改变的，事务只是控制数据的最终状态，也就是说如果没有正确的隔离级别，在更新操作语句结束后，即使事务未完成，其他事务就已经可以读取到改变的数据值了。<br><strong>现在为止: 所有的数据库都避免脏读操</strong>，可以用两个 Mysql 会话试验一下以上的操作，在默认的隔离级别下（REPEATABLE-READ），A 事务在 T5 时刻读取到的余额为 1000 元，不会是 500 元。</p>
+<h4 id="2-3-不可重复读"><a href="#2-3-不可重复读" class="headerlink" title="2.3 不可重复读"></a>2.3 不可重复读</h4><p>定义：读到已经提交更新的数据，但一个事务范围内两个相同的查询却返回了不同数据。</p>
+<table>
+<thead>
+<tr>
+<th>时间点</th>
+<th>事务 A</th>
+<th>事务 B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T1</td>
+<td></td>
+<td><strong>开始事务</strong></td>
+</tr>
+<tr>
+<td>T2</td>
+<td><strong>开始事务</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>T3</td>
+<td></td>
+<td>查询账户余额为 1000 元</td>
+</tr>
+<tr>
+<td>T4</td>
+<td>查询账户余额为 1000 元</td>
+<td></td>
+</tr>
+<tr>
+<td>T5</td>
+<td></td>
+<td>取出 100 元把余额改为 900 元</td>
+</tr>
+<tr>
+<td>T6</td>
+<td></td>
+<td><strong>提交事务</strong></td>
+</tr>
+<tr>
+<td>T7</td>
+<td>查询账户余额为 900 元（与 T4 读取的一不一致，不可重复读）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-4-幻读"><a href="#2-4-幻读" class="headerlink" title="2.4 幻读"></a>2.4 幻读</h4><p>定义：读到已提交插入数据，幻读与不可重复读类似，幻读是查询到了另一个事务已提交的新插入数据，而不可重复读是查询到了另一个事务已提交的更新数据。</p>
+<table>
+<thead>
+<tr>
+<th>时间点</th>
+<th>事务 A</th>
+<th>事务 B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T1</td>
+<td></td>
+<td><strong>开始事务</strong></td>
+</tr>
+<tr>
+<td>T2</td>
+<td><strong>开始事务</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>T3</td>
+<td>统计用户 Z 总存款数为 1000 元</td>
+<td></td>
+</tr>
+<tr>
+<td>T4</td>
+<td></td>
+<td>新增 Z 的一个存款账号，存款 100 元</td>
+</tr>
+<tr>
+<td>T5</td>
+<td></td>
+<td><strong>提交事务</strong></td>
+</tr>
+<tr>
+<td>T6</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>T7</td>
+<td>再次统计用户 Z 总存款数为 1100 元（与 T4 读取的一不一致，幻读）</td>
+</tr>
+</tbody>
+</table>
+<p>A 事务第一次查询时，没有问题，第二次查询时查到了 B 事务已提交的新插入数据，这导致两次查询结果不同。<br><strong>不可重复读和幻读的区别：</strong> 简单来说，不可重复读是由于数据修改引起的，幻读是由数据插入或者删除引起的。<br>不可重复读，是指在数据库访问中，一个事务范围内两个相同的查询却返回了不同数据。这是由于查询时系统中其他事务修改的提交而引起的。比如事务 T1 读取某一数据，事务 T2 读取并修改了该数据，T1 为了对读取值进行检验而再次读取该数据，便得到了不同的结果。<br>一种更易理解的说法是：在一个事务内，多次读同一个数据。在这个事务还没有结束时，另一个事务也访问该同一数据。那么，在第一个事务的两次读数据之间。由于第二个事务的修改，那么第一个事务读到的数据可能不一样，这样就发生了在一个事务内两次读到的数据是不一样的，因此称为不可重复读，即原始读取不可重复。<br>所谓幻读，是指事务 A 读取与搜索条件相匹配的若干行。事务 B 以插入或删除行等方式来修改事务 A 的结果集，然后再提交。<br>幻读是指当事务不是独立执行时发生的一种现象，例如第一个事务对一个表中的数据进行了修改，比如这种修改涉及到表中的 “全部数据行”。同时，第二个事务也修改这个表中的数据，这种修改是向表中插入 “一行新数据”。那么，以后就会发生操作第一个事务的用户发现表中还有没有修改的数据行，就好象发生了幻觉一样. 一般解决幻读的方法是增加范围锁 RangeS，锁定检锁范围为只读，这样就避免了幻读。</p>
+<h3 id="3-事务隔离级别"><a href="#3-事务隔离级别" class="headerlink" title="3. 事务隔离级别"></a>3. 事务隔离级别</h3><p>以上就是数据库并发事务导致的五大问题，总结来说其中两类是更新问题，三类是读问题，数据库是如何避免这种并发事务问题的呢？答案就是通过不同的事务隔离级别，在不同的隔离级别下，并发事务读取数据的结果是不一样的，比如在脏读小节里介绍的，如果是在 REPEATABLE-READ 隔离级别下，A 事务在 T5 时刻读取是读取不到 B 事务未提交的数据的。我们需要根据业务的要求，设置不同的隔离级别，在效率和数据安全性中找到平衡点。<br>SQL 标准定义了 4 类隔离级别，包括了一些具体规则，用来限定事务内外的哪些改变是可见的，哪些是不可见的。低级别的隔离级一般支持更高的并发处理，并拥有更低的系统开销。</p>
+<h4 id="3-1-SERIALIZABLE（串行化）"><a href="#3-1-SERIALIZABLE（串行化）" class="headerlink" title="3.1 SERIALIZABLE（串行化）"></a>3.1 SERIALIZABLE（串行化）</h4><p>当数据库系统使用 SERIALIZABLE 隔离级别时，一个事务在执行过程中完全看不到其他事务对数据库所做的更新。当两个事务同时操作数据库中相同数据时，如果第一个事务已经在访问该数据，第二个事务只能停下来等待，必须等到第一个事务结束后才能恢复运行。因此这两个事务实际上是串行化方式运行。</p>
+<h4 id="3-2-REPEATABLE-READ（可重复读）"><a href="#3-2-REPEATABLE-READ（可重复读）" class="headerlink" title="3.2 REPEATABLE READ（可重复读）"></a>3.2 REPEATABLE READ（可重复读）</h4><p>当数据库系统使用 REPEATABLE READ 隔离级别时，一个事务在执行过程中可以看到其他事务已经提交的新插入的记录，但是不能看到其他事务对已有记录的更新。</p>
+<h4 id="3-3-READ-COMMITTED（读已提交数据）"><a href="#3-3-READ-COMMITTED（读已提交数据）" class="headerlink" title="3.3 READ COMMITTED（读已提交数据）"></a>3.3 READ COMMITTED（读已提交数据）</h4><p>当数据库系统使用 READ COMMITTED 隔离级别时，一个事务在执行过程中可以看到其他事务已经提交的新插入的记录，而且还能看到其他事务已经提交的对已有记录的更新。</p>
+<h4 id="3-4-READ-UNCOMMITTED（读未提交数据）"><a href="#3-4-READ-UNCOMMITTED（读未提交数据）" class="headerlink" title="3.4 READ UNCOMMITTED（读未提交数据）"></a>3.4 READ UNCOMMITTED（读未提交数据）</h4><p>当数据库系统使用 READ UNCOMMITTED 隔离级别时，一个事务在执行过程中可以看到其他事务没有提交的新插入的记录，而且还能看到其他事务没有提交的对已有记录的更新。<br>以上的四种隔离级别按从高到底排序，你可能会说，选择 SERIALIZABLE，因为它最安全！没错，它是最安全，但它也是最慢的！四种隔离级别的安全性与性能成反比！最安全的性能最差，最不安全的性能最好！</p>
+<h3 id="4-隔离级别与并发问题"><a href="#4-隔离级别与并发问题" class="headerlink" title="4. 隔离级别与并发问题"></a>4. 隔离级别与并发问题</h3><p>通过以上的四种隔离级别的定义，我们已经可以分析出，每个隔离级别可以避免哪些并发问题了，总结一下如下表：</p>
+<table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>第一类丢失更新</th>
+<th>第二类丢失更新</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SERIALIZABLE （串行化）</td>
+<td>避免</td>
+<td>避免</td>
+<td>避免</td>
+<td>避免</td>
+<td>避免</td>
+</tr>
+<tr>
+<td>REPEATABLE READ（可重复读）</td>
+<td>避免</td>
+<td>避免</td>
+<td>避免</td>
+<td>避免</td>
+<td>允许</td>
+</tr>
+<tr>
+<td>READ COMMITTED （读已提交）</td>
+<td>避免</td>
+<td>允许</td>
+<td>避免</td>
+<td>允许</td>
+<td>允许</td>
+</tr>
+<tr>
+<td>READ UNCOMMITTED（读未提交）</td>
+<td>避免</td>
+<td>允许</td>
+<td>允许</td>
+<td>允许</td>
+<td>允许</td>
+</tr>
+</tbody>
+</table>
+<p>我们通过隔离级别的定义很容易自己分析出这张表，比如可重复读隔离级别的定义是一个事务在执行过程中可以看到其他事务已经提交的新插入的记录，但是不能看到其他事务对已有记录的更新。所以，在这种隔离级别下，在脏读示例的 T5 时刻和不可重复读的 T7 时刻，事务 A 都是无论事务 B 是否提交，事务 A 都是无法读取到事务 B 对已有记录的更新的，所以不会产生脏读和不可重复读，而又由于这种隔离级别下可以看到其他事务已经提交的新插入记录，自然是无法避免幻读的产生。另外，值得注意的是所有隔离级别都可以避免第一类丢失更新的问题。<br>大多数关系数据库默认使用 Read committed 的隔离级别，Mysql InnoDB 默认使用 Read repeatable 的隔离级别，这和 Mysql replication 机制使用 Statement 日志格式有关。各数据库隔离级别的实现也是有差别的，例如 Oracle 支持 Read committed 和 Serializable 两种隔离级别，另外可以通过使用读快照在 Read committed 级别上禁止不可重复读问题；MySQL 默认采用 RR 隔离级别，SQL 标准是要求 RR 解决不可重复读的问题，但是因为 MySQL 采用了 gap lock，所以实际上 MySQL 的 RR 隔离级别也解决了幻读的问题，也就是 Mysql InnoDB 在 Read repeatable 级别上使用 next-key locking 策略来避免幻读现象的产生。</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/数据库/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bugs/2018/08/23/数据库/MySQL/MySql-日常指导-大表优化思路/" rel="next" title="MySql 日常指导，及大表优化思路">
+                <i class="fa fa-chevron-left"></i> MySql 日常指导，及大表优化思路
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/08/25/网络/https如何保证数据传输的安全性/" rel="prev" title="https如何保证数据传输的安全性">
+                https如何保证数据传输的安全性 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是事务"><span class="nav-number">1.</span> <span class="nav-text">1. 什么是事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-并发事务会产生的问题"><span class="nav-number">2.</span> <span class="nav-text">2. 并发事务会产生的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-丢失更新"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 丢失更新</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-1-第一类丢失更新"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 第一类丢失更新</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-2-第二类丢失更新"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 第二类丢失更新</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-脏读"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 脏读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-不可重复读"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 不可重复读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-幻读"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 幻读</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-事务隔离级别"><span class="nav-number">3.</span> <span class="nav-text">3. 事务隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-SERIALIZABLE（串行化）"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 SERIALIZABLE（串行化）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-REPEATABLE-READ（可重复读）"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 REPEATABLE READ（可重复读）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-READ-COMMITTED（读已提交数据）"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 READ COMMITTED（读已提交数据）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-READ-UNCOMMITTED（读未提交数据）"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 READ UNCOMMITTED（读未提交数据）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-隔离级别与并发问题"><span class="nav-number">4.</span> <span class="nav-text">4. 隔离级别与并发问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

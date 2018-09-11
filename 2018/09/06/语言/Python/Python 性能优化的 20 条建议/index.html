@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000000666603   优化算法时间复杂度算法的时间复杂度对程序的执行效率影响最大，在 Python 中可以通过选择合适的数据结构来优化时间复杂度，如 list 和 set 查找某一个元素的时间复杂度分别是 O(n) 和 O(1)。不同的场景有不同的优化方式，总得来说，一般有分治">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 性能优化的 20 条建议">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/09/06/语言/Python/Python 性能优化的 20 条建议/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000000666603   优化算法时间复杂度算法的时间复杂度对程序的执行效率影响最大，在 Python 中可以通过选择合适的数据结构来优化时间复杂度，如 list 和 set 查找某一个元素的时间复杂度分别是 O(n) 和 O(1)。不同的场景有不同的优化方式，总得来说，一般有分治">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-06T05:54:51.731Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python 性能优化的 20 条建议">
+<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000000666603   优化算法时间复杂度算法的时间复杂度对程序的执行效率影响最大，在 Python 中可以通过选择合适的数据结构来优化时间复杂度，如 list 和 set 查找某一个元素的时间复杂度分别是 O(n) 和 O(1)。不同的场景有不同的优化方式，总得来说，一般有分治">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/09/06/语言/Python/Python 性能优化的 20 条建议/"/>
+
+
+
+
+
+  <title>Python 性能优化的 20 条建议 | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微笑的周末</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/06/语言/Python/Python 性能优化的 20 条建议/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python 性能优化的 20 条建议</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-06T08:36:03+00:00">
+                2018-09-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="https://segmentfault.com/a/1190000000666603" target="_blank" rel="noopener">https://segmentfault.com/a/1190000000666603</a></p>
+</blockquote>
+<ol>
+<li><h3 id="优化算法时间复杂度"><a href="#优化算法时间复杂度" class="headerlink" title="优化算法时间复杂度"></a>优化算法时间复杂度</h3><p>算法的时间复杂度对程序的执行效率影响最大，在 Python 中可以通过选择合适的数据结构来优化时间复杂度，如 list 和 set 查找某一个元素的时间复杂度分别是 O(n) 和 O(1)。不同的场景有不同的优化方式，总得来说，一般有分治，分支界限，贪心，动态规划等思想。</p>
+</li>
+<li><h3 id="减少冗余数据"><a href="#减少冗余数据" class="headerlink" title="减少冗余数据"></a>减少冗余数据</h3><p>如用上三角或下三角的方式去保存一个大的对称矩阵。在 0 元素占大多数的矩阵里使用稀疏矩阵表示。</p>
+</li>
+<li><h3 id="合理使用-copy-与-deepcopy"><a href="#合理使用-copy-与-deepcopy" class="headerlink" title="合理使用 copy 与 deepcopy"></a>合理使用 copy 与 deepcopy</h3><p>对于 dict 和 list 等数据结构的对象，直接赋值使用的是引用的方式。而有些情况下需要复制整个对象，这时可以使用 copy 包里的 copy 和 deepcopy，这两个函数的不同之处在于后者是递归复制的。效率也不一样：（以下程序在 ipython 中运行）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">a = range(<span class="number">100000</span>)</span><br><span class="line">%timeit -n <span class="number">10</span> copy.copy(a) <span class="comment"># 运行10次 copy.copy(a)</span></span><br><span class="line">%timeit -n <span class="number">10</span> copy.deepcopy(a)</span><br><span class="line"><span class="number">10</span> loops, best of <span class="number">3</span>: <span class="number">1.55</span> ms per loop</span><br><span class="line"><span class="number">10</span> loops, best of <span class="number">3</span>: <span class="number">151</span> ms per loop</span><br></pre></td></tr></table></figure>
+<p>timeit 后面的 - n 表示运行的次数，后两行对应的是两个 timeit 的输出，下同。由此可见后者慢一个数量级。</p>
+</li>
+<li><h3 id="使用-dict-或-set-查找元素"><a href="#使用-dict-或-set-查找元素" class="headerlink" title="使用 dict 或 set 查找元素"></a>使用 dict 或 set 查找元素</h3><p>python dict 和 set 都是使用 hash 表来实现 (类似 c++11 标准库中 unordered_map)，查找元素的时间复杂度是 O(1)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a = range(<span class="number">1000</span>)</span><br><span class="line">s = set(a)</span><br><span class="line">d = dict((i,<span class="number">1</span>) <span class="keyword">for</span> i <span class="keyword">in</span> a)</span><br><span class="line">%timeit -n <span class="number">10000</span> <span class="number">100</span> <span class="keyword">in</span> d</span><br><span class="line">%timeit -n <span class="number">10000</span> <span class="number">100</span> <span class="keyword">in</span> s</span><br><span class="line"><span class="number">10000</span> loops, best of <span class="number">3</span>: <span class="number">43.5</span> ns per loop</span><br><span class="line"><span class="number">10000</span> loops, best of <span class="number">3</span>: <span class="number">49.6</span> ns per loop</span><br></pre></td></tr></table></figure>
+<p><code>dict</code>的效率略高 (占用的空间也多一些)。</p>
+</li>
+<li><h3 id="合理使用生成器（generator）和-yield"><a href="#合理使用生成器（generator）和-yield" class="headerlink" title="合理使用生成器（generator）和 yield"></a>合理使用生成器（generator）和 yield</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">%timeit -n <span class="number">100</span> a = (i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100000</span>))</span><br><span class="line">%timeit -n <span class="number">100</span> b = [i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100000</span>)]</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">1.54</span> ms per loop</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">4.56</span> ms per loop</span><br></pre></td></tr></table></figure>
+<p>使用<code>()</code>得到的是一个 generator 对象，所需要的内存空间与列表的大小无关，所以效率会高一些。在具体应用上，比如 set(i for i in range(100000)) 会比 set([i for i in range(100000)]) 快。</p>
+<p>但是对于需要循环遍历的情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">%timeit -n <span class="number">10</span> <span class="keyword">for</span> x <span class="keyword">in</span> (i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100000</span>)): <span class="keyword">pass</span></span><br><span class="line">%timeit -n <span class="number">10</span> <span class="keyword">for</span> x <span class="keyword">in</span> [i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100000</span>)]: <span class="keyword">pass</span></span><br><span class="line"><span class="number">10</span> loops, best of <span class="number">3</span>: <span class="number">6.51</span> ms per loop</span><br><span class="line"><span class="number">10</span> loops, best of <span class="number">3</span>: <span class="number">5.54</span> ms per loop</span><br></pre></td></tr></table></figure>
+<p>后者的效率反而更高，但是如果循环里有 break, 用 generator 的好处是显而易见的。<code>yield</code>也是用于创建 generator：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">yield_func</span><span class="params">(ls)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> ls:</span><br><span class="line">        <span class="keyword">yield</span> i+<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">not_yield_func</span><span class="params">(ls)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> [i+<span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> ls]</span><br><span class="line"></span><br><span class="line">ls = range(<span class="number">1000000</span>)</span><br><span class="line">%timeit -n <span class="number">10</span> <span class="keyword">for</span> i <span class="keyword">in</span> yield_func(ls):<span class="keyword">pass</span></span><br><span class="line">%timeit -n <span class="number">10</span> <span class="keyword">for</span> i <span class="keyword">in</span> not_yield_func(ls):<span class="keyword">pass</span></span><br><span class="line"><span class="number">10</span> loops, best of <span class="number">3</span>: <span class="number">63.8</span> ms per loop</span><br><span class="line"><span class="number">10</span> loops, best of <span class="number">3</span>: <span class="number">62.9</span> ms per loop</span><br></pre></td></tr></table></figure>
+<p>对于内存不是非常大的 list，可以直接返回一个 list，但是可读性<code>yield</code>更佳 (人个喜好)。</p>
+<p>python2.x 内置 generator 功能的有 xrange 函数、itertools 包等。</p>
+</li>
+<li><h3 id="优化循环"><a href="#优化循环" class="headerlink" title="优化循环"></a>优化循环</h3><p>循环之外能做的事不要放在循环内，比如下面的优化可以快一倍：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = range(<span class="number">10000</span>)</span><br><span class="line">size_a = len(a)</span><br><span class="line">%timeit -n <span class="number">1000</span> <span class="keyword">for</span> i <span class="keyword">in</span> a: k = len(a)</span><br><span class="line">%timeit -n <span class="number">1000</span> <span class="keyword">for</span> i <span class="keyword">in</span> a: k = size_a</span><br><span class="line"><span class="number">1000</span> loops, best of <span class="number">3</span>: <span class="number">569</span> µs per loop</span><br><span class="line"><span class="number">1000</span> loops, best of <span class="number">3</span>: <span class="number">256</span> µs per loop</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="优化包含多个判断表达式的顺序"><a href="#优化包含多个判断表达式的顺序" class="headerlink" title="优化包含多个判断表达式的顺序"></a>优化包含多个判断表达式的顺序</h3><p>对于 and，应该把满足条件少的放在前面，对于 or，把满足条件多的放在前面。如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = range(<span class="number">2000</span>)  </span><br><span class="line">%timeit -n <span class="number">100</span> [i <span class="keyword">for</span> i <span class="keyword">in</span> a <span class="keyword">if</span> <span class="number">10</span> &lt; i &lt; <span class="number">20</span> <span class="keyword">or</span> <span class="number">1000</span> &lt; i &lt; <span class="number">2000</span>]</span><br><span class="line">%timeit -n <span class="number">100</span> [i <span class="keyword">for</span> i <span class="keyword">in</span> a <span class="keyword">if</span> <span class="number">1000</span> &lt; i &lt; <span class="number">2000</span> <span class="keyword">or</span> <span class="number">100</span> &lt; i &lt; <span class="number">20</span>]     </span><br><span class="line">%timeit -n <span class="number">100</span> [i <span class="keyword">for</span> i <span class="keyword">in</span> a <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">0</span> <span class="keyword">and</span> i &gt; <span class="number">1900</span>]</span><br><span class="line">%timeit -n <span class="number">100</span> [i <span class="keyword">for</span> i <span class="keyword">in</span> a <span class="keyword">if</span> i &gt; <span class="number">1900</span> <span class="keyword">and</span> i % <span class="number">2</span> == <span class="number">0</span>]</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">287</span> µs per loop</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">214</span> µs per loop</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">128</span> µs per loop</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">56.1</span> µs per loop</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="使用-join-合并迭代器中的字符串"><a href="#使用-join-合并迭代器中的字符串" class="headerlink" title="使用 join 合并迭代器中的字符串"></a>使用 join 合并迭代器中的字符串</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: %%timeit</span><br><span class="line">   ...: s = <span class="string">''</span></span><br><span class="line">   ...: <span class="keyword">for</span> i <span class="keyword">in</span> a:</span><br><span class="line">   ...:         s += i</span><br><span class="line">   ...:</span><br><span class="line"><span class="number">10000</span> loops, best of <span class="number">3</span>: <span class="number">59.8</span> µs per loop</span><br><span class="line"></span><br><span class="line">In [<span class="number">2</span>]: %%timeit</span><br><span class="line">s = <span class="string">''</span>.join(a)</span><br><span class="line">   ...:</span><br><span class="line"><span class="number">100000</span> loops, best of <span class="number">3</span>: <span class="number">11.8</span> µs per loop</span><br></pre></td></tr></table></figure>
+<p><code>join</code>对于累加的方式，有大约 5 倍的提升。</p>
+</li>
+<li><h3 id="选择合适的格式化字符方式"><a href="#选择合适的格式化字符方式" class="headerlink" title="选择合适的格式化字符方式"></a>选择合适的格式化字符方式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">s1, s2 = &apos;ax&apos;, &apos;bx&apos;</span><br><span class="line">%timeit -n 100000 &apos;abc%s%s&apos; % (s1, s2)</span><br><span class="line">%timeit -n 100000 &apos;abc&#123;0&#125;&#123;1&#125;&apos;.format(s1, s2)</span><br><span class="line">%timeit -n 100000 &apos;abc&apos; + s1 + s2</span><br><span class="line">100000 loops, best of 3: 183 ns per loop</span><br><span class="line">100000 loops, best of 3: 169 ns per loop</span><br><span class="line">100000 loops, best of 3: 103 ns per loop</span><br></pre></td></tr></table></figure>
+<p>三种情况中，<code>%</code>的方式是最慢的，但是三者的差距并不大（都非常快）。(个人觉得<code>%</code>的可读性最好)</p>
+</li>
+<li><h3 id="不借助中间变量交换两个变量的值"><a href="#不借助中间变量交换两个变量的值" class="headerlink" title="不借助中间变量交换两个变量的值"></a>不借助中间变量交换两个变量的值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">3</span>]: %%timeit -n <span class="number">10000</span></span><br><span class="line">    a,b=<span class="number">1</span>,<span class="number">2</span></span><br><span class="line">   ....: c=a;a=b;b=c;</span><br><span class="line">   ....:</span><br><span class="line"><span class="number">10000</span> loops, best of <span class="number">3</span>: <span class="number">172</span> ns per loop</span><br><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: %%timeit -n <span class="number">10000</span></span><br><span class="line">a,b=<span class="number">1</span>,<span class="number">2</span></span><br><span class="line">a,b=b,a</span><br><span class="line">   ....:</span><br><span class="line"><span class="number">10000</span> loops, best of <span class="number">3</span>: <span class="number">86</span> ns per loop</span><br></pre></td></tr></table></figure>
+<p>使用<code>a,b=b,a</code>而不是<code>c=a;a=b;b=c;</code>来交换 a,b 的值，可以快 1 倍以上。</p>
+</li>
+<li><h3 id="使用if-is"><a href="#使用if-is" class="headerlink" title="使用if is"></a>使用<code>if is</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = range(<span class="number">10000</span>)</span><br><span class="line">%timeit -n <span class="number">100</span> [i <span class="keyword">for</span> i <span class="keyword">in</span> a <span class="keyword">if</span> i == <span class="keyword">True</span>]</span><br><span class="line">%timeit -n <span class="number">100</span> [i <span class="keyword">for</span> i <span class="keyword">in</span> a <span class="keyword">if</span> i <span class="keyword">is</span> <span class="keyword">True</span>]</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">531</span> µs per loop</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">362</span> µs per loop</span><br></pre></td></tr></table></figure>
+<p>使用 <code>if is True</code> 比 <code>if == True</code> 将近快一倍。</p>
+</li>
+<li><h3 id="使用级联比较x-lt-y-lt-z"><a href="#使用级联比较x-lt-y-lt-z" class="headerlink" title="使用级联比较x &lt; y &lt; z"></a>使用级联比较<code>x &lt; y &lt; z</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x, y, z = <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span></span><br><span class="line">%timeit -n <span class="number">1000000</span> <span class="keyword">if</span> x &lt; y &lt; z:<span class="keyword">pass</span></span><br><span class="line">%timeit -n <span class="number">1000000</span> <span class="keyword">if</span> x &lt; y <span class="keyword">and</span> y &lt; z:<span class="keyword">pass</span></span><br><span class="line"><span class="number">1000000</span> loops, best of <span class="number">3</span>: <span class="number">101</span> ns per loop</span><br><span class="line"><span class="number">1000000</span> loops, best of <span class="number">3</span>: <span class="number">121</span> ns per loop</span><br></pre></td></tr></table></figure>
+<p><code>x &lt; y &lt; z</code>效率略高，而且可读性更好。</p>
+</li>
+<li><h3 id="while-1-比-while-True-更快"><a href="#while-1-比-while-True-更快" class="headerlink" title="while 1 比 while True 更快"></a><code>while 1</code> 比 <code>while True</code> 更快</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">while_1</span><span class="params">()</span>:</span></span><br><span class="line">    n = <span class="number">100000</span></span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        n -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> n &lt;= <span class="number">0</span>: <span class="keyword">break</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">while_true</span><span class="params">()</span>:</span></span><br><span class="line">    n = <span class="number">100000</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        n -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> n &lt;= <span class="number">0</span>: <span class="keyword">break</span>    </span><br><span class="line"></span><br><span class="line">m, n = <span class="number">1000000</span>, <span class="number">1000000</span> </span><br><span class="line">%timeit -n <span class="number">100</span> while_1()</span><br><span class="line">%timeit -n <span class="number">100</span> while_true()</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">3.69</span> ms per loop</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">5.61</span> ms per loop</span><br></pre></td></tr></table></figure>
+<p>while 1 比 while true 快很多，原因是在 python2.x 中，True 是一个全局变量，而非关键字。</p>
+</li>
+<li><h3 id="使用-而不是-pow"><a href="#使用-而不是-pow" class="headerlink" title="使用**而不是 pow"></a>使用<code>**</code>而不是 pow</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">%timeit -n <span class="number">10000</span> c = pow(<span class="number">2</span>,<span class="number">20</span>)</span><br><span class="line">%timeit -n <span class="number">10000</span> c = <span class="number">2</span>**<span class="number">20</span></span><br><span class="line"><span class="number">10000</span> loops, best of <span class="number">3</span>: <span class="number">284</span> ns per loop</span><br><span class="line"><span class="number">10000</span> loops, best of <span class="number">3</span>: <span class="number">16.9</span> ns per loop</span><br></pre></td></tr></table></figure>
+<p><code>**</code>就是快 10 倍以上！</p>
+</li>
+<li><h3 id="使用-cProfile-cStringIO-和-cPickle-等用-c-实现相同功能（分别对应-profile-StringIO-pickle）的包"><a href="#使用-cProfile-cStringIO-和-cPickle-等用-c-实现相同功能（分别对应-profile-StringIO-pickle）的包" class="headerlink" title="使用 cProfile, cStringIO 和 cPickle 等用 c 实现相同功能（分别对应 profile, StringIO, pickle）的包"></a>使用 cProfile, cStringIO 和 cPickle 等用 c 实现相同功能（分别对应 profile, StringIO, pickle）的包</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cPickle</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line">a = range(<span class="number">10000</span>)</span><br><span class="line">%timeit -n <span class="number">100</span> x = cPickle.dumps(a)</span><br><span class="line">%timeit -n <span class="number">100</span> x = pickle.dumps(a)</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">1.58</span> ms per loop</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">17</span> ms per loop</span><br></pre></td></tr></table></figure>
+<p>由 c 实现的包，速度快 10 倍以上！</p>
+</li>
+<li><h3 id="使用最佳的反序列化方式"><a href="#使用最佳的反序列化方式" class="headerlink" title="使用最佳的反序列化方式"></a>使用最佳的反序列化方式</h3><p>下面比较了 eval, cPickle, json 方式三种对相应字符串反序列化的效率：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> cPickle</span><br><span class="line">a = range(<span class="number">10000</span>)</span><br><span class="line">s1 = str(a)</span><br><span class="line">s2 = cPickle.dumps(a)</span><br><span class="line">s3 = json.dumps(a)</span><br><span class="line">%timeit -n <span class="number">100</span> x = eval(s1)</span><br><span class="line">%timeit -n <span class="number">100</span> x = cPickle.loads(s2)</span><br><span class="line">%timeit -n <span class="number">100</span> x = json.loads(s3)</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">16.8</span> ms per loop</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">2.02</span> ms per loop</span><br><span class="line"><span class="number">100</span> loops, best of <span class="number">3</span>: <span class="number">798</span> µs per loop</span><br></pre></td></tr></table></figure>
+<p>可见 json 比 cPickle 快近 3 倍，比 eval 快 20 多倍。</p>
+</li>
+<li><h3 id="使用-C-扩展-Extension"><a href="#使用-C-扩展-Extension" class="headerlink" title="使用 C 扩展 (Extension)"></a>使用 C 扩展 (Extension)</h3><p>目前主要有 CPython(python 最常见的实现的方式) 原生 API, ctypes,Cython，cffi 三种方式，它们的作用是使得 Python 程序可以调用由 C 编译成的动态链接库，其特点分别是：</p>
+<p><strong>CPython 原生 API</strong>: 通过引入<code>Python.h</code>头文件，对应的 C 程序中可以直接使用 Python 的数据结构。实现过程相对繁琐，但是有比较大的适用范围。</p>
+<p><strong>ctypes</strong>: 通常用于封装 (wrap)C 程序，让纯 Python 程序调用动态链接库（Windows 中的 dll 或 Unix 中的 so 文件）中的函数。如果想要在 python 中使用已经有 C 类库，使用 ctypes 是很好的选择，有一些基准测试下，python2+ctypes 是性能最好的方式。</p>
+<p><strong>Cython</strong>: Cython 是 CPython 的超集，用于简化编写 C 扩展的过程。Cython 的优点是语法简洁，可以很好地兼容 numpy 等包含大量 C 扩展的库。Cython 的使得场景一般是针对项目中某个算法或过程的优化。在<a href="http://docs.cython.org/src/tutorial/numpy.html" target="_blank" rel="noopener">某些测试</a>中，可以有几百倍的性能提升。</p>
+<p><strong>cffi</strong>: cffi 的就是 ctypes 在 pypy（详见下文）中的实现，同进也兼容 CPython。cffi 提供了在 python 使用 C 类库的方式，可以直接在 python 代码中编写 C 代码，同时支持链接到已有的 C 类库。</p>
+<p>使用这些优化方式一般是针对已有项目性能瓶颈模块的优化，可以在少量改动原有项目的情况下大幅度地提高整个程序的运行效率。</p>
+</li>
+<li><h3 id="并行编程"><a href="#并行编程" class="headerlink" title="并行编程"></a>并行编程</h3><p>因为 GIL 的存在，Python 很难充分利用多核 CPU 的优势。但是，可以通过内置的模块 multiprocessing 实现下面几种并行模式：</p>
+<p><strong>多进程</strong>：对于 CPU 密集型的程序，可以使用 multiprocessing 的 Process,Pool 等封装好的类，通过多进程的方式实现并行计算。但是因为进程中的通信成本比较大，对于进程之间需要大量数据交互的程序效率未必有大的提高。</p>
+<p><strong>多线程</strong>：对于 IO 密集型的程序，multiprocessing.dummy 模块使用 multiprocessing 的接口封装 threading，使得多线程编程也变得非常轻松 (比如可以使用 Pool 的 map 接口，简洁高效)。</p>
+<p><strong>分布式</strong>：multiprocessing 中的 Managers 类提供了可以在不同进程之共享数据的方式，可以在此基础上开发出分布式的程序。</p>
+<p>不同的业务场景可以选择其中的一种或几种的组合实现程序性能的优化。</p>
+</li>
+<li><h3 id="终级大杀器：PyPy"><a href="#终级大杀器：PyPy" class="headerlink" title="终级大杀器：PyPy"></a>终级大杀器：PyPy</h3><p>PyPy 是用 RPython(CPython 的子集)实现的 Python，根据官网的基准测试数据，它比 CPython 实现的 Python 要快 6 倍以上。快的原因是使用了 Just-in-Time(JIT)编译器，即动态编译器，与静态编译器 (如 gcc,javac 等) 不同，它是利用程序运行的过程的数据进行优化。由于历史原因，目前 pypy 中还保留着 GIL，不过正在进行的 STM 项目试图将 PyPy 变成没有 GIL 的 Python。</p>
+<p>如果 python 程序中含有 C 扩展 (非 cffi 的方式)，JIT 的优化效果会大打折扣，甚至比 CPython 慢（比 Numpy）。所以在 PyPy 中最好用纯 Python 或使用 cffi 扩展。</p>
+<p>随着 STM，Numpy 等项目的完善，相信 PyPy 将会替代 CPython。</p>
+</li>
+<li><h3 id="使用性能分析工具"><a href="#使用性能分析工具" class="headerlink" title="使用性能分析工具"></a>使用性能分析工具</h3><p>除了上面在 ipython 使用到的 timeit 模块，还有 cProfile。cProfile 的使用方式也非常简单： <code>python -m cProfile filename.py</code>，<code>filename.py</code> 是要运行程序的文件名，可以在标准输出中看到每一个函数被调用的次数和运行的时间，从而找到程序的性能瓶颈，然后可以有针对性地优化。</p>
+</li>
+</ol>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[1] <a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/" target="_blank" rel="noopener"></a><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/" target="_blank" rel="noopener">http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/</a></p>
+<p>[2] <a href="http://maxburstein.com/blog/speeding-up-your-python-code/" target="_blank" rel="noopener"></a><a href="http://maxburstein.com/blog/speeding-up-your-python-code/" target="_blank" rel="noopener">http://maxburstein.com/blog/speeding-up-your-python-code/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bugs/2018/09/06/架构师系列/学习分布式不得不会的 ACP 理论/" rel="next" title="学习分布式不得不会的 ACP 理论">
+                <i class="fa fa-chevron-left"></i> 学习分布式不得不会的 ACP 理论
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/09/07/framework/springcloud/面试/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#优化算法时间复杂度"><span class="nav-number">1.</span> <span class="nav-text">优化算法时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#减少冗余数据"><span class="nav-number">2.</span> <span class="nav-text">减少冗余数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合理使用-copy-与-deepcopy"><span class="nav-number">3.</span> <span class="nav-text">合理使用 copy 与 deepcopy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-dict-或-set-查找元素"><span class="nav-number">4.</span> <span class="nav-text">使用 dict 或 set 查找元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合理使用生成器（generator）和-yield"><span class="nav-number">5.</span> <span class="nav-text">合理使用生成器（generator）和 yield</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化循环"><span class="nav-number">6.</span> <span class="nav-text">优化循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化包含多个判断表达式的顺序"><span class="nav-number">7.</span> <span class="nav-text">优化包含多个判断表达式的顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-join-合并迭代器中的字符串"><span class="nav-number">8.</span> <span class="nav-text">使用 join 合并迭代器中的字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择合适的格式化字符方式"><span class="nav-number">9.</span> <span class="nav-text">选择合适的格式化字符方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不借助中间变量交换两个变量的值"><span class="nav-number">10.</span> <span class="nav-text">不借助中间变量交换两个变量的值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用if-is"><span class="nav-number">11.</span> <span class="nav-text">使用if is</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用级联比较x-lt-y-lt-z"><span class="nav-number">12.</span> <span class="nav-text">使用级联比较x &lt; y &lt; z</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#while-1-比-while-True-更快"><span class="nav-number">13.</span> <span class="nav-text">while 1 比 while True 更快</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-而不是-pow"><span class="nav-number">14.</span> <span class="nav-text">使用**而不是 pow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-cProfile-cStringIO-和-cPickle-等用-c-实现相同功能（分别对应-profile-StringIO-pickle）的包"><span class="nav-number">15.</span> <span class="nav-text">使用 cProfile, cStringIO 和 cPickle 等用 c 实现相同功能（分别对应 profile, StringIO, pickle）的包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用最佳的反序列化方式"><span class="nav-number">16.</span> <span class="nav-text">使用最佳的反序列化方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-C-扩展-Extension"><span class="nav-number">17.</span> <span class="nav-text">使用 C 扩展 (Extension)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并行编程"><span class="nav-number">18.</span> <span class="nav-text">并行编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#终级大杀器：PyPy"><span class="nav-number">19.</span> <span class="nav-text">终级大杀器：PyPy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用性能分析工具"><span class="nav-number">20.</span> <span class="nav-text">使用性能分析工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">21.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
