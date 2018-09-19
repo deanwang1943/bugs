@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="面试题,java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="内存管理是计算机编程中的一个重要问题，一般来说，内存管理主要包括内存分配和内存回收 两个部分。 类加载机制的流程：包括了加载、连接 (验证、准备、解析)、初始化五个阶段  java程序执行过程  1、首先Java源代码文件(.java后缀)会被Java编译器编译为字节码文件(.class后缀)，然后由JVM中的类加载器加载各个类的字节码文件，加载完毕之后，交由JVM执行引擎执行(执行过程还包括将">
+<meta name="keywords" content="面试题,java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java GC详解">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/09/18/语言/Java/Java内存/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="内存管理是计算机编程中的一个重要问题，一般来说，内存管理主要包括内存分配和内存回收 两个部分。 类加载机制的流程：包括了加载、连接 (验证、准备、解析)、初始化五个阶段  java程序执行过程  1、首先Java源代码文件(.java后缀)会被Java编译器编译为字节码文件(.class后缀)，然后由JVM中的类加载器加载各个类的字节码文件，加载完毕之后，交由JVM执行引擎执行(执行过程还包括将">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/15/165dacbe3fcbd978?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/15/165dacbe3fa44149?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/15/165dacbe3fb4a7f4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/15/165dacbe5df7d681?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/15/165dacbe67533586?imageslim">
+<meta property="og:updated_time" content="2018-09-18T13:23:35.872Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java GC详解">
+<meta name="twitter:description" content="内存管理是计算机编程中的一个重要问题，一般来说，内存管理主要包括内存分配和内存回收 两个部分。 类加载机制的流程：包括了加载、连接 (验证、准备、解析)、初始化五个阶段  java程序执行过程  1、首先Java源代码文件(.java后缀)会被Java编译器编译为字节码文件(.class后缀)，然后由JVM中的类加载器加载各个类的字节码文件，加载完毕之后，交由JVM执行引擎执行(执行过程还包括将">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/9/15/165dacbe3fcbd978?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/09/18/语言/Java/Java内存/"/>
+
+
+
+
+
+  <title>Java GC详解 | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微笑的周末</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/18/语言/Java/Java内存/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java GC详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-18T00:36:03+00:00">
+                2018-09-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>内存管理是计算机编程中的一个重要问题，一般来说，内存管理主要包括内存分配和内存回收 两个部分。</p>
+<p>类加载机制的流程：包括了加载、连接 (验证、准备、解析)、初始化五个阶段</p>
+</blockquote>
+<h3 id="java程序执行过程"><a href="#java程序执行过程" class="headerlink" title="java程序执行过程"></a>java程序执行过程</h3><p><img src="https://user-gold-cdn.xitu.io/2018/9/15/165dacbe3fcbd978?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/15/165dacbe3fa44149?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<p>1、首先Java源代码文件(.java后缀)会被Java编译器编译为字节码文件(.class后缀)，然后由JVM中的类加载器加载各个类的字节码文件，加载完毕之后，交由JVM执行引擎执行(执行过程还包括将字节码编译成机器码)，JVM执行引擎在执行字节码时首先会扫描四趟class文件来保证定义的类型的安全性，再检查空引用，数据越界，自动垃圾收集等。在整个程序执行过程中，JVM会用一段空间来存储程序执行期间需要用到的数据和相关信息，这段空间一般被称作为Runtime Data Area（运行时数据区），也就是我们常说的JVM内存</p>
+<p>2、类加载器分为启动类加载器(不继承classLoader，属于虚拟机的一部分；负责加载原生代码实现的Java核心库,包括加载JAVA_HOME中jre/lib/rt.jar里所有的 class)；扩展类加载器(负责在JVM中扩展库目录中去寻找加载Java扩展库,包括JAVA_HOME中jre/lib/ext/xx.jar或-Djava.ext.dirs指定目录下的 jar 包)；应用程序类加载器(ClassLoader.getSystemClassLoader()负责加载Java类路径classpath中的类)</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/15/165dacbe3fb4a7f4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<h3 id="java内存模型划分"><a href="#java内存模型划分" class="headerlink" title="java内存模型划分"></a>java内存模型划分</h3><p>一般来讲，我们将java内存划分为以下几个区域, 如图：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/15/165dacbe5df7d681?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/15/165dacbe67533586?imageslim" alt=""></p>
+<h3 id="java内存区域划分"><a href="#java内存区域划分" class="headerlink" title="java内存区域划分"></a>java内存区域划分</h3><ol>
+<li>程序计数器</li>
+</ol>
+<p>当前线程所执行的字节码行号指示器<br>每个线程都有独立的程序计数器<br>如果执行的是java方法，记录字节码指令地址。如果执行Native方法，则为空（Undefined）<br>不会有OutOfMemoryError出现</p>
+<ol start="2">
+<li>虚拟机栈</li>
+</ol>
+<p>线程私有， 生命周期与线程相同<br>描述java方法执行的内存模型：每个方法都会创建一个栈帧用于存储局部变量，方法出口，操作数栈等信息。每个方法调用对应一个栈帧在虚拟机栈中入栈到出栈的过程<br>存放基本数据类型（8种）和对象引用类型（地址的指针或者对象的句柄）<br>请求栈深度大于虚拟机允许深度时，抛出StackOverflowError异常<br>如果动态扩展仍无法申请足够的内存，抛出OutOfMemoryError异常</p>
+<ol start="3">
+<li>本地方法栈</li>
+</ol>
+<p>作用和虚拟机栈一样<br>区别为：本地方法栈服务虚拟机使用到的Native方法</p>
+<ol start="4">
+<li>堆</li>
+</ol>
+<p>虚拟机管理的内存最大的一块<br>被所有线程共享的区域<br>所有对象的实例在此分片内存<br>可细分为多个代</p>
+<ol start="5">
+<li>方法区</li>
+</ol>
+<p>所有线程共享的区域<br>存储类信息，常量，静态变量<br>在HotSpot虚拟机上也称永久代<br>垃圾收集行为很少出现在这个区域，因为可回收的内存很少</p>
+<ol start="6">
+<li>运行时常量池</li>
+</ol>
+<p>是方法区的一部分<br>用于存放编译器生成的各种字面量和符号引用</p>
+<ol start="7">
+<li>直接内存</li>
+</ol>
+<p>不包括在JVM内存区域中，不受JVM参数影响<br>JVM使用缓冲区时，会在该区区域分配内存<br>配置时注意给该区域预留空间，而不是把所有内存都分给JVM<br>-XX:MaxDirectMemorySize指定，不指定默认与堆最大值一样（-Xmx）</p>
+<h3 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h3><p>1、年轻对象存放在年轻代，采用 Minor GC(指从年轻代空间（包括 Eden 和 Survivor 区域）回收内存); 长期存活的年老对象以及大对象直接存放在年老代，采用 Full GC(Full GC == Major GC 指的是对老年代 / 永久代的 stop the world 的 GC)，回收速度慢; JVM 维护一个对象的年龄来进行对象的内存区域转移，从 Eden-Survivor - 老年代</p>
+<p>2、新生代包括一个 Eden 区，两个 survivor 的 from 和 to 区（8:1:1）, 负责年轻小对象的回收; Eden 区存放新创建的大量对象, 回收频繁, 所以区域大; Survivor 存放每次垃圾回收后存活的对象</p>
+<p>3、一个对象的成员变量可能随着这个对象自身存放在堆上</p>
+<p>4、一个 Object 的大小计算方法: 一个引用 4byte + 空 Object 本身占据 8byte + 其它数据类型占据自身大小 byte(例如 char 占用 2byte); 然而由于系统分配以 8byte 为单位，所以每个 Object 占据的大小必须为 8 的倍数，比如一个空的 Object 应该占据 4+8=12，也就是说需要占据 16byte</p>
+<blockquote>
+<p>内存分配与回收主要是指对象所占据的堆内存的释放与回收</p>
+</blockquote>
+<h4 id="java-对象创建及初始化"><a href="#java-对象创建及初始化" class="headerlink" title="java 对象创建及初始化"></a>java 对象创建及初始化</h4><p>java 对象创建之后，就会在堆内存拥有自己的一块区域，接着就是对象的初始化过程。对象一般通过构造器来进行初始化，构造器是一种与类名相同的没有返回值的特殊方法；如果一个类中没有定义构造函数，则系统会自动生成一个不接受任何参数的默认构造器；但是如果已经定义一个构造器 (无论是否有参数)，编译器就不会再自动创建默认构造器了；我们可以对构造函数进行多次重载 (即传递不同数目或不同顺序的参数列表), 也可以在一个构造器中调用另一个构造器，但是只能调用一次，并且必须将构造器放在最起始处，否则编译器会报错。</p>
+<p>那么类成员初始化又是怎么做的呢？顺序是怎样的呢？java 中所有变量在使用前都应该得到恰当的初始化，即使是方法的局部变量，如果不进行初始化就会发生编译错误；而如果是类的成员变量，即使你不进行初始化赋值，系统也是会给与其一个初始值的，例如 char、int 类型的初始值都是 0，对象引用不进行初始化则默认为 null。</p>
+<p>类成员初始化顺序总结：先静态后普通再构造, 先父类后子类，同级看书写顺序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1.先执行父类静态变量和静态代码块，再执行子类静态变量和静态代码块</span><br><span class="line"></span><br><span class="line">2.先执行父类普通变量和代码块，再执行父类构造器(static方法)</span><br><span class="line"></span><br><span class="line">3.先执行子类普通变量和代码块，再执行子类构造器(static方法)</span><br><span class="line"></span><br><span class="line">4.static方法初始化先于普通方法，静态初始化只有在必要时刻才进行且只初始化一次。</span><br></pre></td></tr></table></figure>
+<h3 id="java-内存回收"><a href="#java-内存回收" class="headerlink" title="java 内存回收"></a>java 内存回收</h3><h5 id="垃圾回收器-4-种收集器-和-finalize-方法"><a href="#垃圾回收器-4-种收集器-和-finalize-方法" class="headerlink" title="垃圾回收器 (4 种收集器) 和 finalize()方法"></a>垃圾回收器 (4 种收集器) 和 finalize()方法</h5><p>java 中垃圾回收器可以帮助程序猿自动回收无用对象占据的内存，但它只负责释放 java 中创建的对象所占据的所有内存，通过某种创建对象之外的方式为对象分配的内存空间则无法被垃圾回收器回收；而且垃圾回收本身也有开销，GC 的优先级比较低，所以如果 JVM 没有面临内存耗尽，它是不会去浪费资源进行垃圾回收以恢复内存的。最后我们会发现，只要程序没有濒临存储空间用完那一刻，对象占用的空间就总也得不到释放。我们可以通过代码 System.gc()来主动启动一个垃圾回收器 (虽然 JVM 不会立刻去回收)，在释放 new 分配内存空间之前，将会通过 finalize() 释放用其他方法分配的内存空间。</p>
+<p>新生代收集器：Serial、ParNew、Parallel Scavenge、G1</p>
+<p>老年代收集器：Serial Old、CMS、Parallel Old、G1</p>
+<p>Serial 收集器：一个单线程的新生代收集器，它进行垃圾收集时，必须暂停其他所有的工作线程，直到它收集结束。简单高效</p>
+<p>ParNew ：新生代收集器、多线程，默认开启收集线程数和CPU数目相同，适用于多核多CPU场景</p>
+<p>Parallel（并行）收集器：JVM 缺省收集器，其最大的优点是使用多个线程来通过扫描并压缩堆。串行收集器在 GC 时会停止其他所有工作线程（stop-the-world），CPU 利用率是最高的，所以适用于要求高吞吐量（throughput）的应用，但停顿时间（pause time）会比较长，所以对 web 应用来说就不适合，因为这意味着用户等待时间会加长。而并行收集器可以理解是多线程串行收集，在串行收集基础上采用多线程方式进行 GC，很好的弥补了串行收集的不足，可以大幅缩短停顿时间，因此对于空间不大的区域（如 young generation），采用并行收集器停顿时间很短，回收效率高，适合高频率执行。</p>
+<p>CMS 收集器：基于 “标记 - 清除” 算法实现的，它使用多线程的算法去扫描老生代堆（标记）并对发现的待回收对象进行回收（清除），容易产生大量内存碎片使得大对象无法创建然后不得不提前触发 full GC。CPU 资源占用过大，标记之后容易产生浮动垃圾只能留到下一次 GC 处理</p>
+<p>G1 收集器：G1 收集器是基于 “标记 - 整理” 算法实现的收集器，也就是说它不会产生空间碎片。G1 是一个针对多处理器大容量内存的服务器端的垃圾收集器，其目标是在实现高吞吐量的同时，尽可能的满足垃圾收集暂停时间的要求。它可以非常精确地控制停顿，既能让使用者明确指定在一个长度为 M 毫秒的时间片段内，消耗在垃圾收集上的时间不得超过 N 毫秒，具备了一些实时 Java（RTSJ）的垃圾收集器的特征。垃圾收集器</p>
+<p>finalize()方法的工作原理是：一旦垃圾回收器准备好释放对象占用的存储空间，将首先调用并且只能调用一次该对象的 finalize()方法 (通过代码 System.gc() 实现)，并且在下一次垃圾回收动作发生时，才会真正回收对象占用的内存。所以如果我们重载 finalize()方法就能在垃圾回收时刻做一些重要的清理工作或者自救该对象一次 (只要在 finalize() 方法中让该对象重新和引用链上的任何一个对象建立关联即可)。finalize()方法用于释放用特殊方式分配的内存空间，这是因为我们可能在 java 中调用非 java 代码来分配内存，比如 Android 开发中调用 NDK。那么，当我们调用 C 中的 malloc()函数分配了存储空间，我们就只能用 free()函数来释放这些内存，这样就需要我们在 finalize()函数中用本地方法调用它。</p>
+<h4 id="对象内存状态-amp-amp-引用形式及回收时机"><a href="#对象内存状态-amp-amp-引用形式及回收时机" class="headerlink" title="对象内存状态 &amp;&amp; 引用形式及回收时机"></a>对象内存状态 &amp;&amp; 引用形式及回收时机</h4><p>如何判断 java 对象需要被回收？GC 判断方法</p>
+<p>1、引用计数，引用计数法记录着每一个对象被其它对象所持有的引用数，被引用一次就加一，引用失效就减一；引用计数器为 0 则说明该对象不再可用；当一个对象被回收后，被该对象所引用的其它对象的引用计数都应该相应减少，它很难解决对象之间的相互循环引用问题循环引用实例</p>
+<p>2、可达性分析算法：从 GC Root 对象向下搜索其所走过的路径称为引用链，当一个对象不再被任何的 GC root 对象引用链相连时说明该对象不再可用，GC root 对象包括四种：方法区中常量和静态变量引用的对象，虚拟机栈中变量引用的对象，本地方法栈中引用的对象; 解决循环引用是因为 GC Root 通常是一组特别管理的指针，这些指针是 tracing GC 的 trace 的起点。它们不是对象图里的对象，对象也不可能引用到这些 “外部” 的指针。</p>
+<p>3、采用引用计数算法的系统只需在每个实例对象创建之初，通过计数器来记录所有的引用次数即可。而可达性算法，则需要再次 GC 时，遍历整个 GC 根节点来判断是否回收</p>
+<p>java 对象的四种引用  </p>
+<ol>
+<li><p>强引用 ：创建一个对象并把这个对象直接赋给一个变量，eg ：Person person = new Person(“sunny”); 不管系统资源有么的紧张，强引用的对象都绝对不会被回收，即使他以后不会再用到。</p>
+</li>
+<li><p>软引用 ：通过 SoftReference 类实现，eg : SoftReference p = new SoftReference(new Person(“Rain”)); 内存非常紧张的时候会被回收，其他时候不会被回收，所以在使用之前要判断是否为 null 从而判断他是否已经被回收了。</p>
+</li>
+<li><p>弱引用 ：通过 WeakReference 类实现，eg : WeakReference p = new WeakReference(new Person(“Rain”)); 不管内存是否足够，系统垃圾回收时必定会回收</p>
+</li>
+<li><p>虚引用 ：不能单独使用，主要是用于追踪对象被垃圾回收的状态，为一个对象设置虚引用关联的唯一目的是希望能在这个对象被收集器回收时收到一个系统通知。通过 PhantomReference 类和引用队列 ReferenceQueue 类联合使用实现</p>
+</li>
+</ol>
+<h4 id="常见垃圾回收算法"><a href="#常见垃圾回收算法" class="headerlink" title="常见垃圾回收算法"></a>常见垃圾回收算法</h4><p>停止 - 复制算法  这是一种非后台回收算法，将可用内存按容量划分为大小相等的两块，每次只使用其中的一块，内存浪费严重. 它先暂停程序的运行，然后将所有存活的对象从当前堆复制到另外一个堆，没被复制的死对象则全部是垃圾，存活对象被复制到新堆之后全部紧密排列，就可以直接分配新空间了。此方法耗费空间且效率低，适用于存活对象少。很明显的缺点是 浪费一半内存 ，但其 简单高效，且回收后内存连续 的优点也很突出。该算法中回收时是清理使用的内存半区，然后切换复制后的内存半区来使用，相比标记-清理算法肯定实现简单，运行高效。但是需要注意的是，在对象存活较多的情况下，对应的复制操作就会越多，效率就会越低。因此，复制算法 适合在对象存活周期较短的情况使用 。</p>
+<p>标记 - 清扫算法  同样是非后台回收算法，该算法从堆栈区和静态域出发，遍历每一个引用去寻找所有需要回收的对象，对每个找到需要回收对象都进行标记。标记结束之后，开始清理工作，被标记的对象都会被释放掉，如果需要连续堆空间，则还需要对剩下的存货对象进行整理; 否则会产生大量内存碎片.标记和清除两个过程效率都不太高 ，在死亡对象特别多的情况下尤为突出。另外收集完成后会造成 内存碎片化严重 ，回收的空间不连续。这两个特点决定了该算法 适合在对象存活周期特别长的情况下使用 ，因为这种情况下每次收集时死亡对象小，在清理时对特定空间的清理就会变少。</p>
+<p>标记 - 整理算法  先标记需要回收的对象，但是不会直接清理那些可回收的对象，而是将存活对象向内存区域的一端移动，然后清理掉端以外的内存。适用于存活对象多。很好的弥补了标记-清理算法的缺点，回收后空间连续， 无内存碎片化问题。效率上小白感觉大多数情况下是比标记-清理算法略微差一些的，这个没有深入研究，只是推测，本身多了一个移动的步骤，如果效率也好的话，那标记-清除算法就没有必要存在了。也 适用于对象存活周期特别长的情况 。</p>
+<p>分代算法  在新生代中，每次垃圾收集时都会发现有大量对象死去，只有少量存活，因此可选用停止复制算法来完成收集，而老年代中因为对象存活率高、没有额外空间对它进行分配担保，就必须使用标记—清除算法或标记—整理算法来进行回收。集百家之长，一般是 首选 。 堆内存被分为新生代和老年代 。 新生代对象存活周期短，大都朝生夕死，采用复制算法 。HotSpot虚拟机默认按8:1:1的比例将新生代分为Eden区域和两块一样大的Survivor区域，每次使用Eden和一块S区，回收时将存活的对象复制到另一块S区，回收完成后再使用这块S区和Eden区。这样每次只会闲置10%的新生代空间，对于获得了高效率的结果来说这个代价还可以接受。 老年代一般存放存活周期长的对象，每次收集对象存活率高，只能使用标记-清除（整理）算法 。注意：新生代中，若收集时存活对象预留的那块S区放不下时，会依赖老年代存放，具体的机制下面会提到。</p>
+<h3 id="JVM-性能调优"><a href="#JVM-性能调优" class="headerlink" title="JVM 性能调优"></a>JVM 性能调优</h3><p>1、JVM 分配超大堆（前提是物理机的内存足够大）来提升服务器的响应速度，但分配超大堆的前提是有把握把应用程序的 Full GC 频率控制得足够低，因为一次 Full GC 的时间造成比较长时间的停顿。控制 Full GC 频率的关键是保证应用中绝大多数对象的生存周期不应太长，尤其不能产生批量的、生命周期长的大对象，这样才能保证老年代的稳定</p>
+<p>2、分配超大堆时，如果用到了 NIO 机制分配使用了很多的 Direct Memory，则有可能导致 Direct Memory 的 OutOfMemoryError 异常，这时可以通过 - XX:MaxDirectMemorySize 参数调整 Direct Memory 的大小</p>
+<p>3、调整线程堆栈，socket 缓冲区，JNI 占用的内存以及虚拟机、GC 消耗的内存</p>
+<p>4、“-Xms and -Xmx (or: -XX:InitialHeapSize and -XX:MaxHeapSize)” 参数：分别指定初始堆和最大堆大小，Xms 一般代表着堆内存的最小值，JVM 在运行时可以动态调整堆内存大小，如果我们 设置 Xms=Xmx 就相当于设置了一个固定大小的堆内存；例如：“java -Xms128m -Xmx2g MyApp” 启动一个初始化堆内存为 128M，最大堆内存为 2G，名叫 “MyApp” 的 Java 应用程序；当我们设置 Xmx 最大堆内存不恰当时就很容易发生内存溢出，这样我们可以通过设置 - XX:+HeapDumpOnOutOfMemoryError 让 JVM 在发生内存溢出时自动生成堆内存快照，默认保存在 JVM 的启动目录下名为 java_pid.hprof 的文件里，分析它可以很好地定位到溢出位置</p>
+<h3 id="Linux-下面查看-Jvm-性能信息的命令"><a href="#Linux-下面查看-Jvm-性能信息的命令" class="headerlink" title="Linux 下面查看 Jvm 性能信息的命令"></a>Linux 下面查看 Jvm 性能信息的命令</h3><p>jstat： 用于查看 Jvm 的堆栈信息，能够查看 eden,survivor,old,perm 等堆区的的容量，利用率信息，对于查看系统是不是有内存泄漏以及参数设置是否合理有不错的意义。例如’’’ jstat -gc 12538 5000 —- 即会每 5 秒一次显示进程号为 12538 的 java 进成的 GC 情况 ‘’’</p>
+<p>jstack：用来查看 Jvm 当前的线程 dump 的，可以看到当前 Jvm 里面的线程状况，对于查找 blocked 线程比较有意义</p>
+<p>jmap：用来查看 Jvm 当前的 heap dump 的，可以看出当前 Jvm 中各种对象的数量，所占空间等等；尤其值得一提的是这个命令可以导出一份 binary heap dump 的 bin 文件，这个文件能够直接用 Eclipse Memory Anayliser 来分析，并找出潜在的内存泄漏的地方。</p>
+<p>非 jvm 命令—netstat：通过这个命令可以看到 Linux 系统当前在各个端口的链接状态，比如查看数据库连接数等</p>
+<h3 id="内存相关问题"><a href="#内存相关问题" class="headerlink" title="内存相关问题"></a>内存相关问题</h3><p>内存泄露是指分配出去的内存没有被回收回来，由于失去了对该内存区域的控制 (例如你把它的地址给弄丢了)，因而造成了资源的浪费。Java 中一般不会产生内存泄露，因为有垃圾回收器自动回收垃圾，但这也不绝对，Java 堆内也可能发生内存泄露（Memory Leak; 当我们 new 了对象，并保存了其引用，但是后面一直没用它，而垃圾回收器又不会去回收它，这边会造成内存泄露</p>
+<p>内存溢出是指程序所需要的内存超出了系统所能分配的内存（包括动态扩展）的上限</p>
+<p>符号引用：符号引用以一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义地定位到目标即可。符号引用与虚拟机实现的内存布局无关，引用的目标并不一定已经加载到了内存中。</p>
+<p>直接引用：直接引用可以是直接指向目标的指针、相对偏移量或是一个能间接定位到目标的句柄。直接引用是与虚拟机实现的内存布局相关的，同一个符号引用在不同虚拟机实例上翻译出来的直接引用一般不会相同。如果有了直接引用，那说明引用的目标必定已经存在于内存之中了。</p>
+<p>双亲委派模型：表示类加载器之间的加载顺序从顶至下的层次关系，加载器之间的父子关系一般都是通过组合来实现，而不是继承。可以防止内存中出现多份同样的字节码，并确保加载顺序</p>
+<p>双亲委派模型的工作过程是：在 loadClass 函数中，首先会判断该类是否被加载过，加载过则进行下一步—- 解析，否则进行加载；如果一个类加载器收到了类加载器的请求，先不会自己尝试加载这个类，而是把这个请求委派给父类加载器去完成，每一个层次的类加载器都是如此，因此所有的加载请求最终都应该传送到顶层的启动类加载器中，只有当父类加载器反馈自己无法完成这个加载请求（它的搜说范围中没有找到所需的类时，子加载类才会尝试自己去加载）</p>
+<p>静态分派和动态分派：静态分派发生在编译阶段，是指依据静态类型 (变量声明时定义的变量类型) 来决定方法的执行版本，例如方法重载中依据参数的定义类型来定位具体应该执行的方法；动态分派发生在运行期，根据变量实例化时的实际类型来决定方法的执行版本，例如方法重写；目前的 Java 语言（JDK1.6）是一门静态多分派、动态单分派的语言。</p>
+<p>动态分派具体实现 Java 虚拟机是通过在方法区中建立一个虚方法表，通过使用方法表的索引来代替元数据查找以提高性能。虚方法表中存放着各个方法的实际入口地址，如果子类没有覆盖父类的方法，那么子类的虚方法表里面的地址入口与父类是一致的；如果重写父类的方法，那么子类的方法表的地址将会替换为子类实现版本的地址。方法表是在类加载的连接阶段（验证、准备、解析）进行初始化，准备了子类的初始化值后，虚拟机会把该类的虚方法表也进行初始化。</p>
+<p>JDK7 和 8 中内存模型变化：JDK7 中把 String 常量池从永久代移到了堆中，并通过 intern 方法来保证不在堆中重复创建一个对象；JDK7 开始使用 G1 收集器替代 CMS 收集器。JDK8 使用元空间来替代原来的方法区，并且提供了字符串去重功能，也就是 G1 收集器可以识别出堆中那些重复出现的字符串并让他们指向同一个内部 char[] 数组，而不是在堆中存在多份拷贝</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/面试题/" rel="tag"><i class="fa fa-tag"></i> 面试题</a>
+          
+            <a href="/bugs/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bugs/2018/09/12/语言/Java/Java SPI 机制详解/" rel="next" title="Java SPI 机制详解">
+                <i class="fa fa-chevron-left"></i> Java SPI 机制详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/09/19/算法/二叉树遍历 (先序、中序、后序)/" rel="prev" title="二叉树遍历">
+                二叉树遍历 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#java程序执行过程"><span class="nav-number">1.</span> <span class="nav-text">java程序执行过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java内存模型划分"><span class="nav-number">2.</span> <span class="nav-text">java内存模型划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java内存区域划分"><span class="nav-number">3.</span> <span class="nav-text">java内存区域划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC"><span class="nav-number">4.</span> <span class="nav-text">GC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#java-对象创建及初始化"><span class="nav-number">4.1.</span> <span class="nav-text">java 对象创建及初始化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-内存回收"><span class="nav-number">5.</span> <span class="nav-text">java 内存回收</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#垃圾回收器-4-种收集器-和-finalize-方法"><span class="nav-number">5.0.1.</span> <span class="nav-text">垃圾回收器 (4 种收集器) 和 finalize()方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对象内存状态-amp-amp-引用形式及回收时机"><span class="nav-number">5.1.</span> <span class="nav-text">对象内存状态 &amp;&amp; 引用形式及回收时机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见垃圾回收算法"><span class="nav-number">5.2.</span> <span class="nav-text">常见垃圾回收算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM-性能调优"><span class="nav-number">6.</span> <span class="nav-text">JVM 性能调优</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-下面查看-Jvm-性能信息的命令"><span class="nav-number">7.</span> <span class="nav-text">Linux 下面查看 Jvm 性能信息的命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存相关问题"><span class="nav-number">8.</span> <span class="nav-text">内存相关问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
