@@ -106,7 +106,7 @@
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/8/22/165623eafe16b175?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/8/22/16562461ca33c749?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/8/22/16562504e8abe730?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:updated_time" content="2018-09-11T15:27:13.442Z">
+<meta property="og:updated_time" content="2018-09-25T16:08:25.030Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何优雅的设计和使用缓存？">
 <meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b849878e51d4538c77a974a  背景在之前的文章中你应该知道的缓存进化史介绍了爱奇艺的缓存架构和缓存的进化历史。俗话说得好，工欲善其事，必先利其器，有了好的工具肯定得知道如何用好这些工具，本篇将介绍如何利用好缓存。 1. 确认是否需要缓存在使用缓存之前，需要确认你的项目是否真的需要">
@@ -568,7 +568,7 @@
 <li>添加了字段或者删除了字段，导致上线之后老的缓存获取的时候反序列化报错，或者出现一些数据移位。</li>
 <li>不同的 JVM 的序列化不同，如果你的缓存有不同的服务都在共同使用 (不提倡)，那么需要注意不同 JVM 可能会对 Class 内部的 Field 排序不同，而影响序列化。比如下面的代码，在 Jdk7 和 Jdk8 中对象 A 的排列顺序不同，最终会导致反序列化结果出现问题:</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//jdk 7</span><br><span class="line">class A&#123;</span><br><span class="line">    int a;</span><br><span class="line">    int b;</span><br><span class="line">&#125;</span><br><span class="line">//jdk 8</span><br><span class="line">class A&#123;</span><br><span class="line">    int b;</span><br><span class="line">    int a;</span><br><span class="line">&#125;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//jdk 7</span><br><span class="line">class A&#123;</span><br><span class="line">    int a;</span><br><span class="line">    int b;</span><br><span class="line">&#125;</span><br><span class="line">//jdk 8</span><br><span class="line">class A&#123;</span><br><span class="line">    int b;</span><br><span class="line">    int a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>序列化的问题必须得到重视，解决的办法有如下几点:</p>
 <ol>
 <li>测试: 对于序列化需要进行全面的测试，如果有不同的服务并且他们的 JVM 不同那么你也需要做这一块的测试，在上面的问题中笔者的单测通过的原因是用的默认数据 false，所以根本没有测试 true 的情况，还好 QA 给力，将其给测试出来了。</li>
@@ -631,8 +631,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/bugs/2018/09/05/framework/Caffeine/深入剖析未来的缓存 - Caffeine/" rel="next" title="深入剖析未来的缓存 - Caffeine">
-                <i class="fa fa-chevron-left"></i> 深入剖析未来的缓存 - Caffeine
+              <a href="/bugs/2018/08/30/架构师系列/支付平台的架构设计/" rel="next" title="支付平台的架构设计(蚂蚁金服)">
+                <i class="fa fa-chevron-left"></i> 支付平台的架构设计(蚂蚁金服)
               </a>
             
           </div>
@@ -641,8 +641,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/bugs/2018/09/06/架构师系列/学习分布式不得不会的 ACP 理论/" rel="prev" title="学习分布式不得不会的 ACP 理论">
-                学习分布式不得不会的 ACP 理论 <i class="fa fa-chevron-right"></i>
+              <a href="/bugs/2018/09/05/framework/Caffeine/深入剖析未来的缓存 - Caffeine/" rel="prev" title="深入剖析未来的缓存 - Caffeine">
+                深入剖析未来的缓存 - Caffeine <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -720,7 +720,7 @@
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -731,7 +731,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/bugs/categories/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -742,7 +742,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/bugs/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

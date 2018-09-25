@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="mybatis," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000016438167  MyBatis 理解与掌握（关联查询）@(MyBatis)[Java, 框架, MyBatis] 一对一查询案例：查询所有订单信息，关联查询下单用户信息  从 Order 的角度，一个订单对应一个用户：order—–&amp;gt;user (一对一）从 User">
+<meta name="keywords" content="mybatis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis 理解与掌握（关联查询)">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/09/20/framework/mybatis/MyBatis 理解与掌握（关联查询）/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000016438167  MyBatis 理解与掌握（关联查询）@(MyBatis)[Java, 框架, MyBatis] 一对一查询案例：查询所有订单信息，关联查询下单用户信息  从 Order 的角度，一个订单对应一个用户：order—–&amp;gt;user (一对一）从 User">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://segmentfault.com/img/bVbg8tv?w=596&h=139">
+<meta property="og:image" content="https://segmentfault.com/img/bVbg8tE?w=771&h=334">
+<meta property="og:image" content="https://segmentfault.com/img/bVbg8tH?w=702&h=511">
+<meta property="og:image" content="https://segmentfault.com/img/bVbg8tN?w=566&h=280">
+<meta property="og:image" content="https://segmentfault.com/img/bVbg8tO?w=871&h=463">
+<meta property="og:image" content="https://segmentfault.com/img/bVbg8tS?w=620&h=299">
+<meta property="og:image" content="https://segmentfault.com">
+<meta property="og:updated_time" content="2018-09-25T16:20:22.038Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MyBatis 理解与掌握（关联查询)">
+<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000016438167  MyBatis 理解与掌握（关联查询）@(MyBatis)[Java, 框架, MyBatis] 一对一查询案例：查询所有订单信息，关联查询下单用户信息  从 Order 的角度，一个订单对应一个用户：order—–&amp;gt;user (一对一）从 User">
+<meta name="twitter:image" content="https://segmentfault.com/img/bVbg8tv?w=596&h=139">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/09/20/framework/mybatis/MyBatis 理解与掌握（关联查询）/"/>
+
+
+
+
+
+  <title>MyBatis 理解与掌握（关联查询) | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微笑的周末</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/20/framework/mybatis/MyBatis 理解与掌握（关联查询）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MyBatis 理解与掌握（关联查询)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-20T00:36:03+00:00">
+                2018-09-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/mybatis/" itemprop="url" rel="index">
+                    <span itemprop="name">mybatis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="https://segmentfault.com/a/1190000016438167" target="_blank" rel="noopener">https://segmentfault.com/a/1190000016438167</a></p>
+</blockquote>
+<h2 id="MyBatis-理解与掌握（关联查询）"><a href="#MyBatis-理解与掌握（关联查询）" class="headerlink" title="MyBatis 理解与掌握（关联查询）"></a>MyBatis 理解与掌握（关联查询）</h2><p>@(MyBatis)[Java, 框架, MyBatis]</p>
+<h3 id="一对一查询"><a href="#一对一查询" class="headerlink" title="一对一查询"></a>一对一查询</h3><p>案例：查询所有订单信息，关联查询下单用户信息</p>
+<p><img src="https://segmentfault.com/img/bVbg8tv?w=596&amp;h=139" alt=""></p>
+<p>从 Order 的角度，一个订单对应一个用户：order—–&gt;user (一对一）<br>从 User 的角度，一个用户可以有多个订单：user——&gt;order (多对一）</p>
+<p>场景需求：查询订单，同时关联查询用户信息<br>——————————- 表设计 ——————————————<br>在 t_orders(多方表) 中增加一个字段 user_id，作为外键</p>
+<p>——————————- 类设计 ——————————————</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class Order &#123;</span><br><span class="line">  private int oId;</span><br><span class="line">  private int number;</span><br><span class="line">  private User user;</span><br><span class="line">    //省略get、set方法</span><br><span class="line">&#125;</span><br><span class="line">public class User &#123;</span><br><span class="line">  private Integer userId;</span><br><span class="line">  private String userName;</span><br><span class="line">    //省略get、set方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>———————– 映射文件 mapping.xml———————–</p>
+<h4 id="方法一：嵌套结果"><a href="#方法一：嵌套结果" class="headerlink" title="方法一：嵌套结果"></a>方法一：嵌套结果</h4><p><code>&lt;association/&gt;</code>关联元素处理 “有一个” 类型的关系。例如, 在下面的<code>&lt;resultMap/&gt;</code>中表示一个订单对应了一个用户。<br>association 标签可用的属性如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">property:对象属性的名称</span><br><span class="line">javaType:对象属性的类型</span><br><span class="line">column:所对应的外键字段名称</span><br><span class="line">select:使用另一个查询封装的结果</span><br><span class="line">columnPrefix:当连接多表时，你将不得不使用列别名来避免ResultSet中的重复列名。指定columnPrefix允许你映射列名到一个外部的结果集中。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;getOrder&quot; parameterType=&quot;int&quot; resultMap=&quot;orderResultMap &quot;&gt;</span><br><span class="line">  select</span><br><span class="line">    t_orders.order_id,t_orders.order_number,t_user.id,t_user.user_name,t_user.user_address</span><br><span class="line">  from t_orders,t_user</span><br><span class="line">  &lt;where&gt;</span><br><span class="line">    t_orders.user_id = t_user.id</span><br><span class="line">    and t_orders.order_id = #&#123;oId&#125;</span><br><span class="line">  &lt;/where&gt;</span><br><span class="line"> &lt;/select&gt;</span><br><span class="line"></span><br><span class="line"> &lt;resultMap type=&quot;com.george.pojo.Order&quot; id=&quot;orderResultMap &quot;&gt;</span><br><span class="line">  &lt;id property=&quot;oId&quot; column=&quot;order_id&quot;/&gt;</span><br><span class="line">  &lt;result property=&quot;number&quot; column=&quot;order_number&quot;/&gt;</span><br><span class="line">  &lt;association property=&quot;user&quot; resultMap=&quot;userResultMap &quot;/&gt;</span><br><span class="line"> &lt;/resultMap&gt;</span><br><span class="line"></span><br><span class="line"> &lt;resultMap type=&quot;com.george.pojo.User&quot; id=&quot;userResultMap &quot;&gt;</span><br><span class="line">  &lt;id property=&quot;userId&quot; column=&quot;id&quot;/&gt;</span><br><span class="line">  &lt;result property=&quot;userName&quot; column=&quot;user_name&quot;/&gt;</span><br><span class="line"> &lt;/resultMap&gt;</span><br></pre></td></tr></table></figure>
+<p>执行过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">DEBUG [main] - ==&gt;  Preparing: select t_orders.order_id, t_orders.order_number, t_user.id, t_user.user_name, t_user.user_address from t_orders,t_user WHERE t_orders.user_id = t_user.id and t_orders.order_id = ?</span><br><span class="line">DEBUG [main] - ==&gt; Parameters: 1(Integer)</span><br><span class="line">TRACE [main] - &lt;==    Columns: order_id, order_number, id, user_name, user_address</span><br><span class="line">TRACE [main] - &lt;==        Row: 1, 30, 1, zhangsan, 北京</span><br><span class="line">DEBUG [main] - &lt;==      Total: 1</span><br><span class="line">打印查询结果对象： Order [oId=1, number=30, user=User [userId=1, userName=zhangsan]]</span><br></pre></td></tr></table></figure>
+<h4 id="方法二：嵌套查询"><a href="#方法二：嵌套查询" class="headerlink" title="方法二：嵌套查询"></a>方法二：嵌套查询</h4><p>通过执行另外一个 SQL 映射语句来返回预期的复杂类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;getOrder&quot; parameterType=&quot;int&quot; resultMap=&quot;orderResultMap&quot;&gt;</span><br><span class="line">  select</span><br><span class="line">     order_id,</span><br><span class="line">     order_number,</span><br><span class="line">     user_id   </span><br><span class="line">  from t_orders</span><br><span class="line">  &lt;where&gt;</span><br><span class="line">     order_id = #&#123;oIddddd&#125;</span><br><span class="line">  &lt;/where&gt;</span><br><span class="line"> &lt;/select&gt;</span><br><span class="line"></span><br><span class="line"> &lt;resultMap type=&quot;com.george.bean.Order&quot; id=&quot;orderResultMap&quot;&gt;</span><br><span class="line">  &lt;id property=&quot;oId&quot; column=&quot;order_id&quot;/&gt;</span><br><span class="line">  &lt;result property=&quot;number&quot; column=&quot;order_number&quot;/&gt;</span><br><span class="line">  &lt;association property=&quot;user&quot; javaType=&quot;com.george.bean.User&quot; column=&quot;user_id&quot; select=&quot;getUser&quot;/&gt;</span><br><span class="line"> &lt;/resultMap&gt;</span><br><span class="line"></span><br><span class="line">  &lt;select id=&quot;getUser&quot; parameterType=&quot;int&quot; resultType=&quot;com.george.bean.User&quot;&gt;</span><br><span class="line">  &lt;!-- 使用别名来映射字段和属性 --&gt;</span><br><span class="line">  select user_id as userId , user_name as userName</span><br><span class="line">  from t_user</span><br><span class="line">  &lt;where&gt;</span><br><span class="line">     user_id=#&#123;idddd&#125;   &lt;!-- 外键字段或者和外键关联那个字段的值，由上一条查询中得到 --&gt;</span><br><span class="line">  &lt;/where&gt;</span><br><span class="line">  &lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<p>—————————java 代码 ———————</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">  public void test() &#123;</span><br><span class="line">    SqlSession session = DBUtil.getSession();</span><br><span class="line">    Order order = session.selectOne(&quot;getOrder&quot;,1 );</span><br><span class="line">    System.out.println(&quot;打印查询结果对象：&quot;+order);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>————————–sql 执行过程 ————————-</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">DEBUG [main] - ==&gt;  Preparing: select order_id, order_number, user_id from t_orders WHERE order_id = ?</span><br><span class="line">DEBUG [main] - ==&gt; Parameters: 1(Integer)</span><br><span class="line">TRACE [main] - &lt;==    Columns: order_id, order_number, user_id</span><br><span class="line">TRACE [main] - &lt;==        Row: 1, 30, 3</span><br><span class="line">DEBUG [main] - ====&gt;  Preparing: select user_id as userId , user_name as userName from t_user WHERE user_id=?</span><br><span class="line">DEBUG [main] - ====&gt; Parameters: 3(Integer)</span><br><span class="line">TRACE [main] - &lt;====    Columns: userId, userName</span><br><span class="line">TRACE [main] - &lt;====        Row: 3, wangwu</span><br><span class="line">DEBUG [main] - &lt;====      Total: 1</span><br><span class="line">DEBUG [main] - &lt;==      Total: 1</span><br><span class="line">打印查询结果对象：Order [oId=1, number=30, user=User [userId=3, userName=wangwu]]</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：我们有两个查询语句: 一个来加载 order, 另外一个来加载 user。<br>这种方式很简单, 但会产生 “N+1 查询问题”。概括地讲, N+1 查询问题可以是这样引起的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">（1）你执行了一个单独的 SQL 语句来获取结果列表(就是“+1”)。</span><br><span class="line">（2）假设返回的是一个集合，集合中的每个元素对应了一条记录,你还需要执行了一个查询语句来为每条记录加载细节(就是“N”)。</span><br></pre></td></tr></table></figure>
+<p>MyBatis 延迟加载是一种处理方式，然而，如果你加载一个列表，之后迅速迭代来访问嵌套的数据，你会调用所有的延迟加载，问题没有解决。</p>
+<h4 id="方法三：增加一个包含订单信息和用户信息的类，用这个类作为返回类型-resultType"><a href="#方法三：增加一个包含订单信息和用户信息的类，用这个类作为返回类型-resultType" class="headerlink" title="方法三：增加一个包含订单信息和用户信息的类，用这个类作为返回类型 resultType"></a>方法三：增加一个包含订单信息和用户信息的类，用这个类作为返回类型 resultType</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class OrdersCustom extends Orders &#123;</span><br><span class="line">            private String username ; // 用户名称</span><br><span class="line">            private String address ; // 用户地址</span><br><span class="line">            省略get、set方法</span><br><span class="line">｝</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- OrdersCustom 类继承 Orders 类后 OrdersCustom 类包括了 Orders 类的所有字段， 只需要定义用户的信息字段即可。 --&gt;</span><br><span class="line">&lt;select id =&quot;findOrdersList&quot;   resultType =&quot;cn.george.mybatis.po.OrdersCustom&quot;  parameterType=&quot;Integer&quot;&gt;</span><br><span class="line">      SELECT</span><br><span class="line">         orders.*,</span><br><span class="line">         user.user_name,</span><br><span class="line">         user.user_address</span><br><span class="line">      FROM</span><br><span class="line">         orders, user</span><br><span class="line">      WHERE orders.user_id = #&#123;user.id&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<p>总结：定义专门的 po 类作为输出类型，其中定义了 sql 查询结果集所有的字段。此方法较为简单，企业中普遍使用。</p>
+<h3 id="一对多查询"><a href="#一对多查询" class="headerlink" title="一对多查询"></a>一对多查询</h3><p>案例：通过订单 id 查询订单信息及订单下的订单明细信息。<br>订单信息与订单明细为一对多关系。</p>
+<p><img src="https://segmentfault.com/img/bVbg8tE?w=771&amp;h=334" alt=""></p>
+<p>————————— 类设计 —————————————-</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">private int oId;</span><br><span class="line">private int number; //订单编号</span><br><span class="line">private User user; //用户信息</span><br><span class="line">private List&lt;Orderdetail&gt; orderdetails;  //订单详情信息</span><br><span class="line">//省略get、set方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>————————- 映射文件 —————————–</p>
+<h4 id="方法一：嵌套结果-1"><a href="#方法一：嵌套结果-1" class="headerlink" title="方法一：嵌套结果"></a>方法一：嵌套结果</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;getOrder&quot; parameterType=&quot;int&quot; resultMap=&quot;orderdetailResultMap&quot;&gt;</span><br><span class="line">     select</span><br><span class="line">     t_orders.order_id,</span><br><span class="line">     t_orders.order_number,</span><br><span class="line">     t_user.user_id,</span><br><span class="line">     t_user.user_name,</span><br><span class="line">     t_user.user_address,</span><br><span class="line">     t_orderdetail.od_id,</span><br><span class="line">     t_orderdetail.items_id,</span><br><span class="line">     t_orderdetail.items_num,</span><br><span class="line">     t_orderdetail.order_id</span><br><span class="line">     from t_orders,t_user,t_orderdetail</span><br><span class="line">     &lt;where&gt;</span><br><span class="line">       t_orderdetail.order_id = t_orders.order_id</span><br><span class="line">       and t_orders.user_id = t_user.user_id</span><br><span class="line">       and t_orders.order_id = #&#123;id&#125;</span><br><span class="line">     &lt;/where&gt;</span><br><span class="line">  &lt;/select&gt;</span><br><span class="line">  &lt;resultMap type=&quot;com.hh.bean.Order&quot; id=&quot;orderdetailResultMap&quot;&gt;</span><br><span class="line">     &lt;id property=&quot;oId&quot; column=&quot;order_id&quot; /&gt;</span><br><span class="line">     &lt;result property=&quot;number&quot; column=&quot;order_number&quot; /&gt;</span><br><span class="line">     &lt;association property=&quot;user&quot; javaType=&quot;com.hh.bean.User&quot;&gt;</span><br><span class="line">       &lt;id property=&quot;userId&quot; column=&quot;user_id&quot; /&gt;</span><br><span class="line">       &lt;result property=&quot;userName&quot; column=&quot;user_name&quot; /&gt;</span><br><span class="line">     &lt;/association&gt;</span><br><span class="line">     &lt;!-- 集合的泛型，指定集合中的对象类型--&gt;</span><br><span class="line">     &lt;collection property=&quot;orderdetails&quot; ofType=&quot;com.hh.bean.Orderdetail&quot;&gt;</span><br><span class="line">       &lt;id property=&quot;odId&quot; column=&quot;od_id&quot; /&gt;</span><br><span class="line">       &lt;result property=&quot;itemsId&quot; column=&quot;items_id&quot; /&gt;</span><br><span class="line">       &lt;result property=&quot;itemsNum&quot; column=&quot;items_num&quot; /&gt;</span><br><span class="line">     &lt;/collection&gt;</span><br><span class="line">  &lt;/resultMap&gt;</span><br></pre></td></tr></table></figure>
+<p>使用继承 extends, 上面的 <resultmap> 可以改写为：</resultmap></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--关联查询用户--&gt;</span><br><span class="line">&lt;resultMap type=&quot;com.hh.bean.Order&quot; id=&quot;orderResultMap&quot;&gt;</span><br><span class="line">     &lt;id property=&quot;oId&quot; column=&quot;order_id&quot; /&gt;</span><br><span class="line">     &lt;result property=&quot;number&quot; column=&quot;order_number&quot; /&gt;</span><br><span class="line">     &lt;association property=&quot;user&quot; javaType=&quot;com.hh.bean.User&quot;&gt;</span><br><span class="line">       &lt;id property=&quot;userId&quot; column=&quot;user_id&quot; /&gt;</span><br><span class="line">       &lt;result property=&quot;userName&quot; column=&quot;user_name&quot; /&gt;</span><br><span class="line">     &lt;/association&gt;</span><br><span class="line">  &lt;/resultMap&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--继承上一个resultMap，关联查询用户和订单详情--&gt;</span><br><span class="line"> &lt;resultMap type=&quot;com.hh.bean.Order&quot; id=&quot;orderdetailResultMap&quot; extends=&quot;orderResultMap&quot;&gt;</span><br><span class="line">    &lt;!-- 集合的泛型，指定集合中的对象类型 --&gt;</span><br><span class="line">    &lt;collection property=&quot;orderdetails&quot; ofType=&quot;com.hh.bean.Orderdetail&quot;&gt;</span><br><span class="line">      &lt;id property=&quot;odId&quot; column=&quot;od_id&quot; /&gt;</span><br><span class="line">      &lt;result property=&quot;itemsId&quot; column=&quot;items_id&quot; /&gt;</span><br><span class="line">      &lt;result property=&quot;itemsNum&quot; column=&quot;items_num&quot; /&gt;</span><br><span class="line">    &lt;/collection&gt;</span><br><span class="line"> &lt;/resultMap&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">打印查询结果对象：Order [oId=1, number=30000001, user=User [userId=3, userName=wangwu],</span><br><span class="line">orderdetails=[Orderdetail [odId=1, itemsId=2, itemsNum=30], Orderdetail [odId=2, itemsId=1, itemsNum=32]]]</span><br></pre></td></tr></table></figure>
+<h4 id="方法二：嵌套查询-1"><a href="#方法二：嵌套查询-1" class="headerlink" title="方法二：嵌套查询"></a>方法二：嵌套查询</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;getOrder&quot; parameterType=&quot;int&quot; resultMap=&quot;orderResultMap&quot;&gt;</span><br><span class="line">     select</span><br><span class="line">     order_id,</span><br><span class="line">     order_number,</span><br><span class="line">     user_id</span><br><span class="line">     from t_orders</span><br><span class="line">     &lt;where&gt;</span><br><span class="line">       order_id = #&#123;oIddddd&#125;</span><br><span class="line">     &lt;/where&gt;</span><br><span class="line">  &lt;/select&gt;</span><br><span class="line"></span><br><span class="line">  &lt;resultMap type=&quot;com.hh.bean.Order&quot; id=&quot;orderResultMap&quot;&gt;</span><br><span class="line">     &lt;id property=&quot;oId&quot; column=&quot;order_id&quot; /&gt;</span><br><span class="line">     &lt;result property=&quot;number&quot; column=&quot;order_number&quot; /&gt;</span><br><span class="line">     &lt;association property=&quot;user&quot; javaType=&quot;com.hh.bean.User&quot;</span><br><span class="line">       column=&quot;user_id&quot; select=&quot;getUser&quot; /&gt;</span><br><span class="line">     &lt;!-- column 哪一个字段和多方表中的外键对应 --&gt;</span><br><span class="line">     &lt;collection property=&quot;orderdetails&quot; column=&quot;order_id&quot; select=&quot;getOrderdeatil&quot;/&gt;</span><br><span class="line">  &lt;/resultMap&gt;</span><br><span class="line"></span><br><span class="line">  &lt;select id=&quot;getUser&quot; parameterType=&quot;int&quot; resultType=&quot;com.hh.bean.User&quot;&gt;</span><br><span class="line">     &lt;!-- 使用别名来映射字段和属性 --&gt;</span><br><span class="line">     select user_id as userId , user_name as userName</span><br><span class="line">     from t_user</span><br><span class="line">     &lt;where&gt;</span><br><span class="line">       user_id=#&#123;idddd&#125;   &lt;!-- 外键字段或者和外键关联那个字段的值，由上一条查询中得到 --&gt;</span><br><span class="line">     &lt;/where&gt;</span><br><span class="line">  &lt;/select&gt;</span><br><span class="line"></span><br><span class="line">  &lt;select id=&quot;getOrderdeatil&quot; parameterType=&quot;int&quot; resultType=&quot;com.hh.bean.Orderdetail&quot;&gt;</span><br><span class="line">     select od_id as odId,items_id as itemsId,items_num as itemsNum</span><br><span class="line">     from t_orderdetail</span><br><span class="line">     &lt;where&gt;</span><br><span class="line">       order_id = #&#123;id&#125;   &lt;!-- 外键字段或者和外键关联那个字段的值，由上一条查询中得到 --&gt;</span><br><span class="line">     &lt;/where&gt;</span><br><span class="line">  &lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<p>—————————java 代码 ———————</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">  public void test() &#123;</span><br><span class="line">    SqlSession session = DBUtil.getSession();</span><br><span class="line">    Order order = session.selectOne(&quot;getOrder&quot;,1 );</span><br><span class="line">    System.out.println(&quot;打印查询结果对象：&quot;+order);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>————————sql 执行结果 ———————–</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">打印查询结果对象：Order [oId=1, number=30000001, user=User [userId=3, userName=wangwu],</span><br><span class="line">orderdetails=[Orderdetail [odId=1, itemsId=2, itemsNum=30], Orderdetail [odId=2, itemsId=1, itemsNum=32]]]</span><br></pre></td></tr></table></figure>
+<h3 id="多对多查询"><a href="#多对多查询" class="headerlink" title="多对多查询"></a>多对多查询</h3><p>案例：查询用户购买的商品信息<br>需要查询所有用户信息，关联查询订单及订单明细信息，订单明细信息中关联查询商品信息</p>
+<p>分析：<br>需要关联查询映射的信息是：订单、订单明细、商品信息</p>
+<ul>
+<li>订单：一个用户对应多个订单，使用 collection 映射到用户对象的订单列表属性中</li>
+<li>订单明细：一个订单对应多个明细，使用 collection 映射到订单对象中的明细属性中</li>
+<li>商品信息： 一个订单明细对应一个商品， 使用 association 映射到订单明细对象的商品属性中。</li>
+</ul>
+<p><img src="https://segmentfault.com/img/bVbg8tH?w=702&amp;h=511" alt=""></p>
+<p>————————— 类设计 ———————————–</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class User &#123;</span><br><span class="line">  private Integer userId;</span><br><span class="line">  private String userName;</span><br><span class="line">  private List&lt;Order&gt; orders;  //订单列表</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Order &#123;</span><br><span class="line">  private int oId;</span><br><span class="line">  private int number; //订单编号</span><br><span class="line">  private List&lt;Orderdetail&gt; orderdetails;  //订单详情信息</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Orderdetail &#123;</span><br><span class="line">  private int odId;</span><br><span class="line">  private Items item; //商品信息</span><br><span class="line">  private int itemsNum; //商品数量</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Items &#123;</span><br><span class="line">  private int itemId;</span><br><span class="line">  private String itemName; //商品名称</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>—————————– 映射文件 ————————————–</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;select id=&quot;getUser&quot; resultMap=&quot;userOrderListResultMap&quot;&gt;</span><br><span class="line">     select</span><br><span class="line">     t_orders.order_id,</span><br><span class="line">     t_orders.order_number,</span><br><span class="line">     t_user.user_id,</span><br><span class="line">     t_user.user_name,</span><br><span class="line">     t_user.user_address,</span><br><span class="line">     t_orderdetail.od_id,</span><br><span class="line">     t_orderdetail.items_id,</span><br><span class="line">     t_orderdetail.items_num,</span><br><span class="line">     t_orderdetail.order_id,</span><br><span class="line">     t_items.item_id,</span><br><span class="line">     t_items.item_name</span><br><span class="line">     from t_orders,t_user,t_orderdetail,t_items</span><br><span class="line">     &lt;where&gt;</span><br><span class="line">       t_orderdetail.order_id = t_orders.order_id</span><br><span class="line">       and t_orders.user_id = t_user.user_id</span><br><span class="line">       and t_orderdetail.items_id = t_items.item_id</span><br><span class="line">     &lt;/where&gt;</span><br><span class="line">  &lt;/select&gt;</span><br><span class="line"></span><br><span class="line">  &lt;resultMap type=&quot;com.hh.bean.User&quot; id=&quot;userOrderListResultMap&quot;&gt;</span><br><span class="line">     &lt;id property=&quot;userId&quot; column=&quot;user_id&quot; /&gt;</span><br><span class="line">     &lt;result property=&quot;userName&quot; column=&quot;user_name&quot; /&gt;</span><br><span class="line">     &lt;collection property=&quot;orders&quot; ofType=&quot;com.hh.bean.Order&quot;&gt;</span><br><span class="line">       &lt;id property=&quot;oId&quot; column=&quot;order_id&quot; /&gt;</span><br><span class="line">       &lt;result property=&quot;number&quot; column=&quot;order_number&quot; /&gt;</span><br><span class="line">       &lt;collection property=&quot;orderdetails&quot; ofType=&quot;com.hh.bean.Orderdetail&quot;&gt;</span><br><span class="line">          &lt;id property=&quot;odId&quot; column=&quot;od_id&quot; /&gt;</span><br><span class="line">          &lt;result property=&quot;itemsNum&quot; column=&quot;items_num&quot; /&gt;</span><br><span class="line">          &lt;association property=&quot;item&quot; javaType=&quot;com.hh.bean.Items&quot;&gt;</span><br><span class="line">            &lt;id property=&quot;itemId&quot; column=&quot;item_id&quot; /&gt;</span><br><span class="line">            &lt;result property=&quot;itemName&quot; column=&quot;item_name&quot; /&gt;</span><br><span class="line">          &lt;/association&gt;</span><br><span class="line">       &lt;/collection&gt;</span><br><span class="line">     &lt;/collection&gt;</span><br><span class="line">  &lt;/resultMap&gt;</span><br></pre></td></tr></table></figure>
+<p>—————————java 代码 ———————</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">  public void test() &#123;</span><br><span class="line">    SqlSession session = DBUtil.getSession();</span><br><span class="line">    List&lt;User&gt; users = session.selectList(&quot;getUser&quot;);</span><br><span class="line">    for (User user : users) &#123;</span><br><span class="line">      System.out.println(&quot;打印用户信息：&quot;+user);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>————————sql 执行结果 ———————–</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">打印用户信息：User [userId=1, userName=zhangsan, orders=[Order [oId=1, number=30000001, orderdetails=[Orderdetail [odId=1, item=Items [itemId=2, itemName=香蕉], itemsNum=30], Orderdetail [odId=2, item=Items [itemId=1, itemName=苹果], itemsNum=32]]], Order [oId=3, number=30000003, orderdetails=[Orderdetail [odId=3, item=Items [itemId=3, itemName=橘子], itemsNum=25]]]]]</span><br><span class="line">打印用户信息：User [userId=3, userName=wangwu, orders=[Order [oId=4, number=30000004, orderdetails=[Orderdetail [odId=4, item=Items [itemId=3, itemName=橘子], itemsNum=45]]]]]</span><br></pre></td></tr></table></figure>
+<h3 id="自关联"><a href="#自关联" class="headerlink" title="自关联"></a>自关联</h3><p><img src="https://segmentfault.com/img/bVbg8tN?w=566&amp;h=280" alt=""></p>
+<p><img src="https://segmentfault.com/img/bVbg8tO?w=871&amp;h=463" alt=""></p>
+<h3 id="延迟加载"><a href="#延迟加载" class="headerlink" title="延迟加载"></a>延迟加载</h3><p>什么是延迟加载</p>
+<p>resultMap 可实现高级映射（使用 association、collection 实现一对一及一对多映射），association、collection 具备延迟加载功能。</p>
+<p>例如：先从单表查询，需要时再从关联表去关联查询，大大 提高数据库性能 ，因为查询单表要比关联查询多张表速度要快。</p>
+<p><img src="https://segmentfault.com/img/bVbg8tS?w=620&amp;h=299" alt=""></p>
+<p>mybatis 框架默认不支持延迟加载功能，如果想要使用，需要启用延迟加载功能</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 打开延迟加载的开关 --&gt;</span><br><span class="line">&lt;setting  /&gt;</span><br></pre></td></tr></table></figure>
+<p>默认框架会采用侵入式的延迟加载：</p>
+<ul>
+<li>如果查询主动方数据，而不使用，那么关联数据是不会被查询的。</li>
+<li>如果使用了主动方的数据，那么关联数据即使没有使用也会被查询。</li>
+</ul>
+<p>可以禁用侵入式延迟加载功能</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 将积极加载改为消息加载即按需加载 --&gt;</span><br><span class="line">&lt;setting  /&gt;</span><br></pre></td></tr></table></figure>
+<p>综上所述，在主配置文件 mybatis-config.xml 中做如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;settings&gt;</span><br><span class="line">  &lt;setting    /&gt;</span><br><span class="line">  &lt;setting    /&gt;</span><br><span class="line">&lt;/settings&gt;</span><br></pre></td></tr></table></figure>
+<p>注意一个异常：Caused by: org.xml.sax.SAXParseException; lineNumber: 36; columnNumber: 17; 元素类型为 “configuration” 的内容必须匹配 “(properties?,settings?,typeAliases?,typeHandlers?,objectFactory?,objectWrapperFactory?,reflectorFactory?,plugins?,environments?,databaseIdProvider?,mappers?)”。<br><img src="https://segmentfault.com" alt=""><br>在关联的元素（association ，collection ，discriminator）中，我们存在一个属性： fetchType 来决定是否需要延迟加载，如果配置它，它将覆盖掉原有在 MyBatis 设置的策略。</p>
+<p>对于它而言，它有两个取值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">* lazy: 延迟加载（默认）</span><br><span class="line">* eager:即刻加载</span><br></pre></td></tr></table></figure>
+<p>由它来决定是否需要延迟或者即刻加载。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><h4 id="resultType"><a href="#resultType" class="headerlink" title="resultType"></a>resultType</h4><p>作用：</p>
+<ul>
+<li>将查询结果按照 sql 列名 pojo 属性名一致性映射到 pojo 中。</li>
+</ul>
+<p>场合：</p>
+<ul>
+<li>常见一些明细记录的展示， 比如用户购买商品明细， 将关联查询信息全部展示在页面时，此时可直接使用 resultType 将每一条记录映射到 pojo 中， 在前端页面遍历 list （ list 中是 pojo ）即可。</li>
+</ul>
+<h4 id="resultMap"><a href="#resultMap" class="headerlink" title="resultMap"></a>resultMap</h4><ul>
+<li>使用 association 和 collection 完成一对一和一对多高级映射 （对结果有特殊的映射要求） 。</li>
+</ul>
+<h4 id="association"><a href="#association" class="headerlink" title="association"></a>association</h4><p>作用：</p>
+<ul>
+<li>将关联查询信息映射到一个 pojo 对象中。</li>
+</ul>
+<p>场合：</p>
+<ul>
+<li>为了方便查询关联信息可以使用 association 将关联订单信息映射为用户对象的 pojo 属性中，比如：查询订单及关联用户信息。使用 resultType 无法将查询结果映射到 pojo 对象的 pojo 属性中，根据对结果集查询遍历的需要选择使用 resultType 还是 resultMap 。</li>
+</ul>
+<h4 id="collection"><a href="#collection" class="headerlink" title="collection"></a>collection</h4><p>作用：</p>
+<ul>
+<li>将关联查询信息映射到一个 list 集合中。</li>
+</ul>
+<p>场合：</p>
+<ul>
+<li>为了方便查询遍历关联信息可以使用 collection 将关联信息映射到 list 集合中，比如：查询用户权限范围模块及模块下的菜单，可使用 collection 将模块映射到模块 list 中，将菜单列表映射到模块对象的菜单 list 属性中， 这样的作的目的也是方便对查询结果集进行遍历查询。</li>
+</ul>
+<p>如果使用 resultType 无法将查询结果映射到 list 集合中。</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/mybatis/" rel="tag"><i class="fa fa-tag"></i> mybatis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bugs/2018/09/20/framework/mybatis/MyBatis 理解与掌握（动态 SQL）/" rel="next" title="MyBatis 理解与掌握（动态 SQL）">
+                <i class="fa fa-chevron-left"></i> MyBatis 理解与掌握（动态 SQL）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/09/20/算法/二分法排序/" rel="prev" title="二分法排序">
+                二分法排序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MyBatis-理解与掌握（关联查询）"><span class="nav-number">1.</span> <span class="nav-text">MyBatis 理解与掌握（关联查询）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一对一查询"><span class="nav-number">1.1.</span> <span class="nav-text">一对一查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一：嵌套结果"><span class="nav-number">1.1.1.</span> <span class="nav-text">方法一：嵌套结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法二：嵌套查询"><span class="nav-number">1.1.2.</span> <span class="nav-text">方法二：嵌套查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法三：增加一个包含订单信息和用户信息的类，用这个类作为返回类型-resultType"><span class="nav-number">1.1.3.</span> <span class="nav-text">方法三：增加一个包含订单信息和用户信息的类，用这个类作为返回类型 resultType</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一对多查询"><span class="nav-number">1.2.</span> <span class="nav-text">一对多查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一：嵌套结果-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">方法一：嵌套结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法二：嵌套查询-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">方法二：嵌套查询</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多对多查询"><span class="nav-number">1.3.</span> <span class="nav-text">多对多查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自关联"><span class="nav-number">1.4.</span> <span class="nav-text">自关联</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#延迟加载"><span class="nav-number">1.5.</span> <span class="nav-text">延迟加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#resultType"><span class="nav-number">1.6.1.</span> <span class="nav-text">resultType</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#resultMap"><span class="nav-number">1.6.2.</span> <span class="nav-text">resultMap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#association"><span class="nav-number">1.6.3.</span> <span class="nav-text">association</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#collection"><span class="nav-number">1.6.4.</span> <span class="nav-text">collection</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

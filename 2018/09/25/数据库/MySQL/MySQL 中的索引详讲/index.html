@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MySQL," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5ba5f443f265da0ab673bb93   今天看了一篇关于 mysql 索引的博客，感觉内容写的非常不错，但是排版说实话看得我头疼，所以将其转载过来，重新排了一下版，也是防止以后忘了的话可以方便重新温习博客地址：www.cnblogs.com/whgk/p/6179…  一、什么是索引？为">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 中的索引详讲">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/09/25/数据库/MySQL/MySQL 中的索引详讲/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5ba5f443f265da0ab673bb93   今天看了一篇关于 mysql 索引的博客，感觉内容写的非常不错，但是排版说实话看得我头疼，所以将其转载过来，重新排了一下版，也是防止以后忘了的话可以方便重新温习博客地址：www.cnblogs.com/whgk/p/6179…  一、什么是索引？为">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/1660059ea7ecbc8a?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/166005bf70915ffe?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/16600625f3244de8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/1660062f02e56dc7?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/1660068202842b0b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/166006a07eb76533?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/166006aaf8204b92?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/166006c9ef8b4b32?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/166006da138e020f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/166006de597c6172?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/1660070ccf22cc76?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/1660071f8b8dfa1f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/1660073789279d59?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/166007491a9fe388?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/1660074ed21dd5be?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/16600792876f25b5?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/16600798a9857006?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/22/166007a207b21c7c?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:updated_time" content="2018-09-25T16:08:29.130Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL 中的索引详讲">
+<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5ba5f443f265da0ab673bb93   今天看了一篇关于 mysql 索引的博客，感觉内容写的非常不错，但是排版说实话看得我头疼，所以将其转载过来，重新排了一下版，也是防止以后忘了的话可以方便重新温习博客地址：www.cnblogs.com/whgk/p/6179…  一、什么是索引？为">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/9/22/1660059ea7ecbc8a?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/09/25/数据库/MySQL/MySQL 中的索引详讲/"/>
+
+
+
+
+
+  <title>MySQL 中的索引详讲 | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微笑的周末</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/25/数据库/MySQL/MySQL 中的索引详讲/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL 中的索引详讲</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T00:36:03+00:00">
+                2018-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="https://juejin.im/post/5ba5f443f265da0ab673bb93" target="_blank" rel="noopener">https://juejin.im/post/5ba5f443f265da0ab673bb93</a></p>
+</blockquote>
+<blockquote>
+<p>今天看了一篇关于 mysql 索引的博客，感觉内容写的非常不错，但是排版说实话看得我头疼，所以将其转载过来，重新排了一下版，也是防止以后忘了的话可以方便重新温习<br>博客地址：<a href="https://link.juejin.im?target=https%3A%2F%2Fwww.cnblogs.com%2Fwhgk%2Fp%2F6179612.html" target="_blank" rel="noopener">www.cnblogs.com/whgk/p/6179…</a></p>
+</blockquote>
+<h3 id="一、什么是索引？为什么要建立索引？"><a href="#一、什么是索引？为什么要建立索引？" class="headerlink" title="一、什么是索引？为什么要建立索引？"></a>一、什么是索引？为什么要建立索引？</h3><pre><code>索引用于快速找出在某个列中有一特定值的行，不使用索引，MySQL 必须从第一条记录开始读完整个表，直到找出相关的行，表越大，查询数据所花费的时间就越多，如果表中查询的列有一个索引，MySQL 能够快速到达一个位置去搜索数据文件，而不必查看所有数据，那么将会节省很大一部分时间。
+
+例如：有一张 person 表，其中有 2W 条记录，记录着 2W 个人的信息。有一个 Phone 的字段记录每个人的电话号码，现在想要查询出电话号码为 xxxx 的人的信息。
+
+如果没有索引，那么将从表中第一条记录一条条往下遍历，直到找到该条信息为止。
+
+如果有了索引，那么会将该 Phone 字段，通过一定的方法进行存储，好让查询该字段上的信息时，能够快速找到对应的数据，而不必在遍历 2W 条数据了。其中 MySQL 中的索引的存储类型有两种：BTREE、HASH。
+
+也就是用树或者 Hash 值来存储该字段，要知道其中详细是如何查找的，就需要会算法的知识了。我们现在只需要知道索引的作用，功能是什么就行。
+</code></pre><h3 id="二、MySQL-中索引的优点和缺点和使用原则"><a href="#二、MySQL-中索引的优点和缺点和使用原则" class="headerlink" title="二、MySQL 中索引的优点和缺点和使用原则"></a>二、MySQL 中索引的优点和缺点和使用原则</h3><h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ol>
+<li>所有的 MySql 列类型 (字段类型) 都可以被索引，也就是可以给任意字段设置索引</li>
+<li>大大加快数据的查询速度</li>
+</ol>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><ol>
+<li>创建索引和维护索引要耗费时间，并且随着数据量的增加所耗费的时间也会增加</li>
+<li>索引也需要占空间，我们知道数据表中的数据也会有最大上线设置的，如果我们有大量的索引，索引文件可能会比数据文件更快达到上线值</li>
+<li>当对表中的数据进行增加、删除、修改时，索引也需要动态的维护，降低了数据的维护速度。</li>
+</ol>
+<h4 id="使用原则："><a href="#使用原则：" class="headerlink" title="使用原则："></a>使用原则：</h4><pre><code>通过上面说的优点和缺点，我们应该可以知道，并不是每个字段度设置索引就好，也不是索引越多越好，而是需要自己合理的使用。
+</code></pre><ol>
+<li>对经常更新的表就避免对其进行过多的索引，对经常用于查询的字段应该创建索引，</li>
+<li>数据量小的表最好不要使用索引，因为由于数据较少，可能查询全部数据花费的时间比遍历索引的时间还要短，索引就可能不会产生优化效果。</li>
+<li>在一同值少的列上 (字段上) 不要建立索引，比如在学生表的 “性别” 字段上只有男，女两个不同值。相反的，在一个字段上不同值较多可是建立索引。 上面说的只是很片面的一些东西，索引肯定还有很多别的优点或者缺点，还有使用原则，先基本上理解索引，然后等以后真正用到了，就会慢慢知道别的作用。注意，学习这张，很重要的一点就是必须先得知道索引是什么，索引是干嘛的，有什么作用，为什么要索引等等，如果不知道，就重复往上面看看写的文字，好好理解一下。一个表中很够创建多个索引，这些索引度会被存放到一个索引文件中(专门存放索引的地方)</li>
+</ol>
+<h3 id="三、索引的分类"><a href="#三、索引的分类" class="headerlink" title="三、索引的分类"></a>三、索引的分类</h3><p>注意：索引是在存储引擎中实现的，也就是说不同的存储引擎，会使用不同的索引</p>
+<pre><code>MyISAM 和 InnoDB 存储引擎：只支持 BTREE 索引， 也就是说默认使用 BTREE，不能够更换
+</code></pre><p>MEMORY/HEAP 存储引擎：支持 HASH 和 BTREE 索引</p>
+<p>索引我们分为四类来讲</p>
+<p>单列索引 (普通索引，唯一索引，主键索引)、组合索引、全文索引、空间索引</p>
+<h4 id="单列索引："><a href="#单列索引：" class="headerlink" title="单列索引："></a>单列索引：</h4><p>一个索引只包含单个列，但一个表中可以有多个单列索引。 这里不要搞混淆了。</p>
+<ol>
+<li>普通索引： MySQL 中基本索引类型，没有什么限制，允许在定义索引的列中插入重复值和空值，纯粹为了查询数据更快一点。</li>
+<li>唯一索引： 索引列中的值必须是唯一的，但是允许为空值，</li>
+<li>主键索引： 是一种特殊的唯一索引，不允许有空值。</li>
+</ol>
+<h4 id="组合索引"><a href="#组合索引" class="headerlink" title="组合索引"></a>组合索引</h4><pre><code>在表中的多个字段组合上创建的索引，只有在查询条件中使用了这些字段的左边字段时，索引才会被使用，使用组合索引时遵循最左前缀集合。这个如果还不明白，等后面举例讲解时在细说 
+</code></pre><h4 id="全文索引"><a href="#全文索引" class="headerlink" title="全文索引"></a>全文索引</h4><pre><code>全文索引，只有在 MyISAM 引擎上才能使用，只能在 CHAR,VARCHAR,TEXT 类型字段上使用全文索引，介绍了要求，说说什么是全文索引，就是在一堆文字中，通过其中的某个关键字等，就能找到该字段所属的记录行，比如有 &quot;好人，二货 ...&quot;
+
+通过好人，可能就可以找到该条记录。这里说的是可能，因为全文索引的使用涉及了很多细节，我们只需要知道这个大概意思，如果感兴趣进一步深入使用它，那么看下面测试该索引时，会给出一个博文，供大家参考。
+</code></pre><h4 id="空间索引"><a href="#空间索引" class="headerlink" title="空间索引"></a>空间索引</h4><pre><code>空间索引是对空间数据类型的字段建立的索引，MySQL 中的空间数据类型有四种，GEOMETRY、POINT、LINESTRING、POLYGON。在创建空间索引时，使用 SPATIAL 关键字。要求，引擎为 MyISAM，创建空间索引的列，必须将其声明为 NOT NULL。具体细节看下面
+</code></pre><h3 id="四、索引操作-创建和删除"><a href="#四、索引操作-创建和删除" class="headerlink" title="四、索引操作 (创建和删除)"></a>四、索引操作 (创建和删除)</h3><h4 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h4><ol>
+<li>创建表的时候创建索引</li>
+</ol>
+<p>格式：CREATE TABLE 表名 [字段名 数据类型] [UNIQUE|FULLTEXT|SPATIAL|…] [INDEX|KEY] [索引名字] (字段名 [length])   [ASC|DESC]</p>
+<p>|————————————–| |———————————–| |————| |———| |—————|   |————|</p>
+<p>普通创建表语句        设置什么样的索引 (唯一、全文等)  索引关键字  索引名字 对哪个字段设置索引  对索引进行排序 </p>
+<ul>
+<li>创建普通索引</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE book</span><br><span class="line">(</span><br><span class="line">bookid INT NOT NULL,</span><br><span class="line">bookname VARCHAR(255) NOT NULL,</span><br><span class="line">authors VARCHAR(255) NOT NULL,</span><br><span class="line">info VARCHAR(255) NULL,</span><br><span class="line">comment VARCHAR(255) NULL,</span><br><span class="line">year_publication YEAR NOT NULL,</span><br><span class="line">INDEX(year_publication)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">CREATE TABLE book</span><br><span class="line">(</span><br><span class="line">bookid INT NOT NULL,</span><br><span class="line">bookname VARCHAR(255) NOT NULL,</span><br><span class="line">authors VARCHAR(255) NOT NULL,</span><br><span class="line">info VARCHAR(255) NULL,</span><br><span class="line">comment VARCHAR(255) NULL,</span><br><span class="line">year_publication YEAR NOT NULL,</span><br><span class="line">KEY(year_publication)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<pre><code>上面两种方式创建度可以，通过这个例子可以对比一下格式，就差不多明白格式是什么意思了。
+</code></pre><p><img src="https://user-gold-cdn.xitu.io/2018/9/22/1660059ea7ecbc8a?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<pre><code>通过打印结果，我们在创建索引时没写索引名的话，会自动帮我们用字段名当作索引名。 测试：看是否使用了索引进行查询。
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM book WHERE year_publication = 1990\G;</span><br></pre></td></tr></table></figure>
+<pre><code>解释：虽然表中没数据，但是有 EXPLAIN 关键字，用来查看索引是否正在被使用，并且输出其使用的索引的信息。
+</code></pre><p><img src="https://user-gold-cdn.xitu.io/2018/9/22/166005bf70915ffe?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">id:SELECT识别符。这是SELECT的查询序列号,也就是一条语句中，该select是第几次出现</span><br><span class="line">。在次语句中，select就只有一个，所以是1.</span><br><span class="line"></span><br><span class="line">select_type:所使用的SELECT查询类型，SIMPLE表示为简单的SELECT，不实用UNION或子</span><br><span class="line">查询，就为简单的SELECT。也就是说在该SELECT查询时会使用索引。其他取值，</span><br><span class="line"></span><br><span class="line">PRIMARY：最外面的SELECT.在拥有子查询时，就会出现两个以上的SELECT。UNION：union</span><br><span class="line">(两张表连接)中的第二个或后面的select语句  SUBQUERY：在子查询中，第二SELECT。</span><br><span class="line"></span><br><span class="line">table：数据表的名字。他们按被读取的先后顺序排列，这里因为只查询一张表，所以只</span><br><span class="line">显示book</span><br><span class="line"></span><br><span class="line">type: 指定本据表和其他数据表之间的关联关系，该表中所有符合检索值的记录都会被取</span><br><span class="line">出来和从上一个表中取出来的记录作联合。ref用于连接程序使用键的最左前缀或者是该</span><br><span class="line">键不是 primary key 或unique索引（换句话说，就是连接程序无法根据键值只取得一条</span><br><span class="line">记录）的情况。当根据键值只查询到少数几条匹配的记录时，这就是一个不错的连接类型</span><br><span class="line">。(注意，个人这里不是很理解，百度了很多资料，全是大白话，等以后用到了这类信息</span><br><span class="line">时，在回过头来补充，这里不懂对后面的影响不大。)可能的取值有</span><br><span class="line">system、const、eq_ref、index和All</span><br><span class="line"></span><br><span class="line">possible_keys：MySQL在搜索数据记录时可以选用的各个索引，该表中就只有一个索引，y</span><br><span class="line">ear_publication</span><br><span class="line"></span><br><span class="line">key：实际选用的索引</span><br><span class="line"></span><br><span class="line">key_len：显示了mysql使用索引的长度(也就是使用的索引个数)，当key字段的值为null</span><br><span class="line">时，索引的长度就是null。注意，key_len的值可以告诉你在联合索引中mysql会真正使用</span><br><span class="line">了哪些索引。这里就使用了1个索引，所以为1，</span><br><span class="line"></span><br><span class="line">ref:给出关联关系中另一个数据表中数据列的名字。常量（const），这里使用的是1990</span><br><span class="line">，就是常量。</span><br><span class="line"></span><br><span class="line">rows：MySQL在执行这个查询时预计会从这个数据表里读出的数据行的个数。</span><br><span class="line"></span><br><span class="line">extra：提供了与关联操作有关的信息，没有则什么都不写。</span><br><span class="line"></span><br><span class="line">上面的一大堆东西能看懂多少看多少，我们最主要的是看possible_keys和key 这两个属性，上面显示了key为year_publication。说明使用了索引。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建唯一索引</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE t1</span><br><span class="line">(</span><br><span class="line">id INT NOT NULL,</span><br><span class="line">name CHAR(30) NOT NULL,</span><br><span class="line">UNIQUE INDEX UniqIdx(id)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>解释：对 id 字段使用了索引，并且索引名字为 UniqIdx。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW CREATE TABLE t1\G;</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/16600625f3244de8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<pre><code>要查看其中查询时使用的索引，必须先往表中插入数据，然后在查询数据，不然查找一个没有的 id 值，是不会使用索引的。
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO t1 VALUES(1,&apos;xxx&apos;);</span><br><span class="line">EXPLAIN SELECT * FROM t1 WHERE id = 1\G;</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/1660062f02e56dc7?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<pre><code>可以看到，通过 id 查询时，会使用唯一索引。并且还实验了查询一个没有的 id 值，则不会使用索引，我觉得原因是所有的 id 应该会存储到一个 const tables 中，到其中并没有该 id 值，那么就没有查找的必要了。
+</code></pre><ul>
+<li>创建主键索引</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE t2</span><br><span class="line">(</span><br><span class="line">id INT NOT NULL,</span><br><span class="line">name CHAR(10),</span><br><span class="line">PRIMARY KEY(id)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">INSERT INTO t2 VALUES(1,&apos;QQQ&apos;);</span><br><span class="line">EXPLAIN SELECT * FROM t2 WHERE id = 1\G;</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/1660068202842b0b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<pre><code>通过这个主键索引，我们就应该反应过来，其实我们以前声明的主键约束，就是一个主键索引，只是之前我们没学过，不知道而已。
+</code></pre><ul>
+<li>创建单列索引</li>
+</ul>
+<p>这个其实就不用在说了，前面几个就是单列索引。</p>
+<ul>
+<li>创建组合索引</li>
+</ul>
+<p>组合索引就是在多个字段上创建一个索引</p>
+<p>创建一个表 t3，在表中的 id、name 和 age 字段上建立组合索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE t3</span><br><span class="line">(</span><br><span class="line">id INT NOT NULL,</span><br><span class="line">name CHAR(30) NOT NULL,</span><br><span class="line">age INT NOT NULL,</span><br><span class="line">info VARCHAR(255),</span><br><span class="line">INDEX MultiIdx(id,name,age)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">SHOW CREATE t3\G;</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/166006a07eb76533?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<p>解释最左前缀</p>
+<pre><code>组合索引就是遵从了最左前缀，利用索引中最左边的列集来匹配行，这样的列集称为最左前缀，不明白没关系，举几个例子就明白了，例如，这里由 id、name 和 age3 个字段构成的索引，索引行中就按 id/name/age 的顺序存放，索引可以索引下面字段组合 (id，name，age)、(id，name) 或者(id)。如果要查询的字段不构成索引最左面的前缀，那么就不会是用索引，比如，age 或者（name，age）组合就不会使用索引查询
+</code></pre><p>在 t3 表中，查询 id 和 name 字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN SELECT * FROM t3 WHERE id = 1 AND name = &apos;joe&apos;\G;</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/166006aaf8204b92?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<p>在 t3 表中，查询 (age，name) 字段，这样就不会使用索引查询。来看看结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN SELECT * FROM t3 WHERE age = 3 AND name = &apos;bob&apos;\G;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>创建全文索引</p>
+<p>   全文索引可以用于全文搜索，但只有 MyISAM 存储引擎支持 FULLTEXT 索引，并且只为 CHAR、VARCHAR 和 TEXT 列服务。索引总是对整个列进行，不支持前缀索引，</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE t4</span><br><span class="line">(</span><br><span class="line">id  INT NOT NULL,</span><br><span class="line">name CHAR(30) NOT NULL,</span><br><span class="line">age INT NOT NULL,</span><br><span class="line">info VARCHAR(255),</span><br><span class="line">FULLTEXT INDEX FullTxtIdx(info)</span><br><span class="line">)ENGINE=MyISAM;</span><br><span class="line"></span><br><span class="line">SHOW CREATE TABLE t4\G;</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/166006c9ef8b4b32?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<p>使用一下什么叫做全文搜索。就是在很多文字中，通过关键字就能够找到该记录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO t4 VALUES</span><br><span class="line">(8,&apos;AAA&apos;,3,&apos;text is so good，hei，my name is bob&apos;)</span><br><span class="line">,(9,&apos;BBB&apos;,4,&apos;my name is gorlr&apos;);</span><br><span class="line"></span><br><span class="line">SELECT * FROM t4 WHERE MATCH(info) AGAINST(&apos;gorlr&apos;);</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/166006da138e020f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN SELECT * FROM t4 WHERE MATCH(info) AGAINST(&apos;gorlr&apos;);</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/166006de597c6172?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="">        注意：在使用全文搜索时，需要借助 MATCH 函数，并且其全文搜索的限制比较多，比如只能通过 MyISAM 引擎，比如只能在 CHAR,VARCHAR,TEXT 上设置全文索引。比如搜索的关键字默认至少要 4 个字符，比如搜索的关键字太短就会被忽略掉。等等，如果你们在实验的时候可能会实验不出来。感兴趣的同学可以看看这篇文章，<a href="https://link.juejin.im?target=http%3A%2F%2Fblog.sina.com.cn%2Fs%2Fblog_ae1611930101a063.html" target="_blank" rel="noopener">全文搜索的使用</a></p>
+<ul>
+<li>创建空间索引</li>
+</ul>
+<p>空间索引也必须使用 MyISAM 引擎， 并且空间类型的字段必须为非空。</p>
+<pre><code>这个空间索引具体能干嘛我也不知道，可能跟游戏开发有关，可能跟别的东西有关，等遇到了自然就知道了，现在只要求能够创建出来。
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE t5</span><br><span class="line">(</span><br><span class="line">g GEOMETRY NOT NULL,</span><br><span class="line">SPATIAL INDEX spatIdx(g)</span><br><span class="line">) ENGINE = MyISAM;</span><br><span class="line"></span><br><span class="line">SHOW CREATE TABLE t5\G;</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/1660070ccf22cc76?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<ol>
+<li>在已经存在的表上创建索引</li>
+</ol>
+<p>格式：ALTER TABLE 表名 ADD[UNIQUE|FULLTEXT|SPATIAL] [INDEX|KEY] [索引名] (索引字段名)[ASC|DESC] 有了上面的基础，这里就不用过多陈述了。</p>
+<p>命令一：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW INDEX FROM 表名\G</span><br></pre></td></tr></table></figure>
+<p>查看一张表中所创建的索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW INDEX FROM book\G;</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/1660071f8b8dfa1f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<pre><code>挑重点讲，我们需要了解的就 5 个，用红颜色标记了的，如果想深入了解，可以去查查该方面的资料，我个人觉得，这些等以后实际工作中遇到了在做详细的了解把。
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Table:创建索引的表</span><br><span class="line"></span><br><span class="line">Non_unique：表示索引非唯一，1代表非唯一索引，0代表唯一索引，意思就是该索引是不是唯一索引</span><br><span class="line"></span><br><span class="line">Key_name：索引名称</span><br><span class="line"></span><br><span class="line">Seq_in_index :表示该字段在索引中的位置，单列索引的话该值为1，组合索引为每个字段在索引定义中的顺序(这个只需要知道单列索引该值就为1，组合索引为别的)</span><br><span class="line"></span><br><span class="line">Column_name：表示定义索引的列字段</span><br><span class="line"></span><br><span class="line">Sub_part：表示索引的长度</span><br><span class="line"></span><br><span class="line">Null：表示该字段是否能为空值</span><br><span class="line"></span><br><span class="line">Index_type：表示索引类型</span><br></pre></td></tr></table></figure>
+<ul>
+<li>为表添加索引</li>
+</ul>
+<p>就拿上面的 book 表来说。本来已经有了一个 year_publication，现在我们为该表在加一个普通索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE book ADD INDEX BkNameIdx(bookname(30));</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/1660073789279d59?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<p>看输出结果，就能知道，添加索引成功了。</p>
+<p>这里只是拿普通索引做个例子，添加其他索引也是一样的。依葫芦画瓢而已。这里就不一一做讲解了。</p>
+<ul>
+<li>使用 CREATE INDEX 创建索引</li>
+</ul>
+<p>格式：CREATE [UNIQUE|FULLTEXT|SPATIAL] [INDEX|KEY] 索引名称 ON 表名 (创建索引的字段名 [length])[ASC|DESC]</p>
+<p>解释：其实就是换汤不换药，格式改变了一下而已，做的事情跟上面完全一样，做一个例子。</p>
+<p>在为 book 表增加一个普通索引，字段为 authors。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE INDEX BkBookNameIdx ON book(bookname);</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/166007491a9fe388?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW INDEX FROM book\G;&amp;emsp;&amp;emsp;//查看book表中的索引</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/1660074ed21dd5be?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<p>解释：第一条截图没截到，因为图太大了，这里只要看到有我们新加进去的索引就证明成功了。。其他索引也是一样的创建。</p>
+<h3 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h3><p>前面讲了对一张表中索引的添加，查询的方法。</p>
+<p>添加的两种方式</p>
+<p>1 在创建表的同时如何创建索引，</p>
+<p>2 在创建了表之后如何给表添加索引的两种方式，</p>
+<p>查询的方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW INDEX FROM 表名\G；</span><br></pre></td></tr></table></figure>
+<p>\G 只是让输出的格式更好看</p>
+<p>现在来说说如何给表删除索引的两种操作。</p>
+<ol>
+<li>格式一：ALTER TABLE 表名 DROP INDEX 索引名</li>
+</ol>
+<p>很简单的语句，现在通过一个例子来看看，还是对 book 表进行操作，删除我们刚才为其添加的索引。</p>
+<p>1、删除 book 表中的名称为 BkBookNameIdx 的索引。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE book DROP INDEX BkBookNameIdx;</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/16600792876f25b5?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW INDEX FROM book\G;&amp;emsp;&amp;emsp;//在查看book表中的索引，就会发现BkBookNameIdx这个索引已经不在了</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/16600798a9857006?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<ol>
+<li>格式二：DROP INDEX 索引名 ON 表名</li>
+</ol>
+<p>删除 book 表中名为 BkNameIdx 的索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DROP INDEX BkNameIdx ON book;</span><br><span class="line">SHOW INDEX FROM book\G;</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/9/22/166007a207b21c7c?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bugs/2018/09/25/架构师系列/秒杀架构实践/" rel="next" title="秒杀架构实践">
+                <i class="fa fa-chevron-left"></i> 秒杀架构实践
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/09/25/数据库/何为脏读、不可重复读、幻读/" rel="prev" title="何为脏读、不可重复读、幻读">
+                何为脏读、不可重复读、幻读 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、什么是索引？为什么要建立索引？"><span class="nav-number">1.</span> <span class="nav-text">一、什么是索引？为什么要建立索引？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、MySQL-中索引的优点和缺点和使用原则"><span class="nav-number">2.</span> <span class="nav-text">二、MySQL 中索引的优点和缺点和使用原则</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点："><span class="nav-number">2.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点："><span class="nav-number">2.2.</span> <span class="nav-text">缺点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用原则："><span class="nav-number">2.3.</span> <span class="nav-text">使用原则：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、索引的分类"><span class="nav-number">3.</span> <span class="nav-text">三、索引的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单列索引："><span class="nav-number">3.1.</span> <span class="nav-text">单列索引：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#组合索引"><span class="nav-number">3.2.</span> <span class="nav-text">组合索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全文索引"><span class="nav-number">3.3.</span> <span class="nav-text">全文索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空间索引"><span class="nav-number">3.4.</span> <span class="nav-text">空间索引</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、索引操作-创建和删除"><span class="nav-number">4.</span> <span class="nav-text">四、索引操作 (创建和删除)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建索引"><span class="nav-number">4.1.</span> <span class="nav-text">创建索引</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除索引"><span class="nav-number">5.</span> <span class="nav-text">删除索引</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

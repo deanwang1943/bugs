@@ -121,7 +121,7 @@
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/4/165a3c9464740424?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/4/165a3cd0c2623dff?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/4/165a3ec20b9f460a?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:updated_time" content="2018-09-05T05:45:00.850Z">
+<meta property="og:updated_time" content="2018-09-25T16:08:25.030Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入剖析未来的缓存 - Caffeine">
 <meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b8df63c6fb9a019e04ebaf4?utm_source=gold_browser_extension  1. 前言读这篇文章之前希望你能好好的阅读: 你应该知道的缓存进化史 和 如何优雅的设计和使用缓存？ 。这两篇文章主要从一些实战上面去介绍如何去使用缓存。在这两篇文章中我都比较推荐">
@@ -383,7 +383,7 @@
 <h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>读这篇文章之前希望你能好好的阅读: <a href="https://link.juejin.im?target=https%3A%2F%2Fjuejin.im%2Fpost%2F5b7593496fb9a009b62904fa" target="_blank" rel="noopener">你应该知道的缓存进化史</a> 和 <a href="https://link.juejin.im?target=https%3A%2F%2Fjuejin.im%2Fpost%2F5b849878e51d4538c77a974a" target="_blank" rel="noopener">如何优雅的设计和使用缓存？</a> 。这两篇文章主要从一些实战上面去介绍如何去使用缓存。在这两篇文章中我都比较推荐 Caffeine 这款本地缓存去代替你的 Guava Cache。本篇文章我将介绍 Caffeine 缓存的具体有哪些功能，以及内部的实现原理，让大家知其然，也要知其所以然。有人会问: 我不使用 Caffeine 这篇文章应该对我没啥用了，别着急，在 Caffeine 中的知识一定会对你在其他代码设计方面有很大的帮助。当然在介绍之前还是要贴一下他和其他缓存的一些比较图:</p>
 <p><img src="https://user-gold-cdn.xitu.io/2018/8/16/165406d9fff73da6?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""> 可以看见 Caffeine 基本从各个维度都是相比于其他缓存都高，废话不多说，首先还是先看看如何使用吧。</p>
 <h2 id="1-1-如何使用"><a href="#1-1-如何使用" class="headerlink" title="1.1 如何使用"></a>1.1 如何使用</h2><p>Caffeine 使用比较简单，API 和 Guava Cache 一致:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        Cache&lt;String, String&gt; cache = Caffeine.newBuilder()</span><br><span class="line">                .expireAfterWrite(1, TimeUnit.SECONDS)</span><br><span class="line">                .expireAfterAccess(1,TimeUnit.SECONDS)</span><br><span class="line">                .maximumSize(10)</span><br><span class="line">                .build();</span><br><span class="line">        cache.put(&quot;hello&quot;,&quot;hello&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        Cache&lt;String, String&gt; cache = Caffeine.newBuilder()</span><br><span class="line">                .expireAfterWrite(1, TimeUnit.SECONDS)</span><br><span class="line">                .expireAfterAccess(1,TimeUnit.SECONDS)</span><br><span class="line">                .maximumSize(10)</span><br><span class="line">                .build();</span><br><span class="line">        cache.put(&quot;hello&quot;,&quot;hello&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <h1 id="2-Caffeine-原理简介"><a href="#2-Caffeine-原理简介" class="headerlink" title="2.Caffeine 原理简介"></a>2.Caffeine 原理简介</h1><h2 id="2-1W-TinyLFU"><a href="#2-1W-TinyLFU" class="headerlink" title="2.1W-TinyLFU"></a>2.1W-TinyLFU</h2><p>传统的 LFU 受时间周期的影响比较大。所以各种 LFU 的变种出现了，基于时间周期进行衰减，或者在最近某个时间段内的频率。同样的 LFU 也会使用额外空间记录每一个数据访问的频率，即使数据没有在缓存中也需要记录，所以需要维护的额外空间很大。</p>
 <blockquote>
 <p>可以试想我们对这个维护空间建立一个 hashMap，每个数据项都会存在这个 hashMap 中，当数据量特别大的时候，这个 hashMap 也会特别大。</p>
@@ -479,7 +479,7 @@
 <h3 id="3-4-1-弱引用的淘汰策略"><a href="#3-4-1-弱引用的淘汰策略" class="headerlink" title="3.4.1 弱引用的淘汰策略"></a>3.4.1 弱引用的淘汰策略</h3><p>在 Caffeine 中支持弱引用的淘汰策略，其中有两个 api: weakKeys() 和 weakValues(), 用来设置 key 是弱引用还是 value 是弱引用。具体原理是在 put 的时候将 key 和 value 用虚引用进行包装并绑定至引用队列:</p>
 <p><img src="https://user-gold-cdn.xitu.io/2018/9/4/165a3c9464740424?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="">。</p>
 <p>具体回收的时候，在我们前面介绍的 maintenance 方法中，有两个方法:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//处理key引用的</span><br><span class="line">drainKeyReferences();</span><br><span class="line">//处理value引用</span><br><span class="line">drainValueReferences();</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//处理key引用的</span><br><span class="line">drainKeyReferences();</span><br><span class="line">//处理value引用</span><br><span class="line">drainValueReferences();</span><br></pre></td></tr></table></figure>
 <p>具体的处理的代码有:</p>
 <p><img src="https://user-gold-cdn.xitu.io/2018/9/4/165a3cd0c2623dff?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
 <p>因为我们的 key 已经被回收了，然后他会进入引用队列，通过这个引用队列，一直弹出到他为空为止。我们能根据这个队列中的运用获取到 Node, 然后对其进行驱逐。</p>
@@ -498,7 +498,7 @@
 </ul>
 <p>通过上面的监听，我们可以实时监控缓存当前的状态，以评估缓存的健康程度以及缓存命中率等，方便后续调整参数。</p>
 <h2 id="3-6-有始有终-淘汰监听"><a href="#3-6-有始有终-淘汰监听" class="headerlink" title="3.6 有始有终 - 淘汰监听"></a>3.6 有始有终 - 淘汰监听</h2><p>有很多时候我们需要知道 Caffeine 中的缓存为什么被淘汰了呢，从而进行一些优化？这个时候我们就需要一个监听器, 代码如下所示:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Cache&lt;String, String&gt; cache = Caffeine.newBuilder()</span><br><span class="line">                .removalListener(((key, value, cause) -&gt; &#123;</span><br><span class="line">                    System.out.println(cause);</span><br><span class="line">                &#125;))</span><br><span class="line">                .build();</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Cache&lt;String, String&gt; cache = Caffeine.newBuilder()</span><br><span class="line">                .removalListener(((key, value, cause) -&gt; &#123;</span><br><span class="line">                    System.out.println(cause);</span><br><span class="line">                &#125;))</span><br><span class="line">                .build();</span><br></pre></td></tr></table></figure>
 <p>在 Caffeine 中被淘汰的原因有很多种:</p>
 <ul>
 <li>EXPLICIT: 这个原因是，用户造成的，通过调用 remove 方法从而进行删除。</li>
@@ -552,8 +552,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/bugs/2018/08/30/架构师系列/支付平台的架构设计/" rel="next" title="支付平台的架构设计(蚂蚁金服)">
-                <i class="fa fa-chevron-left"></i> 支付平台的架构设计(蚂蚁金服)
+              <a href="/bugs/2018/09/05/framework/如何优雅的设计和使用缓存？/" rel="next" title="如何优雅的设计和使用缓存？">
+                <i class="fa fa-chevron-left"></i> 如何优雅的设计和使用缓存？
               </a>
             
           </div>
@@ -562,8 +562,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/bugs/2018/09/05/framework/如何优雅的设计和使用缓存？/" rel="prev" title="如何优雅的设计和使用缓存？">
-                如何优雅的设计和使用缓存？ <i class="fa fa-chevron-right"></i>
+              <a href="/bugs/2018/09/06/语言/Java/Java 并发之 AQS 详解 Thread 详解 Thread 详解/" rel="prev" title="Java 并发之 AQS 详解 Thread 详解 Thread 详解">
+                Java 并发之 AQS 详解 Thread 详解 Thread 详解 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -641,7 +641,7 @@
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -652,7 +652,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/bugs/categories/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -663,7 +663,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/bugs/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

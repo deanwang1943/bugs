@@ -95,7 +95,7 @@
 <meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b90cbf4e51d450e84776d27?utm_source=gold_browser_extension  之前对于数据库事务概念的理解有很多不到位的地方，今天用简单的实例再来阐述一下数据库事务和隔离级别的概念，也方便以后温故而知新。 1. 什么是事务事务（Transaction）是并发控">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/6/165ad9f0d6d6b87b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:updated_time" content="2018-09-11T15:21:11.858Z">
+<meta property="og:updated_time" content="2018-09-25T16:08:25.030Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库事务隔离级别">
 <meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b90cbf4e51d450e84776d27?utm_source=gold_browser_extension  之前对于数据库事务概念的理解有很多不到位的地方，今天用简单的实例再来阐述一下数据库事务和隔离级别的概念，也方便以后温故而知新。 1. 什么是事务事务（Transaction）是并发控">
@@ -356,19 +356,19 @@
 </blockquote>
 <p>之前对于数据库事务概念的理解有很多不到位的地方，今天用简单的实例再来阐述一下数据库事务和隔离级别的概念，也方便以后温故而知新。</p>
 <h3 id="1-什么是事务"><a href="#1-什么是事务" class="headerlink" title="1. 什么是事务"></a>1. 什么是事务</h3><p>事务（Transaction）是并发控制的基本单位。所谓的事务，它是一个操作序列，这些操作要么都执行，要么都不执行，它是一个不可分割的工作单位。例如，银行转账工作：从一个账号扣款并使另一个账号增款，这两个操作要么都执行，要么都不执行。所以，应该把它们看成一个事务。事务是数据库维护数据一致性的单位，在每个事务结束时，都能保 持数据一致性。<br>我们以 Msql 数据库的操作为例，再进一步解释一下数据库事务： 首先我们用以下命令查看该 Mysql 会话的事务隔离级别，关于事务隔离级别及其作用，我们在后面的章节中会进行详细介绍，这里只要简单知道数据库可以设置不同的事务隔离级别，不同的隔离级别会对事务的操作产生不同的效果即可。使用以下命令可以查询当前 Mysql 会话的事务隔离级别，可以看到，Mysql 默认的事务隔离级别是 REPEATABLE-READ。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select @@tx_isolation;</span><br><span class="line">+-----------------+</span><br><span class="line">| @@tx_isolation  |</span><br><span class="line">+-----------------+</span><br><span class="line">| REPEATABLE-READ |</span><br><span class="line">+-----------------+</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select @@tx_isolation;</span><br><span class="line">+-----------------+</span><br><span class="line">| @@tx_isolation  |</span><br><span class="line">+-----------------+</span><br><span class="line">| REPEATABLE-READ |</span><br><span class="line">+-----------------+</span><br></pre></td></tr></table></figure>
 <p>为了用实例来解释事务，我们创建了如下的 bank 数据表，并插入一条数据，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; describe bank;</span><br><span class="line">+---------+---------------+------+-----+---------+----------------+</span><br><span class="line">| Field   | Type          | Null | Key | Default | Extra          |</span><br><span class="line">+---------+---------------+------+-----+---------+----------------+</span><br><span class="line">| id      | int(11)       | NO   | PRI | NULL    | auto_increment |</span><br><span class="line">| name    | varchar(40)   | NO   |     | NULL    |                |</span><br><span class="line">| balance | decimal(10,2) | YES  |     | NULL    |                |</span><br><span class="line">+---------+---------------+------+-----+---------+----------------+</span><br><span class="line">mysql&gt; select * from bank;</span><br><span class="line">+----+------+---------+</span><br><span class="line">| id | name | balance |</span><br><span class="line">+----+------+---------+</span><br><span class="line">|  3 | fufu | 2000.00 |</span><br><span class="line">+----+------+---------+</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; describe bank;</span><br><span class="line">+---------+---------------+------+-----+---------+----------------+</span><br><span class="line">| Field   | Type          | Null | Key | Default | Extra          |</span><br><span class="line">+---------+---------------+------+-----+---------+----------------+</span><br><span class="line">| id      | int(11)       | NO   | PRI | NULL    | auto_increment |</span><br><span class="line">| name    | varchar(40)   | NO   |     | NULL    |                |</span><br><span class="line">| balance | decimal(10,2) | YES  |     | NULL    |                |</span><br><span class="line">+---------+---------------+------+-----+---------+----------------+</span><br><span class="line">mysql&gt; select * from bank;</span><br><span class="line">+----+------+---------+</span><br><span class="line">| id | name | balance |</span><br><span class="line">+----+------+---------+</span><br><span class="line">|  3 | fufu | 2000.00 |</span><br><span class="line">+----+------+---------+</span><br></pre></td></tr></table></figure>
 <p>使用 start transaction 命令开启数据库事务，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; start transaction;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; start transaction;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
 <p>更新 id 为 3 的行的 balance 值为 3000.00，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update bank set balance = 3000 where id = 3;</span><br><span class="line">Query OK, 1 row affected (0.09 sec)</span><br><span class="line">Rows matched: 1  Changed: 1  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from bank;</span><br><span class="line">+----+------+---------+</span><br><span class="line">| id | name | balance |</span><br><span class="line">+----+------+---------+</span><br><span class="line">|  3 | fufu | 3000.00 |</span><br><span class="line">+----+------+---------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update bank set balance = 3000 where id = 3;</span><br><span class="line">Query OK, 1 row affected (0.09 sec)</span><br><span class="line">Rows matched: 1  Changed: 1  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from bank;</span><br><span class="line">+----+------+---------+</span><br><span class="line">| id | name | balance |</span><br><span class="line">+----+------+---------+</span><br><span class="line">|  3 | fufu | 3000.00 |</span><br><span class="line">+----+------+---------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
 <p>此时我们可以看到，select 语句查询到的 id 为 3 的行的 balance 值已经修改为 3000.00，接下来我们再尝试插入一条新数据，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into bank (name, balance) values (&apos;melo&apos;, 1000);</span><br><span class="line">Query OK, 1 row affected (0.06 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from bank;</span><br><span class="line">+----+------+---------+</span><br><span class="line">| id | name | balance |</span><br><span class="line">+----+------+---------+</span><br><span class="line">|  3 | fufu | 3000.00 |</span><br><span class="line">|  4 | melo | 1000.00 |</span><br><span class="line">+----+------+---------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into bank (name, balance) values (&apos;melo&apos;, 1000);</span><br><span class="line">Query OK, 1 row affected (0.06 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from bank;</span><br><span class="line">+----+------+---------+</span><br><span class="line">| id | name | balance |</span><br><span class="line">+----+------+---------+</span><br><span class="line">|  3 | fufu | 3000.00 |</span><br><span class="line">|  4 | melo | 1000.00 |</span><br><span class="line">+----+------+---------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
 <p>由于以上的 update 和 insert 操作都是在 start transaction 命令开启事务之后，所以直到事务结束，这些操作都属于同一事务，假设我们在 insert 操作时产生了错误，可以根据事务的定义得知，这些属于同一事务的所有操作要么都执行要么都不执行，我们可以验证一下，使用 rollback 命令，模拟事务失败回滚，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; rollback;</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; rollback;</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br></pre></td></tr></table></figure>
 <p>此时我们在查询数据库中的所有数据，发现数据恢复到了 update 命令执行前的状态，id 为 3 的行的 balance 值等于 2000 没有变化。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from bank;</span><br><span class="line">+----+------+---------+</span><br><span class="line">| id | name | balance |</span><br><span class="line">+----+------+---------+</span><br><span class="line">|  3 | fufu | 2000.00 |</span><br><span class="line">+----+------+---------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from bank;</span><br><span class="line">+----+------+---------+</span><br><span class="line">| id | name | balance |</span><br><span class="line">+----+------+---------+</span><br><span class="line">|  3 | fufu | 2000.00 |</span><br><span class="line">+----+------+---------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
 <p>到此，我们阐述了数据库事务的定义并用简单的 Mysql 操作说明了事务的操作方式，我们可以总结出数据库事务的生命周期如下：</p>
 <p><img src="https://user-gold-cdn.xitu.io/2018/9/6/165ad9f0d6d6b87b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""> 可以看出事务的边界包括：</p>
 <ul>
@@ -731,8 +731,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/bugs/2018/08/23/数据库/MySQL/MySql-日常指导-大表优化思路/" rel="next" title="MySql 日常指导，及大表优化思路">
-                <i class="fa fa-chevron-left"></i> MySql 日常指导，及大表优化思路
+              <a href="/bugs/2018/08/22/framework/redis/redis高速的单线程/" rel="next" title="Redis单线程，高并发">
+                <i class="fa fa-chevron-left"></i> Redis单线程，高并发
               </a>
             
           </div>
@@ -741,8 +741,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/bugs/2018/08/25/网络/https如何保证数据传输的安全性/" rel="prev" title="https如何保证数据传输的安全性">
-                https如何保证数据传输的安全性 <i class="fa fa-chevron-right"></i>
+              <a href="/bugs/2018/08/23/数据库/MySQL/MySql-日常指导-大表优化思路/" rel="prev" title="MySql 日常指导，及大表优化思路">
+                MySql 日常指导，及大表优化思路 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -820,7 +820,7 @@
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -831,7 +831,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/bugs/categories/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -842,7 +842,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/bugs/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
