@@ -351,13 +351,13 @@
       
         <hr>
 <h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><h4 id="1-定义变量"><a href="#1-定义变量" class="headerlink" title="1.定义变量"></a>1.定义变量</h4><p>实例:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">变量名一般都是由字母、数字、下划线组成的，变量名不能以数字开头</span></span><br><span class="line">变量名=0</span><br><span class="line">变量名='xxxx'</span><br><span class="line">变量名="yyyy"</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>变量名一般都是由字母、数字、下划线组成的，变量名不能以数字开头</span><br><span class="line">变量名=0</span><br><span class="line">变量名='xxxx'</span><br><span class="line">变量名="yyyy"</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>变量的内容可以用单引号、双引号引起来，同时也可以不加引号，但是这三者的含义是不一样的</p>
 </blockquote>
 <pre><code>1.当我们不加单引号时必须是连续的字符串才可以；如果加了&apos;&apos;号那么结论是当变量名写什么那么它就会输出什么
 2.&quot;&quot;这种定义的方式特点是：输出变量内容时引号变量及命令会经过解析后在输出
-</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">变量名=`ifconfig`</span><br><span class="line">变量名=$("ifconfig")</span><br><span class="line"><span class="meta">#</span><span class="bash">可以执行ifconfig的命令</span></span><br></pre></td></tr></table></figure>
+</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">变量名=`ifconfig`</span><br><span class="line">变量名=$("ifconfig")</span><br><span class="line"><span class="meta">#</span>可以执行ifconfig的命令</span><br></pre></td></tr></table></figure>
 <p>同时我们也可以在命令段的前后加<code></code>反撇号</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IP=`ifconfig`</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -373,7 +373,7 @@
 <li>$?:表示上一个命令执行的结果0为成功，1为失败</li>
 <li>$$ 和 $!都是获取脚本进程号PID</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"></span><br><span class="line">for TOKEN in "$*"</span><br><span class="line">do</span><br><span class="line">   echo $TOKEN</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">for token in "$@"</span><br><span class="line">do</span><br><span class="line">   echo $token</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/sh</span><br><span class="line"></span><br><span class="line">for TOKEN in "$*"</span><br><span class="line">do</span><br><span class="line">   echo $TOKEN</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">for token in "$@"</span><br><span class="line">do</span><br><span class="line">   echo $token</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
 <h4 id="3-变量数值计算"><a href="#3-变量数值计算" class="headerlink" title="3.变量数值计算"></a>3.变量数值计算</h4><p>shell也有很多的运算符如下：</p>
 <pre><code>+、-、：代表着加号 和减号 或者，负号
 *、/、%：代表着乘号，除号，和取模。
@@ -392,7 +392,7 @@ $[] ：用于整数运算
 awk：awk既可以整数运算，也可以小数运算
 declare: 定义变量值和属性，-i参数可以用于定义整形变量，做运算
 </code></pre><p>实例</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[ $&#123;#a&#125; -le 0 ] #a是一个变量了 如果a长度小于0</span><br><span class="line"></span><br><span class="line">echo $((1+1))  #计算1+1后输出</span><br><span class="line">2</span><br><span class="line"></span><br><span class="line">((a=1+2**3-4%3)) #先算乘除，后算加减</span><br><span class="line">echo $a</span><br><span class="line">8</span><br><span class="line"></span><br><span class="line">b=$((1+2**3-4%3)) #在这里b是一个变量 将变量名的计算结果赋值给b</span><br><span class="line">echo $b</span><br><span class="line">8</span><br><span class="line"></span><br><span class="line">echo $((6==6)) #6==6 那么就输出1</span><br><span class="line">echo $((2&gt;3))  #当条件2&gt;3错误后输出0</span><br><span class="line">echo "a**b=$((a**b))"</span><br><span class="line"></span><br><span class="line">let a=a+8  #使用let,对a重新赋值</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 利用expr做计算，将一个未知的变量和一个已知的一个整数相加，看返回的值是否为0，如果默认是0 那么就是一个整数。如果非0则输入的就是字符串不是整数。</span></span><br><span class="line">expr 4 / 2</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[ $&#123;#a&#125; -le 0 ] #a是一个变量了 如果a长度小于0</span><br><span class="line"></span><br><span class="line">echo $((1+1))  #计算1+1后输出</span><br><span class="line">2</span><br><span class="line"></span><br><span class="line">((a=1+2**3-4%3)) #先算乘除，后算加减</span><br><span class="line">echo $a</span><br><span class="line">8</span><br><span class="line"></span><br><span class="line">b=$((1+2**3-4%3)) #在这里b是一个变量 将变量名的计算结果赋值给b</span><br><span class="line">echo $b</span><br><span class="line">8</span><br><span class="line"></span><br><span class="line">echo $((6==6)) #6==6 那么就输出1</span><br><span class="line">echo $((2&gt;3))  #当条件2&gt;3错误后输出0</span><br><span class="line">echo "a**b=$((a**b))"</span><br><span class="line"></span><br><span class="line">let a=a+8  #使用let,对a重新赋值</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 利用expr做计算，将一个未知的变量和一个已知的一个整数相加，看返回的值是否为0，如果默认是0 那么就是一个整数。如果非0则输入的就是字符串不是整数。</span><br><span class="line">expr 4 / 2</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
 <h3 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h3><h4 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h4><h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h2 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h2><h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h3><p>创建文件</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">touch text.sh #创建文件</span><br><span class="line">cp -[a f r p] path/file1 path/file2 #复制文件 a:表示拷贝所有属性，p:拷贝可以的属性，r:目录,f:强制</span><br><span class="line">rm path/file #删除文件 -f表示强制</span><br><span class="line">mkdir path/folder #创建目录</span><br><span class="line">rm -rf path/folder #删除目录</span><br><span class="line">cat path/file #cat命令是显示文本,-n参数会给所有的行加上行号</span><br><span class="line">ls path #命令并未输出太多每个文件的相关信息 -l参数会产生长列表格式的输出</span><br></pre></td></tr></table></figure>
 <h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo "xxxx" &gt; path/file.log #重新创建，存在则删除</span><br><span class="line">echo "xxxx" &gt;&gt; path/file.log #不存在则创建，存在则追加到尾部</span><br></pre></td></tr></table></figure>
@@ -439,8 +439,8 @@ declare: 定义变量值和属性，-i参数可以用于定义整形变量，做
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/bugs/2018/08/16/语言/Python/Python设计模式/" rel="next" title="Python设计模式">
-                <i class="fa fa-chevron-left"></i> Python设计模式
+              <a href="/bugs/2018/08/19/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
               </a>
             
           </div>
@@ -449,8 +449,8 @@ declare: 定义变量值和属性，-i参数可以用于定义整形变量，做
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/bugs/2018/08/19/hello-world/" rel="prev" title="Hello World">
-                Hello World <i class="fa fa-chevron-right"></i>
+              <a href="/bugs/2018/08/22/framework/redis/redis高速的单线程/" rel="prev" title="Redis单线程，高并发">
+                Redis单线程，高并发 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -539,7 +539,7 @@ declare: 定义变量值和属性，-i参数可以用于定义整形变量，做
               
               <div class="site-state-item site-state-categories">
                 <a href="/bugs/categories/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -550,7 +550,7 @@ declare: 定义变量值和属性，-i参数可以用于定义整形变量，做
               
               <div class="site-state-item site-state-tags">
                 <a href="/bugs/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

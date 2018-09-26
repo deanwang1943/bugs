@@ -260,7 +260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/20/算法/二分法排序/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/20/framework/redis/Redis 持久化（persistence）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -279,7 +279,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/09/20/算法/二分法排序/" itemprop="url">二分法排序</a></h1>
+                <a class="post-title-link" href="/bugs/2018/09/20/framework/redis/Redis 持久化（persistence）/" itemprop="url">Redis 持久化（persistence）</a></h1>
         
 
         <div class="post-meta">
@@ -314,8 +314,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
+                  <a href="/bugs/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
                   </a>
                 </span>
 
@@ -354,174 +354,25 @@
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 https://www.cnblogs.com/bugY/archive/2011/04/28/2032293.html
+本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000015897415
 
-算法思想简单描述：在插入第i个元素时，对前面的0～i-1元素进行折半，先跟他们中间的那个元素比，如果小，则对前半再进行折半，否则对后半进行折半，直到left&gt;right，然后再把第i个元素前1位与目标位置之间的所有元素后移，再把第i个元素放在目标位置上。    二分法排序最重要的一个步骤就是查找要插入元素的位置，也就是要在哪一个位置上放我们要准备排序的这个元素。当我们查找到位置以后就很好说了，和插入排序一样，将这个位置以后的所有元素都向后移动一位。这样就实现了二分法排序。　　然后是怎么查找着一个位置呢，就是不断的比较已排序的序列中的中间元素和要排序元素，如果大于的话，说明这个要排序的元素在已排序序列中点之前的序列。123456789101112131415161718192021222324252627282
+
+本文首发于 Redis 持久化（persistence）技术口袋书，转载请注明出处。
+
+本文讲解 Redis 数据库的数据持久化解决方案。
+测试环境：
+
+Windows 7
+Redis 4.0.2.2 去下载 Windows 版本
+
+RDB 和 AOF 持久化解决方案Redis 提供两种持久化解决方案：RDB 持久化和 AOF 持久化。
+要点：
+RDB 持久化：可以在指定时间间隔内，生成数据集在这个时间点的快照。AOF 持久化：通过记录服务器执行的所有写操作命令，在服务器重启时，通过重新执行这些命令来还原数据。
+RDB 持久化方案采用 RDB 持久化方案时，Redis 会每隔一段时间对数据集进行快照备份，换句话说这种方案在服务器发生故障时可能造成数据的丢失。所以，如果对数据的完整性有比较强烈的要求，可能不太适用这种备份方案，即它适用于做数据的备份
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/20/算法/二分法排序/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/20/framework/mybatis/MyBatis 理解与掌握（关联查询）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/09/20/framework/mybatis/MyBatis 理解与掌握（关联查询）/" itemprop="url">MyBatis 理解与掌握（关联查询)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-20T08:36:03+08:00">
-                2018-09-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/mybatis/" itemprop="url" rel="index">
-                    <span itemprop="name">mybatis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000016438167
-
-MyBatis 理解与掌握（关联查询）@(MyBatis)[Java, 框架, MyBatis]
-一对一查询案例：查询所有订单信息，关联查询下单用户信息
-
-从 Order 的角度，一个订单对应一个用户：order—–&gt;user (一对一）从 User 的角度，一个用户可以有多个订单：user——&gt;order (多对一）
-场景需求：查询订单，同时关联查询用户信息——————————- 表设计 ——————————————在 t_orders(多方表) 中增加一个字段 user_id，作为外键
-——————————- 类设计 ——————————————
-1234567891011public class Order &#123;  private int oId;  private int number;  private User us
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/20/framework/mybatis/MyBatis 理解与掌握（关联查询）/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/09/20/framework/redis/Redis 持久化（persistence）/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -892,7 +743,7 @@ ifif 就是简单的条件判断 ，利用 if 语句我们可以实现某些简�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/19/语言/Java/JAVA 多线程与并发学习总结/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/20/算法/二分法排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -911,7 +762,7 @@ ifif 就是简单的条件判断 ，利用 if 语句我们可以实现某些简�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/09/19/语言/Java/JAVA 多线程与并发学习总结/" itemprop="url">JAVA 多线程与并发学习总结</a></h1>
+                <a class="post-title-link" href="/bugs/2018/09/20/算法/二分法排序/" itemprop="url">二分法排序</a></h1>
         
 
         <div class="post-meta">
@@ -923,168 +774,8 @@ ifif 就是简单的条件判断 ，利用 if 语句我们可以实现某些简�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T08:36:03+08:00">
-                2018-09-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000016041898
-
-1、计算机系统使用高速缓存来作为内存与处理器之间的缓冲，将运算需要用到的数据复制到缓存中，让计算能快速进行；当运算结束后再从缓存同步回内存之中，这样处理器就无需等待缓慢的内存读写了。
-缓存一致性：多处理器系统中，因为共享同一主内存，当多个处理器的运算任务都设计到同一块内存区域时，将可能导致各自的缓存数据不一致的情况，则同步回主内存时需要遵循一些协议。
-乱序执行优化：为了使得处理器内部的运算单位能尽量被充分利用。
-2、JAVA 内存模型目标是定义程序中各个变量的访问规则。(包括实例字段、静态字段和构成数组的元素，不包括局部变量和方法参数)
-1. 所有的变量都存储在主内存中 (虚拟机内存的一部分)。
-2. 每条线程都由自己的工作内存，线程的工作内存中保存了该线程使用到的变量的主内存副本拷贝，线程对变量的所有操作都必须在工作内存中进行，而不能直接读写主内
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/19/语言/Java/JAVA 多线程与并发学习总结/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/19/算法/二叉树遍历 (先序、中序、后序)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/09/19/算法/二叉树遍历 (先序、中序、后序)/" itemprop="url">二叉树遍历</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T08:36:03+08:00">
-                2018-09-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-20T08:36:03+08:00">
+                2018-09-20
               </time>
             
 
@@ -1146,24 +837,13 @@ ifif 就是简单的条件判断 ，利用 if 语句我们可以实现某些简�
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 https://www.jianshu.com/p/456af5480cee 
+本文由 简悦 SimpRead 转码， 原文地址 https://www.cnblogs.com/bugY/archive/2011/04/28/2032293.html
 
-二叉树有多种遍历方法，有层次遍历、深度优先遍历、广度优先遍历等。
-本文只涉及二叉树的先序、中序、后序的递归和非递归遍历。
-涉及到的代码都用 Java 编写。
-
-首先给出二叉树节点类：树节点：
-1234567891011class TreeNode &#123;    int val;    //左子树    TreeNode left;    //右子树    TreeNode right;    //构造方法    TreeNode(int x) &#123;        val = x;    &#125;&#125;
-
-无论是哪种遍历方法，考查节点的顺序都是一样的 (思考做试卷的时候，人工遍历考查顺序)。只不过有时候考查了节点，将其暂存，需要之后的过程中输出。
-
-如图 1 所示，三种遍历方法 (人工) 得到的结果分别是：
-
-先序：1 2 4 6 7
+算法思想简单描述：在插入第i个元素时，对前面的0～i-1元素进行折半，先跟他们中间的那个元素比，如果小，则对前半再进行折半，否则对后半进行折半，直到left&gt;right，然后再把第i个元素前1位与目标位置之间的所有元素后移，再把第i个元素放在目标位置上。    二分法排序最重要的一个步骤就是查找要插入元素的位置，也就是要在哪一个位置上放我们要准备排序的这个元素。当我们查找到位置以后就很好说了，和插入排序一样，将这个位置以后的所有元素都向后移动一位。这样就实现了二分法排序。　　然后是怎么查找着一个位置呢，就是不断的比较已排序的序列中的中间元素和要排序元素，如果大于的话，说明这个要排序的元素在已排序序列中点之前的序列。123456789101112131415161718192021222324252627282
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/19/算法/二叉树遍历 (先序、中序、后序)/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/09/20/算法/二分法排序/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1535,6 +1215,332 @@ A 文章：http://blog.csdn.net/lufeng20/article/details/24314381B 文章：http
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/19/算法/二叉树遍历 (先序、中序、后序)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/09/19/算法/二叉树遍历 (先序、中序、后序)/" itemprop="url">二叉树遍历</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T08:36:03+08:00">
+                2018-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 https://www.jianshu.com/p/456af5480cee 
+
+二叉树有多种遍历方法，有层次遍历、深度优先遍历、广度优先遍历等。
+本文只涉及二叉树的先序、中序、后序的递归和非递归遍历。
+涉及到的代码都用 Java 编写。
+
+首先给出二叉树节点类：树节点：
+1234567891011class TreeNode &#123;    int val;    //左子树    TreeNode left;    //右子树    TreeNode right;    //构造方法    TreeNode(int x) &#123;        val = x;    &#125;&#125;
+
+无论是哪种遍历方法，考查节点的顺序都是一样的 (思考做试卷的时候，人工遍历考查顺序)。只不过有时候考查了节点，将其暂存，需要之后的过程中输出。
+
+如图 1 所示，三种遍历方法 (人工) 得到的结果分别是：
+
+先序：1 2 4 6 7
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/09/19/算法/二叉树遍历 (先序、中序、后序)/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/19/语言/Java/JAVA 多线程与并发学习总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/09/19/语言/Java/JAVA 多线程与并发学习总结/" itemprop="url">JAVA 多线程与并发学习总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T08:36:03+08:00">
+                2018-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000016041898
+
+1、计算机系统使用高速缓存来作为内存与处理器之间的缓冲，将运算需要用到的数据复制到缓存中，让计算能快速进行；当运算结束后再从缓存同步回内存之中，这样处理器就无需等待缓慢的内存读写了。
+缓存一致性：多处理器系统中，因为共享同一主内存，当多个处理器的运算任务都设计到同一块内存区域时，将可能导致各自的缓存数据不一致的情况，则同步回主内存时需要遵循一些协议。
+乱序执行优化：为了使得处理器内部的运算单位能尽量被充分利用。
+2、JAVA 内存模型目标是定义程序中各个变量的访问规则。(包括实例字段、静态字段和构成数组的元素，不包括局部变量和方法参数)
+1. 所有的变量都存储在主内存中 (虚拟机内存的一部分)。
+2. 每条线程都由自己的工作内存，线程的工作内存中保存了该线程使用到的变量的主内存副本拷贝，线程对变量的所有操作都必须在工作内存中进行，而不能直接读写主内
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/09/19/语言/Java/JAVA 多线程与并发学习总结/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/18/语言/Java/Java内存/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1694,7 +1700,7 @@ java程序执行过程
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/12/语言/Java/Java SPI 机制详解/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/16/面试/饿了么/面试前准备/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -1713,7 +1719,7 @@ java程序执行过程
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/09/12/语言/Java/Java SPI 机制详解/" itemprop="url">Java SPI 机制详解</a></h1>
+                <a class="post-title-link" href="/bugs/2018/09/16/面试/饿了么/面试前准备/" itemprop="url">面试前准备</a></h1>
         
 
         <div class="post-meta">
@@ -1725,8 +1731,8 @@ java程序执行过程
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-12T16:36:03+08:00">
-                2018-09-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-16T13:36:03+08:00">
+                2018-09-16
               </time>
             
 
@@ -1748,8 +1754,8 @@ java程序执行过程
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/bugs/categories/面试/" itemprop="url" rel="index">
+                    <span itemprop="name">面试</span>
                   </a>
                 </span>
 
@@ -1788,17 +1794,20 @@ java程序执行过程
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 http://blueskykong.com/2018/05/14/java-spi/
+http和https的区别
 
-SPI 全称为 (Service Provider Interface) ，是 JDK 内置的一种服务提供发现机制。SPI 是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是 java.sql.Driver 接口，其他不同厂商可以针对同一接口做出不同的实现，mysql 和 postgresql 都有不同的实现提供给用户，而 Java 的 SPI 机制可以为某个接口寻找服务实现。
-
-类图中，接口对应定义的抽象 SPI 接口；实现方实现 SPI 接口；调用方依赖 SPI 接口。
-SPI 接口的定义在调用方，在概念上更依赖调用方；组织上位于调用方所在的包中；实现位于独立的包中。
-当接口属于实现方的情况，实现方提供了接口和实现，这个用法很常见，属于 API 调用。我们可以引用接口来达到调用某实现类
+HTTP：是互联网上应用最为广泛的一种网络协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少。
+HTTPS：是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
+HTTPS协议的主要作用可以分为两种：一种是建立一个信息安全通道，来保证数据传输的安全；另一种就是确认网站的真实性。
+HTTPS和HTTP的区别主要如下：
+1、https协议需要到ca申请证书，一般免费证书较少，因而需要一定费用。
+2、http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议。
+3、http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。
+4、http的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/12/语言/Java/Java SPI 机制详解/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/09/16/面试/饿了么/面试前准备/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1901,7 +1910,7 @@ SPI 接口的定义在调用方，在概念上更依赖调用方；组织上位�
               
               <div class="site-state-item site-state-categories">
                 <a href="/bugs/categories/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1912,7 +1921,7 @@ SPI 接口的定义在调用方，在概念上更依赖调用方；组织上位�
               
               <div class="site-state-item site-state-tags">
                 <a href="/bugs/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
