@@ -260,6 +260,795 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/25/数据库/MySQL/MySQL 中的索引详讲/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/09/25/数据库/MySQL/MySQL 中的索引详讲/" itemprop="url">MySQL 中的索引详讲</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T08:36:03+08:00">
+                2018-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5ba5f443f265da0ab673bb93
+
+
+今天看了一篇关于 mysql 索引的博客，感觉内容写的非常不错，但是排版说实话看得我头疼，所以将其转载过来，重新排了一下版，也是防止以后忘了的话可以方便重新温习博客地址：www.cnblogs.com/whgk/p/6179…
+
+一、什么是索引？为什么要建立索引？索引用于快速找出在某个列中有一特定值的行，不使用索引，MySQL 必须从第一条记录开始读完整个表，直到找出相关的行，表越大，查询数据所花费的时间就越多，如果表中查询的列有一个索引，MySQL 能够快速到达一个位置去搜索数据文件，而不必查看所有数据，那么将会节省很大一部分时间。
+
+例如：有一张 person 表，其中有 2W 条记录，记录着 2W 个人的信息。有一个 Phone 的字段记录每个人的电话号码，现在想要查询出电话号码为 xxxx 的人的信息。
+
+如果没有索引，那么将从表
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/09/25/数据库/MySQL/MySQL 中的索引详讲/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/25/数据库/何为脏读、不可重复读、幻读/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/09/25/数据库/何为脏读、不可重复读、幻读/" itemprop="url">何为脏读、不可重复读、幻读</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T08:36:03+08:00">
+                2018-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 http://ifeve.com/db_problem/
+
+2.0 前言事务的隔离性是指多个事务并发执行的时候相互之间不受到彼此的干扰的特性，隔离性是事务 ACID 特性中的 I，根据隔离程度从低到高分为 Read Uncommitted（读未提交），Read Committed（读已提交），Repeatable Read（可重复读），Serializable（串行化）四种隔离级别。在具体介绍事务隔离性前先介绍几个名词，以便说明数据库在并发操作时候可能存在的问题，以便展开来探讨这四种隔离级别对应存在哪些问题，哪些隔离级别解决了哪些问题。
+2.1 何为脏读、不可重复读、幻读
+脏读所谓脏读是指一个事务中访问到了另外一个事务未提交的数据，如下图：
+
+ image.png
+如上图开启两个会话来模拟两个线程同时去访问数据库表 table 中 id=1 的记录，假设两个会话开启前数据库中 table 表中 id=1 的记录行里面的列 age 值为 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/09/25/数据库/何为脏读、不可重复读、幻读/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/25/架构师系列/秒杀架构实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/09/25/架构师系列/秒杀架构实践/" itemprop="url">秒杀架构实践</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T08:36:03+08:00">
+                2018-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 http://ifeve.com/%e7%a7%92%e6%9d%80%e6%9e%b6%e6%9e%84%e5%ae%9e%e8%b7%b5/
+
+前言之前在 Java-Interview 中提到过秒杀架构的设计，这次基于其中的理论简单实现了一下。
+本文所有涉及的代码：
+
+https://github.com/crossoverJie/SSM
+https://github.com/crossoverJie/distributed-redis-tool
+
+最终架构图：
+系统架构设计. png
+先简单根据这个图谈下请求的流转，因为后面不管怎么改进这个都是没有变的。
+
+前端请求进入 web 层，对应的代码就是 controller。
+之后将真正的库存校验、下单等请求发往 Service 层（其中 RPC 调用依然采用的 dubbo，只是更新为最新版本，本次不会过多讨论 dubbo 相关的细节，有兴趣的可以查看 基于 dubbo 的分布式架构）
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/09/25/架构师系列/秒杀架构实践/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/25/算法/拜托，面试别再问我 TopK 了！！！/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/09/25/算法/拜托，面试别再问我 TopK 了！！！/" itemprop="url">TopK问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T08:36:03+08:00">
+                2018-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/entry/5ba385dbe51d450e5d0b0a76?utm_source=gold_browser_extension
+
+
+前言：本文将介绍随机选择，分治法，减治法的思想，以及 TopK 问题优化的来龙去脉，原理与细节，保证有收获。
+
+面试中，TopK，是问得比较多的几个问题之一，到底有几种方法，这些方案里蕴含的优化思路究竟是怎么样的，今天和大家聊一聊。
+画外音： 除非校招，我在面试过程中从不问 TopK 这个问题，默认大家都知道。
+问题描述：
+从 arr[1, n] 这 n 个数中，找出最大的 k 个数，这就是经典的 TopK 问题。
+栗子：
+从 arr[1, 12]={5,3,7,1,8,2,9,4,7,2,6,6} 这 n=12 个数中，找出最大的 k=5 个。
+一、排序
+
+排序是最容易想到的方法，将 n 个数排序之后，取出最大的 k 个，即为所得。
+伪代码：
+sort(arr, 1,
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/09/25/算法/拜托，面试别再问我 TopK 了！！！/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/22/算法/统计学/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/09/22/算法/统计学/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-22T21:17:24+08:00">
+                2018-09-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          mean:平均数重数:
+方差:用来表述数据和均值之间的偏离程度，总体方差的计算公式是每个一数与均值的差的二次方后求和，在除去数据数量N
+样本方差：
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/09/22/算法/统计学/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/20/framework/redis/Redis 持久化（persistence）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -584,7 +1373,7 @@ ifif 就是简单的条件判断 ，利用 if 语句我们可以实现某些简�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/20/语言/Java/夯实基础系列一：Java 基础总结/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/20/framework/mybatis/MyBatis 理解与掌握（关联查询）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -603,7 +1392,7 @@ ifif 就是简单的条件判断 ，利用 if 语句我们可以实现某些简�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/09/20/语言/Java/夯实基础系列一：Java 基础总结/" itemprop="url">夯实基础系列一：Java 基础总结</a></h1>
+                <a class="post-title-link" href="/bugs/2018/09/20/framework/mybatis/MyBatis 理解与掌握（关联查询）/" itemprop="url">MyBatis 理解与掌握（关联查询)</a></h1>
         
 
         <div class="post-meta">
@@ -638,8 +1427,8 @@ ifif 就是简单的条件判断 ，利用 if 语句我们可以实现某些简�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/bugs/categories/mybatis/" itemprop="url" rel="index">
+                    <span itemprop="name">mybatis</span>
                   </a>
                 </span>
 
@@ -678,17 +1467,19 @@ ifif 就是简单的条件判断 ，利用 if 语句我们可以实现某些简�
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000016461719
+本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000016438167
 
-前言大学期间接触 Java 的时间也不短了，不论学习还是实习，都让我发觉基础的重要性。互联网发展太快了，各种框架各种技术更新迭代的速度非常快，可能你刚好掌握了一门技术的应用，它却已经走在淘汰的边缘了。
-而学习新技术总要付出一定的时间成本，那么怎么降低时间成本呢？那就是打好基础，技术再怎么革新，底层的东西也很少会变动，牢固的基础会帮助你在各种新技术的学习中游刃有余，快速上手。
-因为我选择的方向是后台开发，所以谈谈我认为的基础有哪些。其他方向肯定也有自己的体系，从低层到高层，可以自己摸索。后台的话，我觉得网络知识，各种协议，web 知识，数据库知识，Linux 基本操作以及自己选择的后台语言知识，这些是最基础最需要牢固掌握的。
-所以从今天起，会出一系列与后台基础相关的博文，一是对自己过去学习的一个总结，二是分享出来，希望可以帮助到需要的人。
-概要Jav
+MyBatis 理解与掌握（关联查询）@(MyBatis)[Java, 框架, MyBatis]
+一对一查询案例：查询所有订单信息，关联查询下单用户信息
+
+从 Order 的角度，一个订单对应一个用户：order—–&gt;user (一对一）从 User 的角度，一个用户可以有多个订单：user——&gt;order (多对一）
+场景需求：查询订单，同时关联查询用户信息——————————- 表设计 ——————————————在 t_orders(多方表) 中增加一个字段 user_id，作为外键
+——————————- 类设计 ——————————————
+1234567891011public class Order &#123;  private int oId;  private int number;  private User us
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/20/语言/Java/夯实基础系列一：Java 基础总结/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/09/20/framework/mybatis/MyBatis 理解与掌握（关联查询）/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -898,7 +1689,7 @@ ifif 就是简单的条件判断 ，利用 if 语句我们可以实现某些简�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/19/Docker CheatSheet _ Docker 配置与实践清单/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/20/语言/Java/夯实基础系列一：Java 基础总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -917,7 +1708,7 @@ ifif 就是简单的条件判断 ，利用 if 语句我们可以实现某些简�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/09/19/Docker CheatSheet _ Docker 配置与实践清单/" itemprop="url">Docker CheatSheet | Docker 配置与实践</a></h1>
+                <a class="post-title-link" href="/bugs/2018/09/20/语言/Java/夯实基础系列一：Java 基础总结/" itemprop="url">夯实基础系列一：Java 基础总结</a></h1>
         
 
         <div class="post-meta">
@@ -929,168 +1720,8 @@ ifif 就是简单的条件判断 ，利用 if 语句我们可以实现某些简�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T08:36:03+08:00">
-                2018-09-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/docker/" itemprop="url" rel="index">
-                    <span itemprop="name">docker</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5ba11f635188255c8473a134?utm_source=gold_browser_extension
-
-
-📖 节选自 Awesome CheatSheet/Docker CheatSheet，对来自官方文档及 Docker Links 中链接内容的归档整理，包含了日常工作中常用的 Docker 概念与命令，如果对于 Linux 常用操作尚不熟悉的可以参考 Linux Commands CheatSheet。
-
-Docker CheatSheet | Docker 配置与实践清单Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从 Apache2.0 协议开源。Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上。
-
-虚拟机最大的瓶颈在于其需要特殊硬件虚拟化技术支持，并且携带完整的操作系统；而 D
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/19/Docker CheatSheet _ Docker 配置与实践清单/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/19/语言/Java/详细领悟 ThreadLocal 变量/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/09/19/语言/Java/详细领悟 ThreadLocal 变量/" itemprop="url">详细领悟ThreadLocal</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T08:36:03+08:00">
-                2018-09-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-20T08:36:03+08:00">
+                2018-09-20
               </time>
             
 
@@ -1152,662 +1783,17 @@ Docker CheatSheet | Docker 配置与实践清单Docker 是一个开源的应用�
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/entry/5b9dca7cf265da0a9223a056?utm_source=gold_browser_extension
+本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000016461719
 
-关于对 ThreadLocal 变量的理解，我今天查看一下午的博客，自己也写了 demo 来测试来看自己的理解到底是不是那么回事。从看到博客引出不解，到仔细查看 ThreadLocal 源码（JDK1.8），我觉得我很有必要记录下来我这大半天的收获，
-今天我研究的最多的就是这两篇文章说理解。我在这里暂称为 A 文章和 B 文章。以下是两篇博文地址，我是在看完 A 文章后，很有疑问，特别是在 A 文章后的各位网页的评论中，更加坚定我要弄清楚 ThreadLocal 到底是怎么一回事。
-A 文章：http://blog.csdn.net/lufeng20/article/details/24314381B 文章：http://www.cnblogs.com/dolphin05
+前言大学期间接触 Java 的时间也不短了，不论学习还是实习，都让我发觉基础的重要性。互联网发展太快了，各种框架各种技术更新迭代的速度非常快，可能你刚好掌握了一门技术的应用，它却已经走在淘汰的边缘了。
+而学习新技术总要付出一定的时间成本，那么怎么降低时间成本呢？那就是打好基础，技术再怎么革新，底层的东西也很少会变动，牢固的基础会帮助你在各种新技术的学习中游刃有余，快速上手。
+因为我选择的方向是后台开发，所以谈谈我认为的基础有哪些。其他方向肯定也有自己的体系，从低层到高层，可以自己摸索。后台的话，我觉得网络知识，各种协议，web 知识，数据库知识，Linux 基本操作以及自己选择的后台语言知识，这些是最基础最需要牢固掌握的。
+所以从今天起，会出一系列与后台基础相关的博文，一是对自己过去学习的一个总结，二是分享出来，希望可以帮助到需要的人。
+概要Jav
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/19/语言/Java/详细领悟 ThreadLocal 变量/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/19/算法/二叉树遍历 (先序、中序、后序)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/09/19/算法/二叉树遍历 (先序、中序、后序)/" itemprop="url">二叉树遍历</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T08:36:03+08:00">
-                2018-09-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 https://www.jianshu.com/p/456af5480cee 
-
-二叉树有多种遍历方法，有层次遍历、深度优先遍历、广度优先遍历等。
-本文只涉及二叉树的先序、中序、后序的递归和非递归遍历。
-涉及到的代码都用 Java 编写。
-
-首先给出二叉树节点类：树节点：
-1234567891011class TreeNode &#123;    int val;    //左子树    TreeNode left;    //右子树    TreeNode right;    //构造方法    TreeNode(int x) &#123;        val = x;    &#125;&#125;
-
-无论是哪种遍历方法，考查节点的顺序都是一样的 (思考做试卷的时候，人工遍历考查顺序)。只不过有时候考查了节点，将其暂存，需要之后的过程中输出。
-
-如图 1 所示，三种遍历方法 (人工) 得到的结果分别是：
-
-先序：1 2 4 6 7
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/19/算法/二叉树遍历 (先序、中序、后序)/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/19/语言/Java/JAVA 多线程与并发学习总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/09/19/语言/Java/JAVA 多线程与并发学习总结/" itemprop="url">JAVA 多线程与并发学习总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T08:36:03+08:00">
-                2018-09-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 https://segmentfault.com/a/1190000016041898
-
-1、计算机系统使用高速缓存来作为内存与处理器之间的缓冲，将运算需要用到的数据复制到缓存中，让计算能快速进行；当运算结束后再从缓存同步回内存之中，这样处理器就无需等待缓慢的内存读写了。
-缓存一致性：多处理器系统中，因为共享同一主内存，当多个处理器的运算任务都设计到同一块内存区域时，将可能导致各自的缓存数据不一致的情况，则同步回主内存时需要遵循一些协议。
-乱序执行优化：为了使得处理器内部的运算单位能尽量被充分利用。
-2、JAVA 内存模型目标是定义程序中各个变量的访问规则。(包括实例字段、静态字段和构成数组的元素，不包括局部变量和方法参数)
-1. 所有的变量都存储在主内存中 (虚拟机内存的一部分)。
-2. 每条线程都由自己的工作内存，线程的工作内存中保存了该线程使用到的变量的主内存副本拷贝，线程对变量的所有操作都必须在工作内存中进行，而不能直接读写主内
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/19/语言/Java/JAVA 多线程与并发学习总结/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/18/语言/Java/Java内存/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/09/18/语言/Java/Java内存/" itemprop="url">Java GC详解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-18T08:36:03+08:00">
-                2018-09-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-内存管理是计算机编程中的一个重要问题，一般来说，内存管理主要包括内存分配和内存回收 两个部分。
-类加载机制的流程：包括了加载、连接 (验证、准备、解析)、初始化五个阶段
-
-java程序执行过程
-
-1、首先Java源代码文件(.java后缀)会被Java编译器编译为字节码文件(.class后缀)，然后由JVM中的类加载器加载各个类的字节码文件，加载完毕之后，交由JVM执行引擎执行(执行过程还包括将字节码编译成机器码)，JVM执行引擎在执行字节码时首先会扫描四趟class文件来保证定义的类型的安全性，再检查空引用，数据越界，自动垃圾收集等。在整个程序执行过程中，JVM会用一段空间来存储程序执行期间需要用到的数据和相关信息，这段空间一般被称作为Runtime Data Area（运行时数据区），也就是我们常说的JVM内存
-2、类加载器分为启动类加载器(不继承classLoader，属于虚拟机的一部分；负责加载原生代码实现的Java核心库,包括加载JAVA_HOME中jre/lib/rt.ja
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/18/语言/Java/Java内存/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/16/面试/饿了么/面试前准备/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/09/16/面试/饿了么/面试前准备/" itemprop="url">面试前准备</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-16T13:36:03+08:00">
-                2018-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/面试/" itemprop="url" rel="index">
-                    <span itemprop="name">面试</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-http和https的区别
-
-HTTP：是互联网上应用最为广泛的一种网络协议，是一个客户端和服务器端请求和应答的标准（TCP），用于从WWW服务器传输超文本到本地浏览器的传输协议，它可以使浏览器更加高效，使网络传输减少。
-HTTPS：是以安全为目标的HTTP通道，简单讲是HTTP的安全版，即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
-HTTPS协议的主要作用可以分为两种：一种是建立一个信息安全通道，来保证数据传输的安全；另一种就是确认网站的真实性。
-HTTPS和HTTP的区别主要如下：
-1、https协议需要到ca申请证书，一般免费证书较少，因而需要一定费用。
-2、http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议。
-3、http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。
-4、http的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/16/面试/饿了么/面试前准备/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/09/20/语言/Java/夯实基础系列一：Java 基础总结/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1853,7 +1839,7 @@ HTTPS和HTTP的区别主要如下：
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/bugs/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/bugs/">1</a><span class="page-number current">2</span><a class="page-number" href="/bugs/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/bugs/page/6/">6</a><a class="extend next" rel="next" href="/bugs/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/bugs/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/bugs/">1</a><span class="page-number current">2</span><a class="page-number" href="/bugs/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/bugs/page/7/">7</a><a class="extend next" rel="next" href="/bugs/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1899,7 +1885,7 @@ HTTPS和HTTP的区别主要如下：
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
