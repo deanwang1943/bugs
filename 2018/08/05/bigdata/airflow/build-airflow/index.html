@@ -438,10 +438,10 @@
 </blockquote>
 <h3 id="airflow实例"><a href="#airflow实例" class="headerlink" title="airflow实例"></a>airflow实例</h3><ol>
 <li><p>测试一个dag中一个task</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">Test a task instance. This will run a task without checking <span class="keyword">for</span> dependencies or recording it’s state <span class="keyword">in</span> the database.</span></span><br><span class="line">airflow test [-h] [-sd SUBDIR] [-dr] [-tp TASK_PARAMS]</span><br><span class="line">           dag_id task_id execution_date</span><br><span class="line">airflow test dag_id task_id 2018-08-08</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>Test a task instance. This will run a task without checking for dependencies or recording it’s state in the database.</span><br><span class="line">airflow test [-h] [-sd SUBDIR] [-dr] [-tp TASK_PARAMS]</span><br><span class="line">           dag_id task_id execution_date</span><br><span class="line">airflow test dag_id task_id 2018-08-08</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>特定运行一个dag</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">Run subsections of a DAG <span class="keyword">for</span> a specified date range</span></span><br><span class="line">airflow backfill [-h] [-t TASK_REGEX] [-s START_DATE] [-e END_DATE] [-m] [-l]</span><br><span class="line">               [-x] [-a] [-i] [-I] [-sd SUBDIR] [--pool POOL]</span><br><span class="line">               [--delay_on_limit DELAY_ON_LIMIT] [-dr]</span><br><span class="line">               dag_id</span><br><span class="line">airflow backfill dag_id</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>Run subsections of a DAG for a specified date range</span><br><span class="line">airflow backfill [-h] [-t TASK_REGEX] [-s START_DATE] [-e END_DATE] [-m] [-l]</span><br><span class="line">               [-x] [-a] [-i] [-I] [-sd SUBDIR] [--pool POOL]</span><br><span class="line">               [--delay_on_limit DELAY_ON_LIMIT] [-dr]</span><br><span class="line">               dag_id</span><br><span class="line">airflow backfill dag_id</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>Run a single task instance</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">airflow run [-h] [-sd SUBDIR] [-m] [-f] [--pool POOL] [--cfg_path CFG_PATH]</span><br><span class="line">          [-l] [-A] [-i] [-I] [--ship_dag] [-p PICKLE]</span><br><span class="line">          dag_id task_id execution_date</span><br><span class="line">airflow run dag_id task_id 2018-08-08</span><br></pre></td></tr></table></figure>
@@ -492,8 +492,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/bugs/2018/07/31/bigdata/hadoop/hadoop-hive-docker/" rel="next" title="Hadoop with hive in docker">
-                <i class="fa fa-chevron-left"></i> Hadoop with hive in docker
+              <a href="/bugs/2018/08/05/Idea/" rel="next" title="Idea快捷键">
+                <i class="fa fa-chevron-left"></i> Idea快捷键
               </a>
             
           </div>
@@ -502,8 +502,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/bugs/2018/08/05/Idea/" rel="prev" title="Idea快捷键">
-                Idea快捷键 <i class="fa fa-chevron-right"></i>
+              <a href="/bugs/2018/08/06/语言/Java/高并发编程(三)/" rel="prev" title="Java高并发-线程池">
+                Java高并发-线程池 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -581,7 +581,7 @@
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

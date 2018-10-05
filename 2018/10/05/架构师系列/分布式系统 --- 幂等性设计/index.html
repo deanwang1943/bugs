@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="架构设计,分布式," />
 
 
 
@@ -87,16 +87,16 @@
 
 
 <meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https://www.cnblogs.com/wxgblogs/p/6639272.html  　　WEB 资源或 API 方法的幂等性是指一次和多次请求某一个资源应该具有同样的副作用。幂等性是系统的接口对外一种承诺 (而不是实现), 承诺只要调用接口成功, 外部多次调用对系统的影响是一致的。幂等性是分布式系统设计中的一个重要概念，对超时处理、">
-<meta name="keywords" content="Java Python 大数据">
+<meta name="keywords" content="架构设计,分布式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Bugs">
+<meta property="og:title" content="分布式系统 --- 幂等性设计">
 <meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/10/05/架构师系列/分布式系统 --- 幂等性设计/index.html">
 <meta property="og:site_name" content="Bugs">
 <meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://www.cnblogs.com/wxgblogs/p/6639272.html  　　WEB 资源或 API 方法的幂等性是指一次和多次请求某一个资源应该具有同样的副作用。幂等性是系统的接口对外一种承诺 (而不是实现), 承诺只要调用接口成功, 外部多次调用对系统的影响是一致的。幂等性是分布式系统设计中的一个重要概念，对超时处理、">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-02T14:03:35.717Z">
+<meta property="og:updated_time" content="2018-10-05T08:28:50.072Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Bugs">
+<meta name="twitter:title" content="分布式系统 --- 幂等性设计">
 <meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://www.cnblogs.com/wxgblogs/p/6639272.html  　　WEB 资源或 API 方法的幂等性是指一次和多次请求某一个资源应该具有同样的副作用。幂等性是系统的接口对外一种承诺 (而不是实现), 承诺只要调用接口成功, 外部多次调用对系统的影响是一致的。幂等性是分布式系统设计中的一个重要概念，对超时处理、">
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <title> | Bugs</title>
+  <title>分布式系统 --- 幂等性设计 | Bugs</title>
   
 
 
@@ -277,7 +277,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">分布式系统 --- 幂等性设计</h1>
         
 
         <div class="post-meta">
@@ -289,7 +289,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-05T06:45:41+00:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-05T00:36:03+00:00">
                 2018-10-05
               </time>
             
@@ -299,6 +299,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -383,6 +405,14 @@ update tableName set name=#name#,version=version+1 where version=#version#
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/架构设计/" rel="tag"><i class="fa fa-tag"></i> 架构设计</a>
+          
+            <a href="/bugs/tags/分布式/" rel="tag"><i class="fa fa-tag"></i> 分布式</a>
+          
+        </div>
+      
 
       
       
@@ -392,8 +422,8 @@ update tableName set name=#name#,version=version+1 where version=#version#
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/bugs/2018/10/05/bigdata/spark/深度剖析 Spark 分布式执行原理 - AIQ/" rel="next" title="">
-                <i class="fa fa-chevron-left"></i> 
+              <a href="/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/" rel="next" title="垃圾回收的基础算法">
+                <i class="fa fa-chevron-left"></i> 垃圾回收的基础算法
               </a>
             
           </div>
@@ -401,6 +431,10 @@ update tableName set name=#name#,version=version+1 where version=#version#
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/10/05/架构师系列/什么是分布式锁？/" rel="prev" title="什么是分布式锁？">
+                什么是分布式锁？ <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -477,7 +511,7 @@ update tableName set name=#name#,version=version+1 where version=#version#
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

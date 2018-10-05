@@ -353,7 +353,7 @@
 <p>本文基于Hadoop in docker的文章后构建的，具体base的docker镜像都为hadoop3构建</p>
 </blockquote>
 <h3 id="构建镜像文件"><a href="#构建镜像文件" class="headerlink" title="构建镜像文件"></a>构建镜像文件</h3><p><code>Dockerfile</code></p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> dean1943/hadoop3</span><br><span class="line"></span><br><span class="line"><span class="keyword">ENV</span> HIVE_HOME /opt/hive</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir -p <span class="variable">$HIVE_HOME</span> &amp;&amp; mkdir -p <span class="variable">$HIVE_HOME</span>/tmp</span></span><br><span class="line"><span class="bash">COPY hive.tar.gz /opt/hive/installer.tgz</span></span><br><span class="line"><span class="bash">RUN <span class="built_in">cd</span> /opt/hive &amp;&amp; tar --strip-components=1 -xzf installer.tgz &amp;&amp; rm installer.tgz</span></span><br><span class="line"><span class="bash"></span></span><br><span class="line"><span class="bash">COPY hive-default.xml /opt/hive/conf/hive-site.xml</span></span><br><span class="line"><span class="bash">COPY hive-env.sh /opt/hive/conf/hive-env.sh</span></span><br><span class="line"><span class="bash"></span></span><br><span class="line"><span class="bash">ENV PATH <span class="variable">$PATH</span>:<span class="variable">$HIVE_HOME</span>/bin</span></span><br><span class="line"><span class="bash"></span></span><br><span class="line"><span class="bash"></span></span><br><span class="line"><span class="bash">CMD [<span class="string">'/bin/bash'</span>, <span class="string">'/init.sh'</span>]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> dean1943/hadoop3</span><br><span class="line"></span><br><span class="line"><span class="keyword">ENV</span> HIVE_HOME /opt/hive</span><br><span class="line"><span class="keyword">RUN</span> mkdir -p $HIVE_HOME &amp;&amp; mkdir -p $HIVE_HOME/tmp</span><br><span class="line">COPY hive.tar.gz /opt/hive/installer.tgz</span><br><span class="line">RUN cd /opt/hive &amp;&amp; tar --strip-components=1 -xzf installer.tgz &amp;&amp; rm installer.tgz</span><br><span class="line"></span><br><span class="line">COPY hive-default.xml /opt/hive/conf/hive-site.xml</span><br><span class="line">COPY hive-env.sh /opt/hive/conf/hive-env.sh</span><br><span class="line"></span><br><span class="line">ENV PATH $PATH:$HIVE_HOME/bin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CMD ['/bin/bash', '/init.sh']</span><br></pre></td></tr></table></figure>
 <h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p><code>hive-env.sh</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export HADOOP_HOME=/opt/hadoop</span><br><span class="line">export HIVE_CONF_DIR=/opt/hive/conf</span><br></pre></td></tr></table></figure>
 <p><code>hive-site.xml</code></p>
@@ -429,8 +429,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/bugs/2018/08/05/bigdata/airflow/build-airflow/" rel="prev" title="构建Apache airflow开发环境">
-                构建Apache airflow开发环境 <i class="fa fa-chevron-right"></i>
+              <a href="/bugs/2018/08/05/Idea/" rel="prev" title="Idea快捷键">
+                Idea快捷键 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -508,7 +508,7 @@
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

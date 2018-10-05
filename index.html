@@ -260,139 +260,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/架构师系列/分布式系统 --- 幂等性设计/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/10/05/架构师系列/分布式系统 --- 幂等性设计/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-05T14:45:41+08:00">
-                2018-10-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 https://www.cnblogs.com/wxgblogs/p/6639272.html
-
-　　WEB 资源或 API 方法的幂等性是指一次和多次请求某一个资源应该具有同样的副作用。幂等性是系统的接口对外一种承诺 (而不是实现), 承诺只要调用接口成功, 外部多次调用对系统的影响是一致的。幂等性是分布式系统设计中的一个重要概念，对超时处理、系统恢复等具有重要意义。声明为幂等的接口会认为外部调用失败是常态, 并且失败之后必然会有重试。例如，在因网络中断等原因导致请求方未能收到请求返回值的情况下，如果该资源具备幂等性，请求方只需要重新请求即可，而无需担心重复调用会产生错误。实际上，我们常用的 HTTP 协议的方法是具有幂等性语义要求的，比如：get 方法用于获取资源，不应有副作用，因此是幂等的；post 方法用于创建资源，每次请求都会产生新的资源，因此不具备幂等性；put 方法用于更新资源，是幂等的；delete 方法用于删除资源，也
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/10/05/架构师系列/分布式系统 --- 幂等性设计/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/bigdata/spark/深度剖析 Spark 分布式执行原理 - AIQ/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -539,7 +406,7 @@ Spark REPL（spa
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -558,7 +425,7 @@ Spark REPL（spa
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/" itemprop="url">垃圾回收的基础算法</a></h1>
+                <a class="post-title-link" href="/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/" itemprop="url">从新浪微博分析高性能高并发网络架构的设计</a></h1>
         
 
         <div class="post-meta">
@@ -593,8 +460,8 @@ Spark REPL（spa
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/bugs/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
                   </a>
                 </span>
 
@@ -633,17 +500,18 @@ Spark REPL（spa
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5bade237e51d450ea401fd71?utm_source=gold_browser_extension
+本文由 简悦 SimpRead 转码， 原文地址 http://www.3xmq.com/article/1515685180389
 
-《对象搜索算法与回收算法》介绍了垃圾回收的基础算法，相当于垃圾回收的方法论。接下来就详细看看垃圾回收的具体实现。
-上文提到过现代的商用虚拟机的都是采用分代收集的，不同的区域用不同的收集器。常用的 7 种收集器，其适用的范围如图所示
- Serial、ParNew、Parallel Scavenge 用于新生代；CMS、Serial Old、Paralled Old 用于老年代。 并且他们相互之间以相对固定的组合使用（具体组合关系如上图）。G1 是一个独立的收集器不依赖其他 6 种收集器。ZGC 是目前 JDK 11 的实验收集器。
-下面来看看各个收集器的特性
-Serial 收集器Serial，是单线程执行垃圾回收的。当需要执行垃圾回收时，程序会暂停一切手上的工作，然后单线程执
+
+作者 | 卫向军来自 | cnblogs
+
+架构以及我理解中架构的本质
+在开始谈我对架构本质的理解之前，先谈谈对今天技术沙龙主题的个人见解，千万级规模的网站感觉数量级是非常大的，对这个数量级我们战略上 要重 视 它 ， 战术上又 要 藐 视 它。先举个例子感受一下千万级到底是什么数量级？现在很流行的优步 (Uber)，从媒体公布的信息看，它每天接单量平均在百万左右， 假如每天有 10 个小时的服务时间，平均 QPS 只有 30 左右。对于一个后台服务器，单机的平均 QPS 可以到达 800-1000，单独看写的业务量很简单 。为什么我们又不能说轻视它？第一，我们看它的数据存储，每天一百万的话，一年数据量的规模是多少？其次，刚才说的订单量，每一个订单要推送给附近的司机、司机要并发抢单，后面业务场景的访问量往往是前者的上百倍，轻松就超过上亿级别了。
+今天
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -882,7 +750,7 @@ Google 公司实现的粗粒度分布式锁服务，
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/架构师系列/分布式系统 --- 幂等性设计/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -901,7 +769,7 @@ Google 公司实现的粗粒度分布式锁服务，
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/" itemprop="url">从新浪微博分析高性能高并发网络架构的设计</a></h1>
+                <a class="post-title-link" href="/bugs/2018/10/05/架构师系列/分布式系统 --- 幂等性设计/" itemprop="url">分布式系统 --- 幂等性设计</a></h1>
         
 
         <div class="post-meta">
@@ -976,18 +844,172 @@ Google 公司实现的粗粒度分布式锁服务，
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 http://www.3xmq.com/article/1515685180389
+本文由 简悦 SimpRead 转码， 原文地址 https://www.cnblogs.com/wxgblogs/p/6639272.html
 
-
-作者 | 卫向军来自 | cnblogs
-
-架构以及我理解中架构的本质
-在开始谈我对架构本质的理解之前，先谈谈对今天技术沙龙主题的个人见解，千万级规模的网站感觉数量级是非常大的，对这个数量级我们战略上 要重 视 它 ， 战术上又 要 藐 视 它。先举个例子感受一下千万级到底是什么数量级？现在很流行的优步 (Uber)，从媒体公布的信息看，它每天接单量平均在百万左右， 假如每天有 10 个小时的服务时间，平均 QPS 只有 30 左右。对于一个后台服务器，单机的平均 QPS 可以到达 800-1000，单独看写的业务量很简单 。为什么我们又不能说轻视它？第一，我们看它的数据存储，每天一百万的话，一年数据量的规模是多少？其次，刚才说的订单量，每一个订单要推送给附近的司机、司机要并发抢单，后面业务场景的访问量往往是前者的上百倍，轻松就超过上亿级别了。
-今天
+　　WEB 资源或 API 方法的幂等性是指一次和多次请求某一个资源应该具有同样的副作用。幂等性是系统的接口对外一种承诺 (而不是实现), 承诺只要调用接口成功, 外部多次调用对系统的影响是一致的。幂等性是分布式系统设计中的一个重要概念，对超时处理、系统恢复等具有重要意义。声明为幂等的接口会认为外部调用失败是常态, 并且失败之后必然会有重试。例如，在因网络中断等原因导致请求方未能收到请求返回值的情况下，如果该资源具备幂等性，请求方只需要重新请求即可，而无需担心重复调用会产生错误。实际上，我们常用的 HTTP 协议的方法是具有幂等性语义要求的，比如：get 方法用于获取资源，不应有副作用，因此是幂等的；post 方法用于创建资源，每次请求都会产生新的资源，因此不具备幂等性；put 方法用于更新资源，是幂等的；delete 方法用于删除资源，也
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/10/05/架构师系列/分布式系统 --- 幂等性设计/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/" itemprop="url">垃圾回收的基础算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-05T08:36:03+08:00">
+                2018-10-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5bade237e51d450ea401fd71?utm_source=gold_browser_extension
+
+《对象搜索算法与回收算法》介绍了垃圾回收的基础算法，相当于垃圾回收的方法论。接下来就详细看看垃圾回收的具体实现。
+上文提到过现代的商用虚拟机的都是采用分代收集的，不同的区域用不同的收集器。常用的 7 种收集器，其适用的范围如图所示
+ Serial、ParNew、Parallel Scavenge 用于新生代；CMS、Serial Old、Paralled Old 用于老年代。 并且他们相互之间以相对固定的组合使用（具体组合关系如上图）。G1 是一个独立的收集器不依赖其他 6 种收集器。ZGC 是目前 JDK 11 的实验收集器。
+下面来看看各个收集器的特性
+Serial 收集器Serial，是单线程执行垃圾回收的。当需要执行垃圾回收时，程序会暂停一切手上的工作，然后单线程执
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1971,7 +1993,7 @@ HashMap.Size &gt;= Capacity * L*
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
