@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 http://www.6aiq.com/article/1523271021117   让代码分布式运行是所有分布式计算框架需要解决的最基本的问题。Spark 是大数据领域中相当火热的计算框架，在大数据分析领域有一统江湖的趋势，网上对于 Spark 源码分析的文章有很多，但是介绍 Spark 如何处理代码分布式执行问题的资料少之又少，这也是我撰写">
+<meta name="keywords" content="Java Python 大数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bugs">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/10/05/bigdata/spark/深度剖析 Spark 分布式执行原理 - AIQ/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 http://www.6aiq.com/article/1523271021117   让代码分布式运行是所有分布式计算框架需要解决的最基本的问题。Spark 是大数据领域中相当火热的计算框架，在大数据分析领域有一统江湖的趋势，网上对于 Spark 源码分析的文章有很多，但是介绍 Spark 如何处理代码分布式执行问题的资料少之又少，这也是我撰写">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://p6akvwd7g.bkt.clouddn.com/file/2018/4/94d95c216b334afe9fe1c24a7653c556-image.png">
+<meta property="og:image" content="http://p6akvwd7g.bkt.clouddn.com/file/2018/4/88640c1f4b994b9aad057ecb64b063a4-image.png">
+<meta property="og:image" content="http://p6akvwd7g.bkt.clouddn.com/file/2018/4/9ee73474fd6048d9bf95d1499b3ba7c3-image.png">
+<meta property="og:updated_time" content="2018-10-02T14:03:45.645Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bugs">
+<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 http://www.6aiq.com/article/1523271021117   让代码分布式运行是所有分布式计算框架需要解决的最基本的问题。Spark 是大数据领域中相当火热的计算框架，在大数据分析领域有一统江湖的趋势，网上对于 Spark 源码分析的文章有很多，但是介绍 Spark 如何处理代码分布式执行问题的资料少之又少，这也是我撰写">
+<meta name="twitter:image" content="http://p6akvwd7g.bkt.clouddn.com/file/2018/4/94d95c216b334afe9fe1c24a7653c556-image.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/10/05/bigdata/spark/深度剖析 Spark 分布式执行原理 - AIQ/"/>
+
+
+
+
+
+  <title> | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">微笑的周末</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/bigdata/spark/深度剖析 Spark 分布式执行原理 - AIQ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-05T06:44:22+00:00">
+                2018-10-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="http://www.6aiq.com/article/1523271021117" target="_blank" rel="noopener">http://www.6aiq.com/article/1523271021117</a></p>
+</blockquote>
+<blockquote>
+<p>让代码分布式运行是所有分布式计算框架需要解决的最基本的问题。<br>Spark 是大数据领域中相当火热的计算框架，在大数据分析领域有一统江湖的趋势，网上对于 Spark 源码分析的文章有很多，但是介绍 Spark 如何处理代码分布式执行问题的资料少之又少，这也是我撰写文本的目的。</p>
+</blockquote>
+<p>Spark 运行在 JVM 之上，任务的执行依赖序列化及类加载机制，因此本文会重点围绕这两个主题介绍 Spark 对代码分布式执行的处理。本文假设读者对 Spark、Java、Scala 有一定的了解，代码示例基于 Scala，Spark 源码基于 2.1.0 版本。阅读本文你可以了解到：</p>
+<ul>
+<li><p>Java 对象序列化机制</p>
+</li>
+<li><p>类加载器的作用</p>
+</li>
+<li><p>Spark 对 closure 序列化的处理</p>
+</li>
+<li><p>Spark Application 的 class 是如何加载的</p>
+</li>
+<li><p>Spark REPL（spark-shell）中的代码是如何分布式执行的</p>
+</li>
+</ul>
+<p>根据以上内容，读者可以基于 JVM 相关的语言构建一个自己的分布式计算服务框架。</p>
+<h2 id="Java-对象序列化"><a href="#Java-对象序列化" class="headerlink" title="Java 对象序列化"></a><a href="http://www.6aiq.com/forward?goto=" target="_blank" rel="noopener"></a><strong>Java 对象序列化</strong></h2><p>序列化 (Serialization) 是将对象的状态信息转换为可以存储或传输的形式的过程。所谓的状态信息指的是对象在内存中的数据，Java 中一般指对象的字段数据。我们开发 Java 应用的时候或多或少都处理过对象序列化，对象常见的序列化形式有 JSON、XML 等。</p>
+<p>JDK 中内置一个 ObjectOutputStream 类可以将对象序列化为二进制数据，使用 ObjectOutputStream 序列化对象时，要求对象所属的类必须实现 java.io.Serializable 接口，否则会报 java.io.NotSerializableException 的异常。</p>
+<p>基本的概念先介绍到这。接下来我们一起探讨一个问题：Java 的方法能否被序列化？</p>
+<p>假设我们有如下的 SimpleTask 类（Java 类）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import java.io.Serializable;</span><br><span class="line"></span><br><span class="line">public abstract class Task implements Serializable &#123;</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        System.out.println(&quot;run task!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class SimpleTask extends Task &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        System.out.println(&quot;run simple task!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还有一个用于将对象序列化到文件的工具类 FileSerializer：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import java.io.&#123;FileInputStream, FileOutputStream, ObjectInputStream, ObjectOutputStream&#125;</span><br><span class="line"></span><br><span class="line">object FileSerializer &#123;</span><br><span class="line"></span><br><span class="line">  def writeObjectToFile(obj: Object, file: String) = &#123;</span><br><span class="line">    val fileStream = new FileOutputStream(file)</span><br><span class="line">    val oos = new ObjectOutputStream(fileStream)</span><br><span class="line">    oos.writeObject(obj)</span><br><span class="line">    oos.close()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  def readObjectFromFile(file: String): Object = &#123;</span><br><span class="line">    val fileStream = new FileInputStream(file)</span><br><span class="line">    val ois = new ObjectInputStream(fileStream)</span><br><span class="line">    val obj = ois.readObject()</span><br><span class="line">    ois.close()</span><br><span class="line">    obj</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单起见，我们采用将对象序列化到文件，然后通过反序列化执行的方式来模拟代码的分布式执行。SimpleTask 就是我们需要模拟分布式执行的代码。</p>
+<p>我们先将 SimpleTask 序列化到文件中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val task = new SimpleTask()</span><br><span class="line">FileSerializer.writeObjectToFile(task, &quot;task.ser&quot;)</span><br></pre></td></tr></table></figure>
+<p>然后将 SimpleTask 类从我们的代码中删除，此时只有 task.ser 文件中含有 task 对象的序列化数据。</p>
+<p>接下来我们执行下面的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">val task = FileSerializer.readObjectFromFile(&quot;task.ser&quot;).asInstanceOf[Task]</span><br><span class="line">task.run()</span><br></pre></td></tr></table></figure>
+<p>请各位读者思考，上面的代码执行后会出现什么样的结果？</p>
+<ul>
+<li>输出：run simple task! ?</li>
+<li>输出：run task! ?</li>
+<li>还是会报错？<br>实际执行会出现形如下面的异常：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread &quot;main&quot; java.lang.ClassNotFoundException: site.stanzhai.serialization.SimpleTask</span><br><span class="line">    at java.net.URLClassLoader.findClass(URLClassLoader.java:381)</span><br><span class="line">    at java.lang.ClassLoader.loadClass(ClassLoader.java:424)</span><br><span class="line">    at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)</span><br><span class="line">    at java.lang.ClassLoader.loadClass(ClassLoader.java:357)</span><br><span class="line">    at java.lang.Class.forName0(Native Method)</span><br><span class="line">    at java.lang.Class.forName(Class.java:348)</span><br><span class="line">    at java.io.ObjectInputStream.resolveClass(ObjectInputStream.java:628)</span><br><span class="line">    at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1620)</span><br><span class="line">    at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1521)</span><br><span class="line">    at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1781)</span><br><span class="line">    at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1353)</span><br><span class="line">    at java.io.ObjectInputStream.readObject(ObjectInputStream.java:373)</span><br><span class="line">    at site.stanzhai.serialization.FileSerializer$.readObjectFromFile(FileSerializer.scala:20)</span><br></pre></td></tr></table></figure>
+<p>从异常信息来看，反序列过程中找不到 SimpleTask 类。由此可以推断序列化后的数据是不包含类的定义信息的。那么，ObjectOutputStream 到底序列化了哪些信息呢？</p>
+<p>对 ObjectOutputStream 实现机制感兴趣的同学可以去看下 JDK 中这个类的实现，ObjectOutputStream 序列化对象时，从父类的数据开始序列化到子类，如果 override 了 writeObject 方法，会反射调用 writeObject 来序列化数据。序列化的数据会按照以下的顺序以二进制的形式输出到 OutputStream 中：<br>类的 descriptor（仅仅是类的描述信息，不包含类的定义）<br>对象的 primitive 类型数据 (int,boolean 等，String 和 Array 是特殊处理的)<br>对象的其他 obj 数据</p>
+<p>回到我们的问题上：Java 的方法能否被序列化？通过我们代码示例及分析，想必大家对这个问题应该清楚了。通过 ObjectOutputStream 序列化对象，仅包含类的描述（而非定义），对象的状态数据，由于缺少类的定义，也就是缺少 SimpleTask 的字节码，反序列化过程中就会出现 ClassNotFound 的异常。</p>
+<p>如何让我们反序列化的对象能正常使用呢？我们还需要了解类加载器。</p>
+<p>类加载器：ClassLoader<br>ClassLoader 在 Java 中是一个抽象类，ClassLoader 的作用是加载类，给定一个类名，ClassLoader 会尝试查找或生成类的定义，一种典型的加载策略是将类名对应到文件名上，然后从文件系统中加载 class file。</p>
+<p>在我们的示例中，反序列化 SimpleTask 失败，是因为 JVM 找不到类的定义，因此要确保正常反序列化，我们必须将 SimpleTask 的 class 文件保存下来，反序列化的时候能够让 ClassLoader 加载到 SimpleTask 的 class。</p>
+<p>接下来，我们对代码做一些改造，添加一个 ClassManipulator 类，用于将对象的 class 文件导出到当前目录的文件中，默认的文件名就是对象的类名（不含包名）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">object ClassManipulator &#123;</span><br><span class="line">  def saveClassFile(obj: AnyRef): Unit = &#123;</span><br><span class="line">    val classLoader = obj.getClass.getClassLoader</span><br><span class="line">    val className = obj.getClass.getName</span><br><span class="line">    val classFile = className.replace(&apos;.&apos;, &apos;/&apos;) + &quot;.class&quot;</span><br><span class="line">    val stream = classLoader.getResourceAsStream(classFile)</span><br><span class="line"></span><br><span class="line">    // just use the class simple name as the file name</span><br><span class="line">    val outputFile = className.split(&apos;.&apos;).last + &quot;.class&quot;</span><br><span class="line">    val fileStream = new FileOutputStream(outputFile)</span><br><span class="line">    var data = stream.read()</span><br><span class="line">    while (data != -1) &#123;</span><br><span class="line">      fileStream.write(data)</span><br><span class="line">      data = stream.read()</span><br><span class="line">    &#125;</span><br><span class="line">    fileStream.flush()</span><br><span class="line">    fileStream.close()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>按照 JVM 的规范，假设对 package.Simple 这样的一个类编译，编译后的 class 文件为 package/Simple.class，因此我们可以根据路径规则，从当前 JVM 进程的 Resource 中得到指定类的 class 数据。</p>
+<p>在删除 SimpleTask 前，我们除了将 task 序列化到文件外，还需要将 task 的 class 文件保存起来，执行完下面的代码，SimpleTask 类就可以从代码中剔除了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val task = new SimpleTask()</span><br><span class="line">FileSerializer.writeObjectToFile(task, &quot;task.ser&quot;)</span><br><span class="line">ClassManipulator.saveClassFile(task)</span><br></pre></td></tr></table></figure>
+<p>由于我们保存 class 文件的方式比较特殊，既不在 jar 包中，也不是按 package/ClassName.class 这种标准的保存方式，因此还需要实现一个自定义的 FileClassLoader 按照我们保存 class 文件的方式来加载所需的类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class FileClassLoader() extends ClassLoader &#123;</span><br><span class="line">  override def findClass(fullClassName: String): Class[_] = &#123;</span><br><span class="line">    val file = fullClassName.split(&apos;.&apos;).last + &quot;.class&quot;</span><br><span class="line">    val in = new FileInputStream(file)</span><br><span class="line">    val bos = new ByteArrayOutputStream</span><br><span class="line">    val bytes = new Array[Byte](4096)</span><br><span class="line">    var done = false</span><br><span class="line">    while (!done) &#123;</span><br><span class="line">      val num = in.read(bytes)</span><br><span class="line">      if (num &gt;= 0) &#123;</span><br><span class="line">        bos.write(bytes, 0, num)</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        done = true</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    val data = bos.toByteArray</span><br><span class="line">    defineClass(fullClassName, data, 0, data.length)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ObjectInputStream 类用于对象的反序列化，在反序列化过程中，它根据序列化数据中类的 descriptor 信息，调用 resolveClass 方法加载对应的类，但是通过 Class.forName 加载 class 使用的并不是我们自定义的 FileClassLoader，所以如果直接使用 ObjectInputStream 进行反序列，依然会因为找不到类而报错，下面是 resolveClass 的源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">protected Class&lt;?&gt; resolveClass(ObjectStreamClass desc)</span><br><span class="line">    throws IOException, ClassNotFoundException</span><br><span class="line">&#123;</span><br><span class="line">    String name = desc.getName();</span><br><span class="line">    try &#123;</span><br><span class="line">        return Class.forName(name, false, latestUserDefinedLoader());</span><br><span class="line">    &#125; catch (ClassNotFoundException ex) &#123;</span><br><span class="line">        Class&lt;?&gt; cl = primClasses.get(name);</span><br><span class="line">        if (cl != null) &#123;</span><br><span class="line">            return cl;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            throw ex;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了能让 ObjectInputStream 在序列化的过程中使用我们自定义的 ClassLoader，我们还需要对 FileSerializer 中的 readObjectFromFile 方法做些改造，修改的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def readObjectFromFile(file: String, classLoader: ClassLoader): Object = &#123;</span><br><span class="line">  val fileStream = new FileInputStream(file)</span><br><span class="line">  val ois = new ObjectInputStream(fileStream) &#123;</span><br><span class="line">    override def resolveClass(desc: ObjectStreamClass): Class[_] =</span><br><span class="line">      Class.forName(desc.getName, false, classLoader)</span><br><span class="line">  &#125;</span><br><span class="line">  val obj = ois.readObject()</span><br><span class="line">  ois.close()</span><br><span class="line">  obj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后，我们将反序列化的代码调整为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val fileClassLoader = new FileClassLoader()</span><br><span class="line">val task = FileSerializer.readObjectFromFile(&quot;task.ser&quot;, fileClassLoader).asInstanceOf[Task]</span><br><span class="line">task.run()</span><br></pre></td></tr></table></figure>
+<p>反序列化的过程中能够通过 fileClassLoader 加载到所需的类，这样我们在执行就不会出错了，最终的执行结果为：run simple task!。到此为止，我们已经完整地模拟了代码分布式执行的过程。完整的示例代码，请参阅：<a href="http://www.6aiq.com/forward?goto=https%3A%2F%2Fgithub.com%2Fstanzhai%2Fjvm-exercise%2Ftree%2Fmaster%2Fsrc%2Fmain%2Fscala%2Fsite%2Fstanzhai%2Fexercise%2Fserialization" target="_blank" rel="noopener">点击这里</a> </p>
+<p>Spark 对 closure 序列化的处理<br>我们依然通过一个示例，快速了解下 Scala 对闭包的处理，下面是从 Scala 的 REPL 中执行的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; val n = 2</span><br><span class="line">n: Int = 2</span><br><span class="line"></span><br><span class="line">scala&gt; val f = (x: Int) =&gt; x * n</span><br><span class="line">f: Int =&gt; Int = &lt;function1&gt;</span><br><span class="line"></span><br><span class="line">scala&gt; Seq.range(0, 5).map(f)</span><br><span class="line">res0: Seq[Int] = List(0, 2, 4, 6, 8)</span><br></pre></td></tr></table></figure>
+<p>f 是采用 Scala 的 =&gt; 语法糖定义的一个闭包，为了弄清楚 Scala 是如何处理闭包的，我们继续执行下面的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; f.getClass</span><br><span class="line">res0: Class[_ &lt;: Int =&gt; Int] = class $anonfun$1</span><br><span class="line"></span><br><span class="line">scala&gt; f.isInstanceOf[Function1[Int, Int]]</span><br><span class="line">res1: Boolean = true</span><br><span class="line"></span><br><span class="line">scala&gt; f.isInstanceOf[Serializable]</span><br><span class="line">res2: Boolean = true</span><br></pre></td></tr></table></figure>
+<p>可以看出 f 对应的类为 $anonfun$1 是 Function1[Int, Int] 的子类，而且实现了 Serializable 接口，这说明 f 是可以被序列化的。</p>
+<p>Spark 对于数据的处理基本都是基于闭包，下面是一个简单的 Spark 分布式处理数据的代码片段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">val spark = SparkSession.builder().appName(&quot;demo&quot;).master(&quot;local&quot;).getOrCreate()</span><br><span class="line">val sc = spark.sparkContext</span><br><span class="line">val data = Array(1, 2, 3, 4, 5)</span><br><span class="line">val distData = sc.parallelize(data)</span><br><span class="line">val sum = distData.map(x =&gt; x * 2).sum()</span><br><span class="line">println(sum)  // 30.0</span><br></pre></td></tr></table></figure>
+<p>对于 distData.map(x =&gt; x <em> 2)，map 中传的一个匿名函数，也是一个非常简单的闭包，对 distData 中的每个元素 </em>2，我们知道对于这种形式的闭包，Scala 编译后是可以序列化的，所以我们的代码能正常执行也合情合理。将入我们将处理函数的闭包定义到一个类中，然后将代码改造为如下形式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Operation &#123;</span><br><span class="line">  val n = 2</span><br><span class="line">  def multiply = (x: Int) =&gt; x * n</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">val sum = distData.map(new Operation().multiply).sum()</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>我们在去执行，会出现什么样的结果呢？实际执行会出现这样的异常：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread &quot;main&quot; org.apache.spark.SparkException: Task not serializable</span><br><span class="line">    at org.apache.spark.util.ClosureCleaner$.ensureSerializable(ClosureCleaner.scala:298)</span><br><span class="line">    ...</span><br><span class="line">Caused by: java.io.NotSerializableException: Operation</span><br></pre></td></tr></table></figure>
+<p>Scala 在构造闭包的时候会确定他所依赖的外部变量，并将它们的引用存到闭包对象中，这样能保证在不同的作用域中调用闭包不出现问题。</p>
+<p>出现 Task not serializable 的异常，是由于我们的 multiply 函数依赖 Operation 类的变量 n，虽然 multiply 是支持序列化的，但是 Operation 不支持序列化，这导致 multiply 函数在序列化的过程中出现了 NotSerializable 的异常，最终导致我们的 Task 序列化失败。</p>
+<p>为了确保 multiply 能被正常序列化，我们需要想办法去除对 Operation 的依赖，我们将代码做如下修改，在去执行就可以了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class Operation &#123;</span><br><span class="line">  def multiply = (x: Int) =&gt; x * 2</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">val sum = distData.map(new Operation().multiply).sum()</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>Spark 对闭包序列化前，会通过工具类 org.apache.spark.util.ClosureCleaner 尝试 clean 掉闭包中无关的外部对象引用，ClosureCleaner 对闭包的处理是在运行期间，相比 Scala 编译器，能更精准的去除闭包中无关的引用。这样做，一方面可以尽可能保证闭包可被序列化，另一方面可以减少闭包序列化后的大小，便于网络传输。</p>
+<p>我们在开发 Spark 应用的时候，如果遇到 Task not serializable 的异常，就需要考虑下，闭包中是否或引用了无法序列化的对象，有的话，尝试去除依赖就可以了。</p>
+<p>Spark 中实现的序列化工具有多个：<br><img src="http://p6akvwd7g.bkt.clouddn.com/file/2018/4/94d95c216b334afe9fe1c24a7653c556-image.png" alt=""></p>
+<p>从 SparkEnv 类的实现来看，用于闭包序列化的是 JavaSerializer:<br><img src="http://p6akvwd7g.bkt.clouddn.com/file/2018/4/88640c1f4b994b9aad057ecb64b063a4-image.png" alt=""></p>
+<p>JavaSerializer 内部使用的是 ObjectOutputStream 将闭包序列化：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">private[spark] class JavaSerializationStream(</span><br><span class="line">    out: OutputStream, counterReset: Int, extraDebugInfo: Boolean)</span><br><span class="line">  extends SerializationStream &#123;</span><br><span class="line">  private val objOut = new ObjectOutputStream(out)</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将闭包反序列化的核心代码为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">private[spark] class JavaDeserializationStream(in: InputStream, loader: ClassLoader)</span><br><span class="line">  extends DeserializationStream &#123;</span><br><span class="line"></span><br><span class="line">  private val objIn = new ObjectInputStream(in) &#123;</span><br><span class="line">    override def resolveClass(desc: ObjectStreamClass): Class[_] =</span><br><span class="line">      try &#123;</span><br><span class="line">        Class.forName(desc.getName, false, loader)</span><br><span class="line">      &#125; catch &#123;</span><br><span class="line">        case e: ClassNotFoundException =&gt;</span><br><span class="line">          JavaDeserializationStream.primitiveMappings.getOrElse(desc.getName, throw e)</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于 ObjectInputStream 我们前面已有介绍，JavaDeserializationStream 有个关键的成员变量 loader，它是个 ClassLoader，可以让 Spark 使用非默认的 ClassLoader 按照自定义的加载策略去加载 class，这样才能保证反序列化过程在其他节点正常进行。</p>
+<p>通过前面的介绍，想要代码在另一端执行，只有序列化还不行，还需要保证执行端能够加载到闭包对应的类。接下来我们探讨 Spark 加载 class 的机制。</p>
+<p>Spark Application 的 class 是如何加载的</p>
+<p>通常情况下我们会将开发的 Spark Application 打包为 jar 包，然后通过 spark-submit 命令提交到集群运行，下面是一个官网的示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./bin/spark-submit \</span><br><span class="line">  --class org.apache.spark.examples.SparkPi \</span><br><span class="line">  ... \</span><br><span class="line">  --jars /path/to/dep-libs.jar \</span><br><span class="line">  /path/to/examples.jar \</span><br></pre></td></tr></table></figure>
+<p>此时，我们编写的代码中所包含的闭包，对应的类已经被编译到 jar 包中了，所以 Executor 端只要能加载到这个 jar 包，从 jar 包中定位闭包的 class 文件，就可以将闭包反序列化了。事实上 Spark 也是这么做的。</p>
+<p>Spark Application 的 Driver 端在运行的时候会基于 netty 建立一个文件服务，我们运行的 jar 包，及–jars 中指定的依赖 jar 包，会被添加到文件服务器中。这个过程在 SparkContext 的 addJar 方法中完成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Adds a JAR dependency for all tasks to be executed on this SparkContext in the future.</span><br><span class="line"> * The `path` passed can be either a local file, a file in HDFS (or other Hadoop-supported</span><br><span class="line"> * filesystems), an HTTP, HTTPS or FTP URI, or local:/path for a file on every worker node.</span><br><span class="line"> */</span><br><span class="line">def addJar(path: String) &#123;</span><br><span class="line">  if (path == null) &#123;</span><br><span class="line">    logWarning(&quot;null specified as parameter to addJar&quot;)</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    var key = &quot;&quot;</span><br><span class="line">    if (path.contains(&quot;\\&quot;)) &#123;</span><br><span class="line">      // For local paths with backslashes on Windows, URI throws an exception</span><br><span class="line">      key = env.rpcEnv.fileServer.addJar(new File(path))</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      val uri = new URI(path)</span><br><span class="line">      // SPARK-17650: Make sure this is a valid URL before adding it to the list of dependencies</span><br><span class="line">      Utils.validateURL(uri)</span><br><span class="line">      key = uri.getScheme match &#123;</span><br><span class="line">        // A JAR file which exists only on the driver node</span><br><span class="line">        case null | &quot;file&quot; =&gt;</span><br><span class="line">          try &#123;</span><br><span class="line">            env.rpcEnv.fileServer.addJar(new File(uri.getPath))</span><br><span class="line">          &#125; catch &#123;</span><br><span class="line">            case exc: FileNotFoundException =&gt;</span><br><span class="line">              logError(s&quot;Jar not found at $path&quot;)</span><br><span class="line">              null</span><br><span class="line">          &#125;</span><br><span class="line">        // A JAR file which exists locally on every worker node</span><br><span class="line">        case &quot;local&quot; =&gt;</span><br><span class="line">          &quot;file:&quot; + uri.getPath</span><br><span class="line">        case _ =&gt;</span><br><span class="line">          path</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if (key != null) &#123;</span><br><span class="line">      val timestamp = System.currentTimeMillis</span><br><span class="line">      if (addedJars.putIfAbsent(key, timestamp).isEmpty) &#123;</span><br><span class="line">        logInfo(s&quot;Added JAR $path at $key with timestamp $timestamp&quot;)</span><br><span class="line">        postEnvironmentUpdate()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Executor 端在执行任务的时候，会从任务信息中得到依赖的 jar 包，然后 updateDependencies 从 Driver 端的文件服务器下载缺失的 jar 包，并将 jar 包添加到 URLClassLoader 中，最后再将 task 反序列化，反序列化前所需的 jar 都已准备好，因此能够将 task 中的闭包正常反序列化，核心代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">override def run(): Unit = &#123;</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">    val (taskFiles, taskJars, taskProps, taskBytes) =</span><br><span class="line">      Task.deserializeWithDependencies(serializedTask)</span><br><span class="line"></span><br><span class="line">    // Must be set before updateDependencies() is called, in case fetching dependencies</span><br><span class="line">    // requires access to properties contained within (e.g. for access control).</span><br><span class="line">    Executor.taskDeserializationProps.set(taskProps)</span><br><span class="line"></span><br><span class="line">    updateDependencies(taskFiles, taskJars)</span><br><span class="line">    task = ser.deserialize[Task[Any]](taskBytes, Thread.currentThread.getContextClassLoader)</span><br><span class="line">    ...</span><br><span class="line">  &#125; finally &#123;</span><br><span class="line">    runningTasks.remove(taskId)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这么来看，整个 Spark Application 分布式加载 class 的机制就比较清晰了。Executor 端能够正常加载 class，反序列化闭包，分布式执行代码自然就不存在什么问题了。</p>
+<p>Spark REPL（spark-shell）中的代码是如何分布式执行的<br>spark-shell 是 Spark 为我们提供的一个 REPL 的工具，可以让我们非常方便的写一些简单的数据处理脚本。下面是一个运行在 spark-shell 的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; val f = (x: Int) =&gt; x + 1</span><br><span class="line">f: Int =&gt; Int = &lt;function1&gt;</span><br><span class="line"></span><br><span class="line">scala&gt; val data = Array(1, 2, 3, 4, 5)</span><br><span class="line">data: Array[Int] = Array(1, 2, 3, 4, 5)</span><br><span class="line"></span><br><span class="line">scala&gt; val distData = sc.parallelize(data)</span><br><span class="line">distData: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[0] at parallelize at &lt;console&gt;:26</span><br><span class="line"></span><br><span class="line">scala&gt; distData.map(f).sum()</span><br><span class="line">res0: Double = 20.0</span><br></pre></td></tr></table></figure>
+<p>我们已知，闭包 f 会被 Scala 编译为匿名类，如果要将 f 序列化到 Executor 端执行，必须要加载 f 对应的匿名类的 class 数据，才能正常反序列化。</p>
+<p>Spark 是如何得到 f 的 class 数据的？Executor 又是如何加载到的？</p>
+<p>源码面前，了无秘密。我们看一下 Spark 的 repl 项目的代码入口，核心代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">object Main extends Logging &#123;</span><br><span class="line">  ...</span><br><span class="line">  val rootDir = conf.getOption(&quot;spark.repl.classdir&quot;).getOrElse(Utils.getLocalDir(conf))</span><br><span class="line">  val outputDir = Utils.createTempDir(root = rootDir, namePrefix = &quot;repl&quot;)</span><br><span class="line"></span><br><span class="line">  def main(args: Array[String]) &#123;</span><br><span class="line">    doMain(args, new SparkILoop)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // Visible for testing</span><br><span class="line">  private[repl] def doMain(args: Array[String], _interp: SparkILoop): Unit = &#123;</span><br><span class="line">    interp = _interp</span><br><span class="line">    val jars = Utils.getUserJars(conf, isShell = true).mkString(File.pathSeparator)</span><br><span class="line">    val interpArguments = List(</span><br><span class="line">      &quot;-Yrepl-class-based&quot;,</span><br><span class="line">      &quot;-Yrepl-outdir&quot;, s&quot;$&#123;outputDir.getAbsolutePath&#125;&quot;,</span><br><span class="line">      &quot;-classpath&quot;, jars</span><br><span class="line">    ) ++ args.toList</span><br><span class="line"></span><br><span class="line">    val settings = new GenericRunnerSettings(scalaOptionError)</span><br><span class="line">    settings.processArguments(interpArguments, true)</span><br><span class="line"></span><br><span class="line">    if (!hasErrors) &#123;</span><br><span class="line">      interp.process(settings) // Repl starts and goes in loop of R.E.P.L</span><br><span class="line">      Option(sparkContext).map(_.stop)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Spark2.1.0 的 REPL 基于 Scala-2.11 的 scala.tools.nsc 编译工具实现，代码已经相当简洁，Spark 给 interp 设置了 2 个关键的配置 -Yrepl-class-based 和 -Yrepl-outdir，通过这两个配置，我们在 shell 中输入的代码会被编译为 class 文件输出到执行的文件夹中。</p>
+<p>如果指定了 spark.repl.classdir 配置，会用这个配置的路径作为 class 文件的输出路径，否则使用 SPARK_LOCAL_DIRS 对应的路径。下面是我测试过程中输出到文件夹中的 class 文件：<br><img src="http://p6akvwd7g.bkt.clouddn.com/file/2018/4/9ee73474fd6048d9bf95d1499b3ba7c3-image.png" alt=""></p>
+<p>我们已经清楚 Spark 如何将 shell 中的代码编译为 class 了，那么 Executor 端，如何加载到这些 class 文件呢？在 org/apache/spark/executor/Executor.scala 中有段和 REPL 相关的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">private val urlClassLoader = createClassLoader()</span><br><span class="line">private val replClassLoader = addReplClassLoaderIfNeeded(urlClassLoader)</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * If the REPL is in use, add another ClassLoader that will read</span><br><span class="line"> * new classes defined by the REPL as the user types code</span><br><span class="line"> */</span><br><span class="line">private def addReplClassLoaderIfNeeded(parent: ClassLoader): ClassLoader = &#123;</span><br><span class="line">  val classUri = conf.get(&quot;spark.repl.class.uri&quot;, null)</span><br><span class="line">  if (classUri != null) &#123;</span><br><span class="line">    logInfo(&quot;Using REPL class URI: &quot; + classUri)</span><br><span class="line">    try &#123;</span><br><span class="line">      val _userClassPathFirst: java.lang.Boolean = userClassPathFirst</span><br><span class="line">      val klass = Utils.classForName(&quot;org.apache.spark.repl.ExecutorClassLoader&quot;)</span><br><span class="line">        .asInstanceOf[Class[_ &lt;: ClassLoader]]</span><br><span class="line">      val constructor = klass.getConstructor(classOf[SparkConf], classOf[SparkEnv],</span><br><span class="line">        classOf[String], classOf[ClassLoader], classOf[Boolean])</span><br><span class="line">      constructor.newInstance(conf, env, classUri, parent, _userClassPathFirst)</span><br><span class="line">    &#125; catch &#123;</span><br><span class="line">      case _: ClassNotFoundException =&gt;</span><br><span class="line">        logError(&quot;Could not find org.apache.spark.repl.ExecutorClassLoader on classpath!&quot;)</span><br><span class="line">        System.exit(1)</span><br><span class="line">        null</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    parent</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">override def run(): Unit = &#123;</span><br><span class="line">  ...</span><br><span class="line">  Thread.currentThread.setContextClassLoader(replClassLoader)</span><br><span class="line">  val ser = env.closureSerializer.newInstance()</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Executor 启动时会判断是否为 REPL 模式，如果是的话会使用 ExecutorClassLoader 做为反序列闭包时所使用的 ClassLoader，ExecutorClassLoader 会通过网络从 Driver 端（也就是执行 spark-shell 的节点）加载所需的 class 文件。这样我们在 spark-shell 中写的代码就可以分布式执行了。</p>
+<p><strong>总结</strong><br><strong>Spark 实现代码的分布式执行有 2 个关键点：</strong><br><code>1.对象必须可序列化</code><br><code>2.Executor端能够加载到所需类的class文件，保证反序列化过程不出错，这点通过自定义的ClassLoader来保障</code></p>
+<p>满足以上 2 个条件，我们的代码就可以分布式运行了。</p>
+<p>当然，构建一个完整的分布式计算框架，还需要有网络通信框架、RPC、文件传输服务等作为支撑，在了解 Spark 代码分布式执行原理的基础上，相信读者已有思路基于 JVM 相关的语言构建分布式计算服务。</p>
+<p>类比其他非 JVM 相关的语言，实现一个分布式计算框架，依然是需要解决序列化，动态加载执行代码的问题。</p>
+<p>（完）</p>
+<blockquote>
+<p>更多高质资源 尽在 AIQ 机器学习大数据 <a href="https://zhuanlan.zhihu.com/52aiq" target="_blank" rel="noopener">知乎专栏 点击关注</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/" rel="next" title="垃圾回收的基础算法">
+                <i class="fa fa-chevron-left"></i> 垃圾回收的基础算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/10/05/架构师系列/分布式系统 --- 幂等性设计/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-对象序列化"><span class="nav-number">1.</span> <span class="nav-text">Java 对象序列化</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

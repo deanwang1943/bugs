@@ -260,7 +260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/29/语言/Java/漫画：高并发下的 HashMap/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/架构师系列/分布式系统 --- 幂等性设计/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -279,7 +279,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/09/29/语言/Java/漫画：高并发下的 HashMap/" itemprop="url">漫画：高并发下的 HashMap</a></h1>
+                <a class="post-title-link" href="/bugs/2018/10/05/架构师系列/分布式系统 --- 幂等性设计/" itemprop="url">未命名</a></h1>
         
 
         <div class="post-meta">
@@ -291,8 +291,287 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-29T08:36:03+08:00">
-                2018-09-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-05T14:45:41+08:00">
+                2018-10-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 https://www.cnblogs.com/wxgblogs/p/6639272.html
+
+　　WEB 资源或 API 方法的幂等性是指一次和多次请求某一个资源应该具有同样的副作用。幂等性是系统的接口对外一种承诺 (而不是实现), 承诺只要调用接口成功, 外部多次调用对系统的影响是一致的。幂等性是分布式系统设计中的一个重要概念，对超时处理、系统恢复等具有重要意义。声明为幂等的接口会认为外部调用失败是常态, 并且失败之后必然会有重试。例如，在因网络中断等原因导致请求方未能收到请求返回值的情况下，如果该资源具备幂等性，请求方只需要重新请求即可，而无需担心重复调用会产生错误。实际上，我们常用的 HTTP 协议的方法是具有幂等性语义要求的，比如：get 方法用于获取资源，不应有副作用，因此是幂等的；post 方法用于创建资源，每次请求都会产生新的资源，因此不具备幂等性；put 方法用于更新资源，是幂等的；delete 方法用于删除资源，也
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/10/05/架构师系列/分布式系统 --- 幂等性设计/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/bigdata/spark/深度剖析 Spark 分布式执行原理 - AIQ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/10/05/bigdata/spark/深度剖析 Spark 分布式执行原理 - AIQ/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-05T14:44:22+08:00">
+                2018-10-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 http://www.6aiq.com/article/1523271021117
+
+
+让代码分布式运行是所有分布式计算框架需要解决的最基本的问题。Spark 是大数据领域中相当火热的计算框架，在大数据分析领域有一统江湖的趋势，网上对于 Spark 源码分析的文章有很多，但是介绍 Spark 如何处理代码分布式执行问题的资料少之又少，这也是我撰写文本的目的。
+
+Spark 运行在 JVM 之上，任务的执行依赖序列化及类加载机制，因此本文会重点围绕这两个主题介绍 Spark 对代码分布式执行的处理。本文假设读者对 Spark、Java、Scala 有一定的了解，代码示例基于 Scala，Spark 源码基于 2.1.0 版本。阅读本文你可以了解到：
+
+Java 对象序列化机制
+
+类加载器的作用
+
+Spark 对 closure 序列化的处理
+
+Spark Application 的 class 是如何加载的
+
+Spark REPL（spa
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/10/05/bigdata/spark/深度剖析 Spark 分布式执行原理 - AIQ/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/" itemprop="url">垃圾回收的基础算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-05T08:36:03+08:00">
+                2018-10-05
               </time>
             
 
@@ -354,31 +633,526 @@
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5a224e1551882535c56cb940
+本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5bade237e51d450ea401fd71?utm_source=gold_browser_extension
 
-​上一期我们介绍了 HashMap 的基本原理，没看过的小伙伴们可以点击下面的链接：
-漫画：什么是 HashMap？
-这一期我们来讲解高并发环境下，HashMap 可能出现的致命问题。
-
-
-
-
-
-
-HashMap 的容量是有限的。当经过多次元素插入，使得 HashMap 达到一定饱和度时，Key 映射位置发生冲突的几率会逐渐提高。
-这时候，HashMap 需要扩展它的长度，也就是进行 Resize。
-
-影响发生 Resize 的因素有两个：
-1.Capacity
-HashMap 的当前长度。上一期曾经说过，HashMap 的长度是 2 的幂。
-2.LoadFactor
-HashMap 负载因子，默认值为 0.75f。
-衡量 HashMap 是否进行 Resize 的条件如下：
-HashMap.Size &gt;= Capacity * L*
+《对象搜索算法与回收算法》介绍了垃圾回收的基础算法，相当于垃圾回收的方法论。接下来就详细看看垃圾回收的具体实现。
+上文提到过现代的商用虚拟机的都是采用分代收集的，不同的区域用不同的收集器。常用的 7 种收集器，其适用的范围如图所示
+ Serial、ParNew、Parallel Scavenge 用于新生代；CMS、Serial Old、Paralled Old 用于老年代。 并且他们相互之间以相对固定的组合使用（具体组合关系如上图）。G1 是一个独立的收集器不依赖其他 6 种收集器。ZGC 是目前 JDK 11 的实验收集器。
+下面来看看各个收集器的特性
+Serial 收集器Serial，是单线程执行垃圾回收的。当需要执行垃圾回收时，程序会暂停一切手上的工作，然后单线程执
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/29/语言/Java/漫画：高并发下的 HashMap/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/架构师系列/什么是分布式锁？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/10/05/架构师系列/什么是分布式锁？/" itemprop="url">什么是分布式锁？</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-05T08:36:03+08:00">
+                2018-10-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b16148a518825136137c8db
+
+
+
+————— 第二天 —————
+
+
+
+
+
+
+
+
+
+
+
+————————————
+
+
+
+
+
+
+分布式锁的实现有哪些？
+1.Memcached 分布式锁
+利用 Memcached 的 add 命令。此命令是原子性操作，只有在 key 不存在的情况下，才能 add 成功，也就意味着线程得到了锁。
+2.Redis 分布式锁
+和 Memcached 的方式类似，利用 Redis 的 setnx 命令。此命令同样是原子性操作，只有在 key 不存在的情况下，才能 set 成功。（setnx 命令并不完善，后续会介绍替代方案）
+3.Zookeeper 分布式锁
+利用 Zookeeper 的顺序临时节点，来实现分布式锁和等待队列。Zookeeper 设计的初衷，就是为了实现分布式锁服务的。
+4.Chubby
+Google 公司实现的粗粒度分布式锁服务，
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/10/05/架构师系列/什么是分布式锁？/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/" itemprop="url">从新浪微博分析高性能高并发网络架构的设计</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-05T08:36:03+08:00">
+                2018-10-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 http://www.3xmq.com/article/1515685180389
+
+
+作者 | 卫向军来自 | cnblogs
+
+架构以及我理解中架构的本质
+在开始谈我对架构本质的理解之前，先谈谈对今天技术沙龙主题的个人见解，千万级规模的网站感觉数量级是非常大的，对这个数量级我们战略上 要重 视 它 ， 战术上又 要 藐 视 它。先举个例子感受一下千万级到底是什么数量级？现在很流行的优步 (Uber)，从媒体公布的信息看，它每天接单量平均在百万左右， 假如每天有 10 个小时的服务时间，平均 QPS 只有 30 左右。对于一个后台服务器，单机的平均 QPS 可以到达 800-1000，单独看写的业务量很简单 。为什么我们又不能说轻视它？第一，我们看它的数据存储，每天一百万的话，一年数据量的规模是多少？其次，刚才说的订单量，每一个订单要推送给附近的司机、司机要并发抢单，后面业务场景的访问量往往是前者的上百倍，轻松就超过上亿级别了。
+今天
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+        
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/01/framework/mq/rabbitmq-docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/10/01/framework/mq/rabbitmq-docker/" itemprop="url">RabbitMQ之Docker构建</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-01T13:36:03+08:00">
+                2018-10-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/MQ/" itemprop="url" rel="index">
+                    <span itemprop="name">MQ</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          RabbitMQ之Docker构建
+因为分布式项目中使用了rabbitmq的组件，故此写文关于采用官方的镜像完成基于docker的rabbitmq的搭建。
+
+准备基础环境
+首先在系统中安装docker的相关软件，本文基于系统ubuntu 18.04版本构建，docker version 17.12
+安装docker，网上很多文章不载赘述
+
+获取镜像docker pull rabbitmq:management
+启动实例docker run -d --hostname dean-rabbit -p 5671:5671 -p 5672:5672 -p 4369:4369 -p 25672:25672 -p 15671:15671 -p 15672:15672 --name dean-rabbit rabbitmq:management
+
+15672端口为web ui界面默认端口，可以通过访问地址http://localhost:15671
+默认用户名和密码：guest/guest
+
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/10/01/framework/mq/rabbitmq-docker/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -609,7 +1383,7 @@ index = Hash（“apple”）
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/28/算法/漫画：如何实现抢红包算法？/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/29/语言/Java/漫画：高并发下的 HashMap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -628,7 +1402,7 @@ index = Hash（“apple”）
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/09/28/算法/漫画：如何实现抢红包算法？/" itemprop="url">漫画：如何实现抢红包算法？</a></h1>
+                <a class="post-title-link" href="/bugs/2018/09/29/语言/Java/漫画：高并发下的 HashMap/" itemprop="url">漫画：高并发下的 HashMap</a></h1>
         
 
         <div class="post-meta">
@@ -640,8 +1414,8 @@ index = Hash（“apple”）
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-28T08:36:03+08:00">
-                2018-09-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-29T08:36:03+08:00">
+                2018-09-29
               </time>
             
 
@@ -663,8 +1437,8 @@ index = Hash（“apple”）
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
+                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -703,33 +1477,31 @@ index = Hash（“apple”）
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5af80310f265da0b8636585e
+本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5a224e1551882535c56cb940
+
+​上一期我们介绍了 HashMap 的基本原理，没看过的小伙伴们可以点击下面的链接：
+漫画：什么是 HashMap？
+这一期我们来讲解高并发环境下，HashMap 可能出现的致命问题。
 
 
 
 
 
 
-发出一个固定金额的红包，由若干个人来抢，需要满足哪些规则？
-1. 所有人抢到金额之和等于红包金额，不能超过，也不能少于。
-2. 每个人至少抢到一分钱。
-3. 要保证所有人抢到金额的几率相等。
+HashMap 的容量是有限的。当经过多次元素插入，使得 HashMap 达到一定饱和度时，Key 映射位置发生冲突的几率会逐渐提高。
+这时候，HashMap 需要扩展它的长度，也就是进行 Resize。
 
-小灰的思路是什么样呢？
-每次抢到的金额 = 随机区间 (0, 剩余金额)
-
-为什么这么说呢？让我们看一个栗子：
-假设有 10 个人，红包总额 100 元。
-第一个人的随机范围是（0，100 元)，平均可以抢到 50 元。
-假设第一个人随机到 50 元，那么剩余金额是 100-50 = 50 元。
-第二个人的随机范围是 （0， 50 元），平均可以抢到 25 元。
-假设第二个人随机到 25 元，那么剩余金额是 50-25 = 25 元。
-第三个人的随机范围是 （0， 25 元），平均可以抢到 12.5 元。
-以此类推，每一次随机范围越来越小。
+影响发生 Resize 的因素有两个：
+1.Capacity
+HashMap 的当前长度。上一期曾经说过，HashMap 的长度是 2 的幂。
+2.LoadFactor
+HashMap 负载因子，默认值为 0.75f。
+衡量 HashMap 是否进行 Resize 的条件如下：
+HashMap.Size &gt;= Capacity * L*
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/28/算法/漫画：如何实现抢红包算法？/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/09/29/语言/Java/漫画：高并发下的 HashMap/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -987,7 +1759,7 @@ index = Hash（“apple”）
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/27/面试/饿了么/面试/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/28/算法/漫画：如何实现抢红包算法？/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -1006,7 +1778,7 @@ index = Hash（“apple”）
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/09/27/面试/饿了么/面试/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/bugs/2018/09/28/算法/漫画：如何实现抢红包算法？/" itemprop="url">漫画：如何实现抢红包算法？</a></h1>
         
 
         <div class="post-meta">
@@ -1018,7 +1790,7 @@ index = Hash（“apple”）
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-28T01:30:21+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-28T08:36:03+08:00">
                 2018-09-28
               </time>
             
@@ -1029,160 +1801,6 @@ index = Hash（“apple”）
           </span>
 
           
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-介绍做过的相关系统，特别是分布式的系统
-
-redis缓存，过期时间设置，缓存如何更新，
-
-数据库如何分库分表？原则是什么？如何联合查询？
-
-mysql中binlog如何使用？
-
-kafka中break和topic介绍，消费者和partition的关系，消费者组与topic的关系，partition的作用
-
-kafka的流程，为什么使用消息中间件？
-
-为什么使用es？优点是什么
-
-序列化和反序列化的工具，原理及比较
-
-dubbo的流程说明，服务提供与消费者的整套流程
-
-多数据库如何处理？
-
-多源数据库如何取topN的数据？
-
-
-
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/27/面试/饿了么/面试/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/27/bigdata/spark/《Spark 官方文档》Spark SQL, DataFrames 以及 Datasets 编程指南/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/09/27/bigdata/spark/《Spark 官方文档》Spark SQL, DataFrames 以及 Datasets 编程指南/" itemprop="url">《Spark 官方文档》Spark SQL, DataFrames 以及 Datasets 编程指南</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-27T08:36:03+08:00">
-                2018-09-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
             <span class="post-category" >
             
               <span class="post-meta-divider">|</span>
@@ -1195,8 +1813,8 @@ dubbo的流程说明，服务提供与消费者的整套流程
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
+                  <a href="/bugs/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
                   </a>
                 </span>
 
@@ -1235,647 +1853,33 @@ dubbo的流程说明，服务提供与消费者的整套流程
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 http://ifeve.com/spark-sql-dataframes/ spark-1.6.0 [原文地址]
+本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5af80310f265da0b8636585e
 
-Spark SQL, DataFrames 以及 Datasets 编程指南概要Spark SQL 是 Spark 中处理结构化数据的模块。与基础的 Spark RDD API 不同，Spark SQL 的接口提供了更多关于数据的结构信息和计算任务的运行时信息。在 Spark 内部，Spark SQL 会能够用于做优化的信息比 RDD API 更多一些。Spark SQL 如今有了三种不同的 API：SQL 语句、DataFrame API 和最新的 Dataset API。不过真正运行计算的时候，无论你使用哪种 API 或语言，Spark SQL 使用的执行引擎都是同一个。这种底层的统一，使开发者可以在不同的 API 之间来回切换，你可以选择一种最自然的方式，来表达你的需求。
-本文中所有的示例都使用 Spark 发布版
+
+
+
+
+
+发出一个固定金额的红包，由若干个人来抢，需要满足哪些规则？
+1. 所有人抢到金额之和等于红包金额，不能超过，也不能少于。
+2. 每个人至少抢到一分钱。
+3. 要保证所有人抢到金额的几率相等。
+
+小灰的思路是什么样呢？
+每次抢到的金额 = 随机区间 (0, 剩余金额)
+
+为什么这么说呢？让我们看一个栗子：
+假设有 10 个人，红包总额 100 元。
+第一个人的随机范围是（0，100 元)，平均可以抢到 50 元。
+假设第一个人随机到 50 元，那么剩余金额是 100-50 = 50 元。
+第二个人的随机范围是 （0， 50 元），平均可以抢到 25 元。
+假设第二个人随机到 25 元，那么剩余金额是 50-25 = 25 元。
+第三个人的随机范围是 （0， 25 元），平均可以抢到 12.5 元。
+以此类推，每一次随机范围越来越小。
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/27/bigdata/spark/《Spark 官方文档》Spark SQL, DataFrames 以及 Datasets 编程指南/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/25/语言/Java/HashMap_ ConcurrentHashMap_ 相信看完这篇没人能难住你！/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/09/25/语言/Java/HashMap_ ConcurrentHashMap_ 相信看完这篇没人能难住你！/" itemprop="url">Java-基础-容器-HashMap_ ConcurrentHashMap</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T16:36:03+08:00">
-                2018-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 http://ifeve.com/hashmap-concurrenthashmap-%e7%9b%b8%e4%bf%a1%e7%9c%8b%e5%ae%8c%e8%bf%99%e7%af%87%e6%b2%a1%e4%ba%ba%e8%83%bd%e9%9a%be%e4%bd%8f%e4%bd%a0%ef%bc%81/
-
-前言Map 这样的 Key Value 在软件开发中是非常经典的结构，常用于在内存中存放数据。
-本篇主要想讨论 ConcurrentHashMap 这样一个并发容器，在正式开始之前我觉得有必要谈谈 HashMap，没有它就不会有后面的 ConcurrentHashMap。
-HashMap众所周知 HashMap 底层是基于 数组 + 链表 组成的，不过在 jdk1.7 和 1.8 中具体实现稍有不同。
-Base 1.71.7 中的数据结构图：
-
-先来看看 1.7 中的实现。
-
-这是 HashMap 中比较核心的几个成
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/25/语言/Java/HashMap_ ConcurrentHashMap_ 相信看完这篇没人能难住你！/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/25/语言/Java/Java 8 中的 Streams API 详解 Java 8 中的 Streams API 详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/09/25/语言/Java/Java 8 中的 Streams API 详解 Java 8 中的 Streams API 详解/" itemprop="url">Java 8 中的 Streams API 详解 Java 8 中的 Streams API 详解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T16:36:03+08:00">
-                2018-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/entry/5ba09f97e51d450e6c74affe?utm_source=gold_browser_extension
-
-Java 8 中的 Streams API 详解Streams 的背景，以及 Java 8 中的使用详解
-为什么需要 StreamStream 作为 Java 8 的一大亮点，它与 java.io 包里的 InputStream 和 OutputStream 是完全不同的概念。它也不同于 StAX 对 XML 解析的 Stream，也不是 Amazon Kinesis 对大数据实时处理的 Stream。Java 8 中的 Stream 是对集合（Collection）对象功能的增强，它专注于对集合对象进行各种非常便利、高效的聚合操作（aggregate operation），或者大批量数据操作 (bulk data operation)。Stream API 借助于同样新
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/25/语言/Java/Java 8 中的 Streams API 详解 Java 8 中的 Streams API 详解/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/25/语言/Java/Java Fork_Join 框架/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/09/25/语言/Java/Java Fork_Join 框架/" itemprop="url">Java Fork_Join 框架</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T16:36:03+08:00">
-                2018-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 http://ifeve.com/java-fork-join-framework/
-
-
-原文链接：A Java Fork/Join Framework(PDF) – Doug Lea
-译序Doug Lea 大神关于Java 7引入的他写的Fork/Join框架的论文。
-响应式编程（Reactive Programming / RP）作为一种范式在整个业界正在逐步受到认可和落地，是对过往系统的业务需求理解梳理之后对系统技术设计 / 架构模式的提升总结。Java作为一个成熟平台，对于趋势一向有些稳健的接纳和跟进能力，有着令人惊叹的生命活力：
-
-Java 7提供了ForkJoinPool，支持了Java 8提供的Stream。
-另外Java 8还提供了Lamda（有效地表达和使用RP需要FP的语言构件和理念）。
-有了前面的这些稳健但不失时机的准备，在Java 9中提供了面向RP的官方 Flow API，实际上是直接把 Reactive St
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/25/语言/Java/Java Fork_Join 框架/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-        
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/25/framework/redis/互联网公司面试必问的 Redis 题目/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/09/25/framework/redis/互联网公司面试必问的 Redis 题目/" itemprop="url">互联网公司面试必问的 Redis 题目</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T16:36:03+08:00">
-                2018-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b99d4bce51d450e7a24b66e?utm_source=gold_browser_extension![](https://user-gold-cdn.xitu.io/2018/9/13/165d0e6e66786d76?imageView2/0/w/1280/h/960/format/webp/ignore-error/1) Redis 是一个非常火的非关系型数据库，火到什么程度呢？只要是一个互联网公司都会使用到。Redis 相关的问题可以说是面试必问的, 下面我从个人当面试官的经验，总结几个必须要掌握的知识点。 介绍：Redis 是一个开源的使用 ANSI C 语言编写、遵守 BSD 协议、支持网络、可基于内存亦可持久化的日志型、Key-Value 数据库，并提供多种语言的 API 的非关系型数据库。 传统数据库遵循 ACID 规则。而 Nosql（Not Only SQ
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/25/framework/redis/互联网公司面试必问的 Redis 题目/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/09/28/算法/漫画：如何实现抢红包算法？/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1921,7 +1925,7 @@ Java 7提供了ForkJoinPool，支持了Java 8提供的Stream。
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/bugs/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/bugs/page/7/">7</a><a class="extend next" rel="next" href="/bugs/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/bugs/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/bugs/page/8/">8</a><a class="extend next" rel="next" href="/bugs/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1967,7 +1971,7 @@ Java 7提供了ForkJoinPool，支持了Java 8提供的Stream。
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">72</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1989,7 +1993,7 @@ Java 7提供了ForkJoinPool，支持了Java 8提供的Stream。
               
               <div class="site-state-item site-state-tags">
                 <a href="/bugs/tags/index.html">
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
