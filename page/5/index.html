@@ -280,6 +280,196 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/12/语言/Java/Spring AOP 中 JDK 和 CGLib 动态代理哪个更快？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/09/12/语言/Java/Spring AOP 中 JDK 和 CGLib 动态代理哪个更快？/" itemprop="url">Spring AOP 中 JDK 和 CGLib 动态代理哪个更快？</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-12T08:36:03+08:00">
+                2018-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.6k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/entry/5b95be3a6fb9a05d06732ec2?utm_source=gold_browser_extension
+
+
+一、背景昨天一位知识星球的小伙伴面试的时候被问到：Spring AOP 中 JDK 和 CGLib 动态代理哪个效率更高？在知识星球整理了一下，今天特分享出来，供大家参考！对知识星球有兴趣的可以了解一下：
+二、基本概念首先，我们知道 Spring AOP 的底层实现有两种方式：一种是 JDK 动态代理，另一种是 CGLib 的方式。
+自 Java 1.3 以后，Java 提供了动态代理技术，允许开发者在运行期创建接口的代理实例，后来这项技术被用到了 Spring 的很多地方。
+JDK 动态代理主要涉及 java.lang.reflect 包下边的两个类：Proxy 和 InvocationHandler。其中，InvocationHandler 是一个接口，可以通过实现
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/09/12/语言/Java/Spring AOP 中 JDK 和 CGLib 动态代理哪个更快？/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/11/语言/Python/Python：从闭包到装饰器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -855,206 +1045,6 @@ SpringBoot，可以用于为服务的开发的基础组件，提供spring的相�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/06/语言/Java/Java 并发之 AQS 详解 Thread 详解 Thread 详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/09/06/语言/Java/Java 并发之 AQS 详解 Thread 详解 Thread 详解/" itemprop="url">Java 并发之 AQS 详解 Thread 详解 Thread 详解</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-06T08:36:03+08:00">
-                2018-09-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  6.1k 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  23 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 https://www.cnblogs.com/waterystone/p/4920797.html
-
-一、概述　　谈到并发，不得不谈 ReentrantLock；而谈到 ReentrantLock，不得不谈 AbstractQueuedSynchronizer（AQS）！
-　　类如其名，抽象的队列式的同步器，AQS 定义了一套多线程访问共享资源的同步器框架，许多同步类实现都依赖于它，如常用的 ReentrantLock/Semaphore/CountDownLatch…。
-　　以下是本文的目录大纲：
-
-
-概述
-框架
-源码详解
-简单应用
-
-
-
-　　若有不正之处，请谅解和批评指正，不胜感激。
-　　请尊重作者劳动成果，转载请标明原文链接：http://www.cnblogs.com/waterystone/p/4920797.html
-　　手机版可访问：https://mp.weixin.qq.com/s/eyZyzk8ZzjwzZYN4a
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/06/语言/Java/Java 并发之 AQS 详解 Thread 详解 Thread 详解/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/06/架构师系列/学习分布式不得不会的 ACP 理论/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1245,7 +1235,7 @@ CAP理论概述CAP 理论：一个分布式系统最多只能同时满足一致�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/05/framework/如何优雅的设计和使用缓存？/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/06/语言/Java/Java 并发之 AQS 详解 Thread 详解 Thread 详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -1264,7 +1254,7 @@ CAP理论概述CAP 理论：一个分布式系统最多只能同时满足一致�
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/09/05/framework/如何优雅的设计和使用缓存？/" itemprop="url">如何优雅的设计和使用缓存？</a></h2>
+                <a class="post-title-link" href="/bugs/2018/09/06/语言/Java/Java 并发之 AQS 详解 Thread 详解 Thread 详解/" itemprop="url">Java 并发之 AQS 详解 Thread 详解 Thread 详解</a></h2>
         
 
         <div class="post-meta">
@@ -1276,8 +1266,8 @@ CAP理论概述CAP 理论：一个分布式系统最多只能同时满足一致�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T13:36:03+08:00">
-                2018-09-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-06T08:36:03+08:00">
+                2018-09-06
               </time>
             
 
@@ -1299,8 +1289,8 @@ CAP理论概述CAP 理论：一个分布式系统最多只能同时满足一致�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/缓存/" itemprop="url" rel="index">
-                    <span itemprop="name">缓存</span>
+                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -1330,7 +1320,7 @@ CAP理论概述CAP 理论：一个分布式系统最多只能同时满足一致�
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  6.5k 字
+                  6.1k 字
                 </span>
               
 
@@ -1346,7 +1336,7 @@ CAP理论概述CAP 理论：一个分布式系统最多只能同时满足一致�
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  22 分钟
+                  23 分钟
                 </span>
               
             </div>
@@ -1370,17 +1360,27 @@ CAP理论概述CAP 理论：一个分布式系统最多只能同时满足一致�
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b849878e51d4538c77a974a
+本文由 简悦 SimpRead 转码， 原文地址 https://www.cnblogs.com/waterystone/p/4920797.html
 
-背景在之前的文章中你应该知道的缓存进化史介绍了爱奇艺的缓存架构和缓存的进化历史。俗话说得好，工欲善其事，必先利其器，有了好的工具肯定得知道如何用好这些工具，本篇将介绍如何利用好缓存。
-1. 确认是否需要缓存在使用缓存之前，需要确认你的项目是否真的需要缓存。使用缓存会引入的一定的技术复杂度，后文也将会一一介绍这些复杂度。一般来说从两个方面来个是否需要使用缓存:
+一、概述　　谈到并发，不得不谈 ReentrantLock；而谈到 ReentrantLock，不得不谈 AbstractQueuedSynchronizer（AQS）！
+　　类如其名，抽象的队列式的同步器，AQS 定义了一套多线程访问共享资源的同步器框架，许多同步类实现都依赖于它，如常用的 ReentrantLock/Semaphore/CountDownLatch…。
+　　以下是本文的目录大纲：
 
-CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如正则表达式，如果你使用正则表达式比较频繁，而其又占用了很多 CPU 的话，那你就应该使用缓存将正则表达式的结果给缓存下来。
-数据库 IO 占用: 如果你发现你的数据库连接池比较空闲，那么不应该用缓存。但是如果数据库连接池比较繁忙，甚至经常报出连接不够的报警，那么是时候应该考虑缓存了。笔者曾经有个服务，被很多其他服务调
+
+概述
+框架
+源码详解
+简单应用
+
+
+
+　　若有不正之处，请谅解和批评指正，不胜感激。
+　　请尊重作者劳动成果，转载请标明原文链接：http://www.cnblogs.com/waterystone/p/4920797.html
+　　手机版可访问：https://mp.weixin.qq.com/s/eyZyzk8ZzjwzZYN4a
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/05/framework/如何优雅的设计和使用缓存？/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/09/06/语言/Java/Java 并发之 AQS 详解 Thread 详解 Thread 详解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1623,7 +1623,7 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/08/30/常见算法/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/05/framework/如何优雅的设计和使用缓存？/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -1642,7 +1642,7 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/08/30/常见算法/" itemprop="url">常见算法</a></h2>
+                <a class="post-title-link" href="/bugs/2018/09/05/framework/如何优雅的设计和使用缓存？/" itemprop="url">如何优雅的设计和使用缓存？</a></h2>
         
 
         <div class="post-meta">
@@ -1654,8 +1654,8 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-30T08:36:03+08:00">
-                2018-08-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T13:36:03+08:00">
+                2018-09-05
               </time>
             
 
@@ -1677,8 +1677,8 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
+                  <a href="/bugs/categories/缓存/" itemprop="url" rel="index">
+                    <span itemprop="name">缓存</span>
                   </a>
                 </span>
 
@@ -1708,7 +1708,7 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  640 字
+                  6.5k 字
                 </span>
               
 
@@ -1724,7 +1724,7 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  22 分钟
                 </span>
               
             </div>
@@ -1748,21 +1748,17 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
         
           
           
-查找一个数组的中位数？
+本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b849878e51d4538c77a974a
 
-基本思路是：任意挑一个元素，以该元素为支点，将数组分成两部分，左部分是小于等于支点的，右部分是大于支点的。如果你的运气爆棚，左部分正好是（n－1）／2个元素，那么支点的那个数就是中位数。如果左侧长度&lt;(n-1)/2, 那么中位点在右侧，反之，中位数在左侧。 进入相应的一侧继续寻找中位点。这种方法很快，但是在最坏的情况下时间复杂度为O(N^2), 不过平均时间复杂度好像是O(N)。
+背景在之前的文章中你应该知道的缓存进化史介绍了爱奇艺的缓存架构和缓存的进化历史。俗话说得好，工欲善其事，必先利其器，有了好的工具肯定得知道如何用好这些工具，本篇将介绍如何利用好缓存。
+1. 确认是否需要缓存在使用缓存之前，需要确认你的项目是否真的需要缓存。使用缓存会引入的一定的技术复杂度，后文也将会一一介绍这些复杂度。一般来说从两个方面来个是否需要使用缓存:
 
-将前(n+1)/2个元素调整为一个小顶堆，对后续的每一个元素，和堆顶比较，如果小于等于堆顶，丢弃之，取下一个元素。 如果大于堆顶，用该元素取代堆顶，调整堆，取下一元素。重复2.2步当遍历完所有元素之后，堆顶即是中位数。
-
-
-
-查找N个元素中的第K个小的元素（来自编程珠玑）
-
-编程珠玑给出了一个时间复杂度O（N），的解决方案。该方案改编自快速排序。经过快排的一次划分，  1）如果左半部份的长度&gt;K-1，那么这个元素就肯定在左半部份了  2）如果左半部份的长度==K-1，那
+CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如正则表达式，如果你使用正则表达式比较频繁，而其又占用了很多 CPU 的话，那你就应该使用缓存将正则表达式的结果给缓存下来。
+数据库 IO 占用: 如果你发现你的数据库连接池比较空闲，那么不应该用缓存。但是如果数据库连接池比较繁忙，甚至经常报出连接不够的报警，那么是时候应该考虑缓存了。笔者曾经有个服务，被很多其他服务调
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/08/30/常见算法/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/09/05/framework/如何优雅的设计和使用缓存？/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2010,7 +2006,7 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/08/29/语言/Java/Java基础面试/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/08/30/常见算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -2029,7 +2025,7 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/08/29/语言/Java/Java基础面试/" itemprop="url">Java基础面试</a></h2>
+                <a class="post-title-link" href="/bugs/2018/08/30/常见算法/" itemprop="url">常见算法</a></h2>
         
 
         <div class="post-meta">
@@ -2041,8 +2037,8 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T08:36:03+08:00">
-                2018-08-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-30T08:36:03+08:00">
+                2018-08-30
               </time>
             
 
@@ -2064,8 +2060,8 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/bugs/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
                   </a>
                 </span>
 
@@ -2095,7 +2091,7 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  16.5k 字
+                  640 字
                 </span>
               
 
@@ -2111,7 +2107,7 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  61 分钟
+                  2 分钟
                 </span>
               
             </div>
@@ -2134,29 +2130,22 @@ CPU 占用: 如果你有某些应用需要消耗大量的 cpu 去计算，比如
       
         
           
-          最近看到网上流传着，各种面试经验及面试题，往往都是一大堆技术题目贴上去，而没有答案。
-为此我业余时间整理了，Java 基础常见的 40 道常见面试题，及详细答案，望各路大牛，发现不对的地方，不吝赐教，留言即可。
+          
+查找一个数组的中位数？
 
-八种基本数据类型的大小，以及他们的封装类
-引用数据类型
-Switch 能否用 string 做参数
-equals 与 == 的区别
-自动装箱，常量池
-Object 有哪些公用方法
-Java 的四种引用，强弱软虚，用到的场景
-Hashcode 的作用
-HashMap 的 hashcode 的作用
-为什么重载 hashCode 方法？
-ArrayList、LinkedList、Vector 的区别
-String、StringBuffer 与 StringBuilder 的区别
-Map、Set、List、Queue、Stack 的特点与用法
-HashMap 和 HashTable 的区别
-JDK7 与 JDK8 中 HashMap 的实现
-HashMap 和 ConcurrentHa
+基本思路是：任意挑一个元素，以该元素为支点，将数组分成两部分，左部分是小于等于支点的，右部分是大于支点的。如果你的运气爆棚，左部分正好是（n－1）／2个元素，那么支点的那个数就是中位数。如果左侧长度&lt;(n-1)/2, 那么中位点在右侧，反之，中位数在左侧。 进入相应的一侧继续寻找中位点。这种方法很快，但是在最坏的情况下时间复杂度为O(N^2), 不过平均时间复杂度好像是O(N)。
+
+将前(n+1)/2个元素调整为一个小顶堆，对后续的每一个元素，和堆顶比较，如果小于等于堆顶，丢弃之，取下一个元素。 如果大于堆顶，用该元素取代堆顶，调整堆，取下一元素。重复2.2步当遍历完所有元素之后，堆顶即是中位数。
+
+
+
+查找N个元素中的第K个小的元素（来自编程珠玑）
+
+编程珠玑给出了一个时间复杂度O（N），的解决方案。该方案改编自快速排序。经过快排的一次划分，  1）如果左半部份的长度&gt;K-1，那么这个元素就肯定在左半部份了  2）如果左半部份的长度==K-1，那
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/08/29/语言/Java/Java基础面试/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/08/30/常见算法/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2248,7 +2237,7 @@ HashMap 和 ConcurrentHa
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">77</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2342,7 +2331,7 @@ HashMap 和 ConcurrentHa
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">239.6k</span>
+    <span title="Site words total count">242.9k</span>
   
 </div>
 

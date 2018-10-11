@@ -86,21 +86,21 @@
 
 
 
-<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 http://blueskykong.com/2018/05/14/java-spi/  SPI 全称为 (Service Provider Interface) ，是 JDK 内置的一种服务提供发现机制。SPI 是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是 java.sql.Dr">
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5af952fdf265da0b9e652de3  什么是 SPI？SPI 全称为 (Service Provider Interface) ，是 JDK 内置的一种服务提供发现机制。SPI 是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java SPI 机制详解">
 <meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/09/12/语言/Java/Java SPI 机制详解/index.html">
 <meta property="og:site_name" content="Bugs">
-<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 http://blueskykong.com/2018/05/14/java-spi/  SPI 全称为 (Service Provider Interface) ，是 JDK 内置的一种服务提供发现机制。SPI 是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是 java.sql.Dr">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5af952fdf265da0b9e652de3  什么是 SPI？SPI 全称为 (Service Provider Interface) ，是 JDK 内置的一种服务提供发现机制。SPI 是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ovci1ihdy.bkt.clouddn.com/spi-uml.jpg">
-<meta property="og:image" content="http://ovci1ihdy.bkt.clouddn.com/java-spi.jpg">
-<meta property="og:updated_time" content="2018-09-11T15:22:59.629Z">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/5/14/1635dec2151e31e4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/5/14/1635dec21502ba4d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:updated_time" content="2018-10-11T13:00:53.147Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java SPI 机制详解">
-<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 http://blueskykong.com/2018/05/14/java-spi/  SPI 全称为 (Service Provider Interface) ，是 JDK 内置的一种服务提供发现机制。SPI 是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是 java.sql.Dr">
-<meta name="twitter:image" content="http://ovci1ihdy.bkt.clouddn.com/spi-uml.jpg">
+<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5af952fdf265da0b9e652de3  什么是 SPI？SPI 全称为 (Service Provider Interface) ，是 JDK 内置的一种服务提供发现机制。SPI 是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/5/14/1635dec2151e31e4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 
 
 
@@ -366,7 +366,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.9k 字
+                  2k 字
                 </span>
               
 
@@ -404,110 +404,47 @@
 
       
         <blockquote>
-<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="http://blueskykong.com/2018/05/14/java-spi/" target="_blank" rel="noopener">http://blueskykong.com/2018/05/14/java-spi/</a></p>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="https://juejin.im/post/5af952fdf265da0b9e652de3" target="_blank" rel="noopener">https://juejin.im/post/5af952fdf265da0b9e652de3</a></p>
 </blockquote>
-<p>SPI 全称为 (Service Provider Interface) ，是 JDK 内置的一种服务提供发现机制。SPI 是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是 java.sql.Driver 接口，其他不同厂商可以针对同一接口做出不同的实现，mysql 和 postgresql 都有不同的实现提供给用户，而 Java 的 SPI 机制可以为某个接口寻找服务实现。</p>
-<p><a href="http://ovci1ihdy.bkt.clouddn.com/spi-uml.jpg" target="_blank" rel="noopener"><img src="http://ovci1ihdy.bkt.clouddn.com/spi-uml.jpg" alt=""></a></p>
+<h2 id="什么是-SPI？"><a href="#什么是-SPI？" class="headerlink" title="什么是 SPI？"></a>什么是 SPI？</h2><p>SPI 全称为 (Service Provider Interface) ，是 JDK 内置的一种服务提供发现机制。SPI 是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。我们经常遇到的就是 java.sql.Driver 接口，其他不同厂商可以针对同一接口做出不同的实现，mysql 和 postgresql 都有不同的实现提供给用户，而 Java 的 SPI 机制可以为某个接口寻找服务实现。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/5/14/1635dec2151e31e4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
 <p>类图中，接口对应定义的抽象 SPI 接口；实现方实现 SPI 接口；调用方依赖 SPI 接口。</p>
 <p>SPI 接口的定义在调用方，在概念上更依赖调用方；组织上位于调用方所在的包中；实现位于独立的包中。</p>
 <p>当接口属于实现方的情况，实现方提供了接口和实现，这个用法很常见，属于 API 调用。我们可以引用接口来达到调用某实现类的功能。</p>
-<h2 id="Java-SPI-应用实例"><a href="#Java-SPI-应用实例" class="headerlink" title="Java SPI 应用实例"></a><a href="#Java-SPI-应用实例" title="Java SPI 应用实例"></a>Java SPI 应用实例</h2><p>当服务的提供者提供了一种接口的实现之后，需要在 classpath 下的 META-INF/services / 目录里创建一个以服务接口命名的文件，这个文件里的内容就是这个接口的具体的实现类。当其他的程序需要这个服务的时候，就可以通过查找这个 jar 包（一般都是以 jar 包做依赖）的 META-INF/services / 中的配置文件，配置文件中有接口的具体实现类名，可以根据这个类名进行加载实例化，就可以使用该服务了。JDK 中查找服务实现的工具类是：java.util.ServiceLoader。</p>
-<h3 id="SPI-接口"><a href="#SPI-接口" class="headerlink" title="SPI 接口"></a><a href="#SPI接口" title="SPI接口"></a>SPI 接口</h3><p>|</p>
-<pre>12345678</pre>
-
-<p> |</p>
-<pre>public interface ObjectSerializer {    byte[] serialize(Object obj) throws ObjectSerializerException;    <t> T deSerialize(byte[] param, Class<t> clazz) throws ObjectSerializerException;    String getSchemeName();}</t></t></pre>
-
-<p> |</p>
+<h2 id="Java-SPI-应用实例"><a href="#Java-SPI-应用实例" class="headerlink" title="Java SPI 应用实例"></a>Java SPI 应用实例</h2><p>当服务的提供者提供了一种接口的实现之后，需要在 classpath 下的 META-INF/services / 目录里创建一个以服务接口命名的文件，这个文件里的内容就是这个接口的具体的实现类。当其他的程序需要这个服务的时候，就可以通过查找这个 jar 包（一般都是以 jar 包做依赖）的 META-INF/services / 中的配置文件，配置文件中有接口的具体实现类名，可以根据这个类名进行加载实例化，就可以使用该服务了。JDK 中查找服务实现的工具类是：java.util.ServiceLoader。</p>
+<h3 id="SPI-接口"><a href="#SPI-接口" class="headerlink" title="SPI 接口"></a>SPI 接口</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public interface ObjectSerializer &#123;</span><br><span class="line"></span><br><span class="line">    byte[] serialize(Object obj) throws ObjectSerializerException;</span><br><span class="line"></span><br><span class="line">    &lt;T&gt; T deSerialize(byte[] param, Class&lt;T&gt; clazz) throws ObjectSerializerException;</span><br><span class="line"></span><br><span class="line">    String getSchemeName();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>定义了一个对象序列化接口，内有三个方法：序列化方法、反序列化方法和序列化名称。</p>
-<h3 id="SPI-具体实现"><a href="#SPI-具体实现" class="headerlink" title="SPI 具体实现"></a><a href="#SPI具体实现" title="SPI具体实现"></a>SPI 具体实现</h3><p>|</p>
-<pre>12345678910111213141516171819202122232425262728293031323334353637383940414243444546</pre>
-
-<p> |</p>
-<pre>public class KryoSerializer implements ObjectSerializer {    @Override    public byte[] serialize(Object obj) throws ObjectSerializerException {        byte[] bytes;        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();        try {            //获取kryo对象            Kryo kryo = new Kryo();            Output output = new Output(outputStream);            kryo.writeObject(output, obj);            bytes = output.toBytes();            output.flush();        } catch (Exception ex) {            throw new ObjectSerializerException("kryo serialize error" + ex.getMessage());        } finally {            try {                outputStream.flush();                outputStream.close();            } catch (IOException e) {            }        }        return bytes;    }    @Override    public <t> T deSerialize(byte[] param, Class<t> clazz) throws ObjectSerializerException {        T object;        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(param)) {            Kryo kryo = new Kryo();            Input input = new Input(inputStream);            object = kryo.readObject(input, clazz);            input.close();        } catch (Exception e) {            throw new ObjectSerializerException("kryo deSerialize error" + e.getMessage());        }        return object;    }    @Override    public String getSchemeName() {        return "kryoSerializer";    }}</t></t></pre>
-
-<p> |</p>
+<h3 id="SPI-具体实现"><a href="#SPI-具体实现" class="headerlink" title="SPI 具体实现"></a>SPI 具体实现</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">public class KryoSerializer implements ObjectSerializer &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public byte[] serialize(Object obj) throws ObjectSerializerException &#123;</span><br><span class="line">        byte[] bytes;</span><br><span class="line">        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();</span><br><span class="line">        try &#123;</span><br><span class="line">            //获取kryo对象</span><br><span class="line">            Kryo kryo = new Kryo();</span><br><span class="line">            Output output = new Output(outputStream);</span><br><span class="line">            kryo.writeObject(output, obj);</span><br><span class="line">            bytes = output.toBytes();</span><br><span class="line">            output.flush();</span><br><span class="line">        &#125; catch (Exception ex) &#123;</span><br><span class="line">            throw new ObjectSerializerException(&quot;kryo serialize error&quot; + ex.getMessage());</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                outputStream.flush();</span><br><span class="line">                outputStream.close();</span><br><span class="line">            &#125; catch (IOException e) &#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return bytes;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public &lt;T&gt; T deSerialize(byte[] param, Class&lt;T&gt; clazz) throws ObjectSerializerException &#123;</span><br><span class="line">        T object;</span><br><span class="line">        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(param)) &#123;</span><br><span class="line">            Kryo kryo = new Kryo();</span><br><span class="line">            Input input = new Input(inputStream);</span><br><span class="line">            object = kryo.readObject(input, clazz);</span><br><span class="line">            input.close();</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            throw new ObjectSerializerException(&quot;kryo deSerialize error&quot; + e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        return object;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String getSchemeName() &#123;</span><br><span class="line">        return &quot;kryoSerializer&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>使用 Kryo 的序列化方式。Kryo 是一个快速高效的 Java 对象图形序列化框架，它原生支持 java，且在 java 的序列化上甚至优于 google 著名的序列化框架 protobuf。</p>
-<p>|</p>
-<pre>123456789101112131415161718192021222324252627282930313233</pre>
-
-<p> |</p>
-<pre>public class JavaSerializer implements ObjectSerializer {    @Override    public byte[] serialize(Object obj) throws ObjectSerializerException {        ByteArrayOutputStream arrayOutputStream;        try {            arrayOutputStream = new ByteArrayOutputStream();            ObjectOutput objectOutput = new ObjectOutputStream(arrayOutputStream);            objectOutput.writeObject(obj);            objectOutput.flush();            objectOutput.close();        } catch (IOException e) {            throw new ObjectSerializerException("JAVA serialize error " + e.getMessage());        }        return arrayOutputStream.toByteArray();    }    @Override    public <t> T deSerialize(byte[] param, Class<t> clazz) throws ObjectSerializerException {        ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(param);        try {            ObjectInput input = new ObjectInputStream(arrayInputStream);            return (T) input.readObject();        } catch (IOException | ClassNotFoundException e) {            throw new ObjectSerializerException("JAVA deSerialize error " + e.getMessage());        }    }    @Override    public String getSchemeName() {        return "javaSerializer";    }}</t></t></pre>
-
-<p> |</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public class JavaSerializer implements ObjectSerializer &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public byte[] serialize(Object obj) throws ObjectSerializerException &#123;</span><br><span class="line">        ByteArrayOutputStream arrayOutputStream;</span><br><span class="line">        try &#123;</span><br><span class="line">            arrayOutputStream = new ByteArrayOutputStream();</span><br><span class="line">            ObjectOutput objectOutput = new ObjectOutputStream(arrayOutputStream);</span><br><span class="line">            objectOutput.writeObject(obj);</span><br><span class="line">            objectOutput.flush();</span><br><span class="line">            objectOutput.close();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            throw new ObjectSerializerException(&quot;JAVA serialize error &quot; + e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        return arrayOutputStream.toByteArray();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public &lt;T&gt; T deSerialize(byte[] param, Class&lt;T&gt; clazz) throws ObjectSerializerException &#123;</span><br><span class="line">        ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(param);</span><br><span class="line">        try &#123;</span><br><span class="line">            ObjectInput input = new ObjectInputStream(arrayInputStream);</span><br><span class="line">            return (T) input.readObject();</span><br><span class="line">        &#125; catch (IOException | ClassNotFoundException e) &#123;</span><br><span class="line">            throw new ObjectSerializerException(&quot;JAVA deSerialize error &quot; + e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String getSchemeName() &#123;</span><br><span class="line">        return &quot;javaSerializer&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Java 原生的序列化方式。</p>
-<h3 id="增加-META-INF-目录文件"><a href="#增加-META-INF-目录文件" class="headerlink" title="增加 META-INF 目录文件"></a><a href="#增加META-INF目录文件" title="增加META-INF目录文件"></a>增加 META-INF 目录文件</h3><p>Resource 下面创建 META-INF/services 目录里创建一个以服务接口命名的文件<br><a href="http://ovci1ihdy.bkt.clouddn.com/java-spi.jpg" target="_blank" rel="noopener"><img src="http://ovci1ihdy.bkt.clouddn.com/java-spi.jpg" alt=""></a></p>
-<p>|</p>
-<pre>12</pre>
-
-<p> |</p>
-<pre>com.blueskykong.javaspi.serializer.KryoSerializercom.blueskykong.javaspi.serializer.JavaSerializer</pre>
-
-<p> |</p>
-<h3 id="Service-类"><a href="#Service-类" class="headerlink" title="Service 类"></a><a href="#Service类" title="Service类"></a>Service 类</h3><p>|</p>
-<pre>12345678910111213</pre>
-
-<p> |</p>
-<p><pre>@Servicepublic class SerializerService {    public ObjectSerializer getObjectSerializer() {        ServiceLoader<objectserializer> serializers = ServiceLoader.load(ObjectSerializer.class);        final Optional<objectserializer> serializer = StreamSupport.stream(serializers.spliterator(), false)                .findFirst();        return serializer.orElse(new JavaSerializer());    }}</objectserializer></objectserializer></pre></p>
-<p> |</p>
+<h3 id="增加-META-INF-目录文件"><a href="#增加-META-INF-目录文件" class="headerlink" title="增加 META-INF 目录文件"></a>增加 META-INF 目录文件</h3><p>Resource 下面创建 META-INF/services 目录里创建一个以服务接口命名的文件</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/5/14/1635dec21502ba4d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">com.blueskykong.javaspi.serializer.KryoSerializer</span><br><span class="line">com.blueskykong.javaspi.serializer.JavaSerializer</span><br></pre></td></tr></table></figure>
+<h3 id="Service-类"><a href="#Service-类" class="headerlink" title="Service 类"></a>Service 类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class SerializerService &#123;</span><br><span class="line"></span><br><span class="line">    public ObjectSerializer getObjectSerializer() &#123;</span><br><span class="line">        ServiceLoader&lt;ObjectSerializer&gt; serializers = ServiceLoader.load(ObjectSerializer.class);</span><br><span class="line"></span><br><span class="line">        final Optional&lt;ObjectSerializer&gt; serializer = StreamSupport.stream(serializers.spliterator(), false)</span><br><span class="line">                .findFirst();</span><br><span class="line"></span><br><span class="line">        return serializer.orElse(new JavaSerializer());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>获取定义的序列化方式，且只取第一个（我们在配置中写了两个），如果找不到则返回 Java 原生序列化方式。</p>
-<h3 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a><a href="#测试类" title="测试类"></a>测试类</h3><p>|</p>
-<pre>1234567891011</pre>
-
-<p> |</p>
-<p><pre>@Autowiredprivate SerializerService serializerService;@Testpublic void serializerTest() throws ObjectSerializerException {    ObjectSerializer objectSerializer = serializerService.getObjectSerializer();    System.out.println(objectSerializer.getSchemeName());    byte[] arrays = objectSerializer.serialize(Arrays.asList(“1”, “2”, “3”));    ArrayList list = objectSerializer.deSerialize(arrays, ArrayList.class);    Assert.assertArrayEquals(Arrays.asList(“1”, “2”, “3”).toArray(), list.toArray());}</pre></p>
-<p> |</p>
+<h3 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@Autowired</span><br><span class="line">private SerializerService serializerService;</span><br><span class="line"></span><br><span class="line">@Test</span><br><span class="line">public void serializerTest() throws ObjectSerializerException &#123;</span><br><span class="line">    ObjectSerializer objectSerializer = serializerService.getObjectSerializer();</span><br><span class="line">    System.out.println(objectSerializer.getSchemeName());</span><br><span class="line">    byte[] arrays = objectSerializer.serialize(Arrays.asList(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;));</span><br><span class="line">    ArrayList list = objectSerializer.deSerialize(arrays, ArrayList.class);</span><br><span class="line">    Assert.assertArrayEquals(Arrays.asList(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;).toArray(), list.toArray());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>测试用例通过，且输出<code>kryoSerializer</code>。</p>
-<h2 id="SPI-的用途"><a href="#SPI-的用途" class="headerlink" title="SPI 的用途"></a><a href="#SPI的用途" title="SPI的用途"></a>SPI 的用途</h2><p>数据库 DriverManager、Spring、ConfigurableBeanFactory 等都用到了 SPI 机制，这里以数据库 DriverManager 为例，看一下其实现的内幕。</p>
-<p>DriverManager 是 jdbc 里管理和注册不同数据库 driver 的工具类。针对一个数据库，可能会存在着不同的数据库驱动实现。我们在使用特定的驱动实现时，不希望修改现有的代码，而希望通过一个简单的配置就可以达到效果。<br>在使用 mysql 驱动的时候，会有一个疑问，DriverManager 是怎么获得某确定驱动类的？我们在运用 Class.forName(“com.mysql.jdbc.Driver”) 加载 mysql 驱动后，就会执行其中的静态代码把 driver 注册到 DriverManager 中，以便后续的使用。</p>
+<h2 id="SPI-的用途"><a href="#SPI-的用途" class="headerlink" title="SPI 的用途"></a>SPI 的用途</h2><p>数据库 DriverManager、Spring、ConfigurableBeanFactory 等都用到了 SPI 机制，这里以数据库 DriverManager 为例，看一下其实现的内幕。</p>
+<p>DriverManager 是 jdbc 里管理和注册不同数据库 driver 的工具类。针对一个数据库，可能会存在着不同的数据库驱动实现。我们在使用特定的驱动实现时，不希望修改现有的代码，而希望通过一个简单的配置就可以达到效果。 在使用 mysql 驱动的时候，会有一个疑问，DriverManager 是怎么获得某确定驱动类的？我们在运用 Class.forName(“com.mysql.jdbc.Driver”) 加载 mysql 驱动后，就会执行其中的静态代码把 driver 注册到 DriverManager 中，以便后续的使用。</p>
 <p>在 JDBC4.0 之前，连接数据库的时候，通常会用<code>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</code>这句先加载数据库相关的驱动，然后再进行获取连接等的操作。而 JDBC4.0 之后不需要<code>Class.forName</code>来加载驱动，直接获取连接即可，这里使用了 Java 的 SPI 扩展机制来实现。</p>
 <p>在 java 中定义了接口 java.sql.Driver，并没有具体的实现，具体的实现都是由不同厂商来提供的。</p>
-<h3 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a><a href="#mysql" title="mysql"></a>mysql</h3><p>在 mysql-connector-java-5.1.45.jar 中，META-INF/services 目录下会有一个名字为 java.sql.Driver 的文件：</p>
-<p>|</p>
-<pre>12</pre>
-
-<p> |</p>
-<pre>com.mysql.jdbc.Drivercom.mysql.fabric.jdbc.FabricMySQLDriver</pre>
-
-<p> |</p>
-<h3 id="pg"><a href="#pg" class="headerlink" title="pg"></a><a href="#pg" title="pg"></a>pg</h3><p>而在 postgresql-42.2.2.jar 中，META-INF/services 目录下会有一个名字为 java.sql.Driver 的文件：</p>
-<p>|</p>
-<pre>1</pre>
-
-<p> |</p>
-<pre>org.postgresql.Driver</pre>
-
-<p> |</p>
-<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a><a href="#用法" title="用法"></a>用法</h3><p>|</p>
-<pre>12</pre>
-
-<p> |</p>
-<pre>String url = "jdbc:mysql://localhost:3306/test";Connection conn = DriverManager.getConnection(url,username,password);</pre>
-
-<p> |</p>
+<h3 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h3><p>在 mysql-connector-java-5.1.45.jar 中，META-INF/services 目录下会有一个名字为 java.sql.Driver 的文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">com.mysql.jdbc.Driver</span><br><span class="line">com.mysql.fabric.jdbc.FabricMySQLDriver</span><br></pre></td></tr></table></figure>
+<h3 id="pg"><a href="#pg" class="headerlink" title="pg"></a>pg</h3><p>而在 postgresql-42.2.2.jar 中，META-INF/services 目录下会有一个名字为 java.sql.Driver 的文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.postgresql.Driver</span><br></pre></td></tr></table></figure>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String url = &quot;jdbc:mysql://localhost:3306/test&quot;;</span><br><span class="line">Connection conn = DriverManager.getConnection(url,username,password);</span><br></pre></td></tr></table></figure>
 <p>上面展示的是 mysql 的用法，pg 用法也是类似。不需要使用<code>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</code>来加载驱动。</p>
-<h3 id="Mysql-DriverManager-实现"><a href="#Mysql-DriverManager-实现" class="headerlink" title="Mysql DriverManager 实现"></a><a href="#Mysql-DriverManager实现" title="Mysql DriverManager实现"></a>Mysql DriverManager 实现</h3><p>上面代码没有了加载驱动的代码，我们怎么去确定使用哪个数据库连接的驱动呢？这里就涉及到使用 Java 的 SPI 扩展机制来查找相关驱动的东西了，关于驱动的查找其实都在 DriverManager 中，DriverManager 是 Java 中的实现，用来获取数据库连接，在 DriverManager 中有一个静态代码块如下：</p>
-<p>|</p>
-<pre>1234</pre>
-
-<p> |</p>
-<pre>static {    loadInitialDrivers();    println("JDBC DriverManager initialized");}</pre>
-
-<p> |</p>
+<h3 id="Mysql-DriverManager-实现"><a href="#Mysql-DriverManager-实现" class="headerlink" title="Mysql DriverManager 实现"></a>Mysql DriverManager 实现</h3><p>上面代码没有了加载驱动的代码，我们怎么去确定使用哪个数据库连接的驱动呢？这里就涉及到使用 Java 的 SPI 扩展机制来查找相关驱动的东西了，关于驱动的查找其实都在 DriverManager 中，DriverManager 是 Java 中的实现，用来获取数据库连接，在 DriverManager 中有一个静态代码块如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">static &#123;</span><br><span class="line">	loadInitialDrivers();</span><br><span class="line">	println(&quot;JDBC DriverManager initialized&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可以看到其内部的静态代码块中有一个<code>loadInitialDrivers</code>方法，<code>loadInitialDrivers</code>用法用到了上文提到的 spi 工具类<code>ServiceLoader</code>:</p>
-<p>|</p>
-<pre>1234567891011121314151617181920212223242526</pre>
-
-<p> |</p>
-<pre>public Void run() {    ServiceLoader<driver> loadedDrivers = ServiceLoader.load(Driver.class);    Iterator<driver> driversIterator = loadedDrivers.iterator();    /* Load these drivers, so that they can be instantiated.     * It may be the case that the driver class may not be there     * i.e. there may be a packaged driver with the service class     * as implementation of java.sql.Driver but the actual class     * may be missing. In that case a java.util.ServiceConfigurationError     * will be thrown at runtime by the VM trying to locate     * and load the service.     *     * Adding a try catch block to catch those runtime errors     * if driver not available in classpath but it's     * packaged as service and that service is there in classpath.     */    try{        while(driversIterator.hasNext()) {            driversIterator.next();        }    } catch(Throwable t) {    // Do nothing    }    return null;}</driver></driver></pre>
-
-<p> |</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public Void run() &#123;</span><br><span class="line"></span><br><span class="line">    ServiceLoader&lt;Driver&gt; loadedDrivers = ServiceLoader.load(Driver.class);</span><br><span class="line">    Iterator&lt;Driver&gt; driversIterator = loadedDrivers.iterator();</span><br><span class="line"></span><br><span class="line">    /* Load these drivers, so that they can be instantiated.</span><br><span class="line">     * It may be the case that the driver class may not be there</span><br><span class="line">     * i.e. there may be a packaged driver with the service class</span><br><span class="line">     * as implementation of java.sql.Driver but the actual class</span><br><span class="line">     * may be missing. In that case a java.util.ServiceConfigurationError</span><br><span class="line">     * will be thrown at runtime by the VM trying to locate</span><br><span class="line">     * and load the service.</span><br><span class="line">     *</span><br><span class="line">     * Adding a try catch block to catch those runtime errors</span><br><span class="line">     * if driver not available in classpath but it&apos;s</span><br><span class="line">     * packaged as service and that service is there in classpath.</span><br><span class="line">     */</span><br><span class="line">    try&#123;</span><br><span class="line">        while(driversIterator.hasNext()) &#123;</span><br><span class="line">            driversIterator.next();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch(Throwable t) &#123;</span><br><span class="line">    // Do nothing</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>遍历使用 SPI 获取到的具体实现，实例化各个实现类。在遍历的时候，首先调用<code>driversIterator.hasNext()</code>方法，这里会搜索 classpath 下以及 jar 包中所有的 META-INF/services 目录下的 java.sql.Driver 文件，并找到文件中的实现类的名字，此时并没有实例化具体的实现类。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><a href="#总结" title="总结"></a>总结</h2><p>SPI 机制在实际开发中使用得场景也有很多。特别是统一标准的不同厂商实现，当有关组织或者公司定义标准之后，具体厂商或者框架开发者实现，之后提供给开发者使用。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>SPI 机制在实际开发中使用得场景也有很多。特别是统一标准的不同厂商实现，当有关组织或者公司定义标准之后，具体厂商或者框架开发者实现，之后提供给开发者使用。</p>
 <p><strong>本文代码：</strong> <a href="https://github.com/keets2012/Spring-Boot-Samples/tree/master/java-spi" target="_blank" rel="noopener">https://github.com/keets2012/Spring-Boot-Samples/tree/master/java-spi</a></p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a><a href="#参考" title="参考"></a>参考</h3><ol>
-<li><a href="https://cxis.me/2017/04/17/Java%E4%B8%ADSPI%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%85%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" target="_blank" rel="noopener">Java 中 SPI 机制深入及源码解析</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/28909673" target="_blank" rel="noopener">Java SPI 思想梳理</a></li>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="https://link.juejin.im?target=https%3A%2F%2Fcxis.me%2F2017%2F04%2F17%2FJava%25E4%25B8%25ADSPI%25E6%259C%25BA%25E5%2588%25B6%25E6%25B7%25B1%25E5%2585%25A5%25E5%258F%258A%25E6%25BA%2590%25E7%25A0%2581%25E8%25A7%25A3%25E6%259E%2590%2F" target="_blank" rel="noopener">Java 中 SPI 机制深入及源码解析</a></li>
+<li><a href="https://link.juejin.im?target=https%3A%2F%2Fzhuanlan.zhihu.com%2Fp%2F28909673" target="_blank" rel="noopener">Java SPI 思想梳理</a></li>
 </ol>
 
       
@@ -568,7 +505,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/bugs/2018/09/16/面试/饿了么/面试/" rel="prev" title="面试前准备">
+              <a href="/bugs/2018/09/16/面试/饿了么/面试前准备/" rel="prev" title="面试前准备">
                 面试前准备 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -647,7 +584,7 @@
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">77</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -718,7 +655,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-SPI-应用实例"><span class="nav-number">1.</span> <span class="nav-text">Java SPI 应用实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SPI-接口"><span class="nav-number">1.1.</span> <span class="nav-text">SPI 接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SPI-具体实现"><span class="nav-number">1.2.</span> <span class="nav-text">SPI 具体实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加-META-INF-目录文件"><span class="nav-number">1.3.</span> <span class="nav-text">增加 META-INF 目录文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service-类"><span class="nav-number">1.4.</span> <span class="nav-text">Service 类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试类"><span class="nav-number">1.5.</span> <span class="nav-text">测试类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SPI-的用途"><span class="nav-number">2.</span> <span class="nav-text">SPI 的用途</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql"><span class="nav-number">2.1.</span> <span class="nav-text">mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pg"><span class="nav-number">2.2.</span> <span class="nav-text">pg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用法"><span class="nav-number">2.3.</span> <span class="nav-text">用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mysql-DriverManager-实现"><span class="nav-number">2.4.</span> <span class="nav-text">Mysql DriverManager 实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-SPI？"><span class="nav-number">1.</span> <span class="nav-text">什么是 SPI？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-SPI-应用实例"><span class="nav-number">2.</span> <span class="nav-text">Java SPI 应用实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SPI-接口"><span class="nav-number">2.1.</span> <span class="nav-text">SPI 接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SPI-具体实现"><span class="nav-number">2.2.</span> <span class="nav-text">SPI 具体实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加-META-INF-目录文件"><span class="nav-number">2.3.</span> <span class="nav-text">增加 META-INF 目录文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service-类"><span class="nav-number">2.4.</span> <span class="nav-text">Service 类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试类"><span class="nav-number">2.5.</span> <span class="nav-text">测试类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SPI-的用途"><span class="nav-number">3.</span> <span class="nav-text">SPI 的用途</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql"><span class="nav-number">3.1.</span> <span class="nav-text">mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pg"><span class="nav-number">3.2.</span> <span class="nav-text">pg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用法"><span class="nav-number">3.3.</span> <span class="nav-text">用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mysql-DriverManager-实现"><span class="nav-number">3.4.</span> <span class="nav-text">Mysql DriverManager 实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -757,7 +694,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">239.6k</span>
+    <span title="Site words total count">242.9k</span>
   
 </div>
 
