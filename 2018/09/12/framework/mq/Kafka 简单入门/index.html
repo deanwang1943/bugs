@@ -97,8 +97,7 @@
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/5/165a9039384bc27d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/5/165a93f047eb4935?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/6/165ac37446702d4b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/6/165af209e9f177af?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:updated_time" content="2018-09-25T16:08:25.030Z">
+<meta property="og:updated_time" content="2018-10-08T03:00:33.363Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kafka 简单入门">
 <meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b8f85a1e51d450e4d2f8eca?utm_source=gold_browser_extension![](https://user-gold-cdn.xitu.io/2018/9/5/165a8a9babccbd7a?imageView2/0/w/1280/h/960/format/">
@@ -338,6 +337,37 @@
           
 
           
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
 
           
 
@@ -456,8 +486,30 @@
 <li>消费者组中的消费者数量 &lt;= 分区数量，如果大于分区数量，多出来的消费者会处于收不到消息的状态，造成不必要的浪费。</li>
 </ul>
 <p><img src="https://user-gold-cdn.xitu.io/2018/9/6/165ac37446702d4b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>小尾巴走一波，欢迎关注我的公众号，不定期分享编程、投资、生活方面的感悟:)</p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/9/6/165af209e9f177af?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
+<h3 id="Kafka的设计："><a href="#Kafka的设计：" class="headerlink" title="Kafka的设计："></a>Kafka的设计：</h3><p>1、吞吐量<br>高吞吐是kafka需要实现的核心目标之一，为此kafka做了以下一些设计：</p>
+<ol>
+<li>数据磁盘持久化：消息不在内存中cache，直接写入到磁盘，充分利用磁盘的顺序读写性能</li>
+<li>zero-copy：减少IO操作步骤</li>
+<li>数据批量发送</li>
+<li>数据压缩</li>
+<li>Topic划分为多个partition，提高parallelism</li>
+</ol>
+<p>2、负载均衡</p>
+<ol>
+<li>producer根据用户指定的算法，将消息发送到指定的partition</li>
+<li>存在多个partiiton，每个partition有自己的replica，每个replica分布在不同的Broker节点上</li>
+<li>多个partition需要选取出lead partition，lead partition负责读写，并由zookeeper负责fail over</li>
+<li>通过zookeeper管理broker与consumer的动态加入与离开</li>
+</ol>
+<p>3、拉取系统</p>
+<p>于kafka broker会持久化数据，broker没有内存压力，因此，consumer非常适合采取pull的方式消费数据，具有以下几点好处：</p>
+<ol>
+<li>简化kafka设计</li>
+<li>consumer根据消费能力自主控制消息拉取速度</li>
+<li>consumer根据自身情况自主选择消费模式，例如批量，重复消费，从尾端开始消费等</li>
+</ol>
+<p>4、可扩展性</p>
+<p>当需要增加broker结点时，新增的broker会向zookeeper注册，而producer及consumer会根据注册在zookeeper上的watcher感知这些变化，并及时作出调整。</p>
 
       
     </div>
@@ -661,7 +713,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是-kafka"><span class="nav-number">1.</span> <span class="nav-text">什么是 kafka</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用实例："><span class="nav-number">2.</span> <span class="nav-text">使用实例：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#producer："><span class="nav-number">2.0.1.</span> <span class="nav-text">producer：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#consumer"><span class="nav-number">2.0.2.</span> <span class="nav-text">consumer:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#properties"><span class="nav-number">2.0.3.</span> <span class="nav-text">properties:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关名词："><span class="nav-number">3.</span> <span class="nav-text">相关名词：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Topic-和-Partition"><span class="nav-number">3.0.1.</span> <span class="nav-text">Topic 和 Partition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Consumer-和-Partition"><span class="nav-number">3.0.2.</span> <span class="nav-text">Consumer 和 Partition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">3.0.3.</span> <span class="nav-text">最后</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是-kafka"><span class="nav-number">1.</span> <span class="nav-text">什么是 kafka</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用实例："><span class="nav-number">2.</span> <span class="nav-text">使用实例：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#producer："><span class="nav-number">2.0.1.</span> <span class="nav-text">producer：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#consumer"><span class="nav-number">2.0.2.</span> <span class="nav-text">consumer:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#properties"><span class="nav-number">2.0.3.</span> <span class="nav-text">properties:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关名词："><span class="nav-number">3.</span> <span class="nav-text">相关名词：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Topic-和-Partition"><span class="nav-number">3.0.1.</span> <span class="nav-text">Topic 和 Partition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Consumer-和-Partition"><span class="nav-number">3.0.2.</span> <span class="nav-text">Consumer 和 Partition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka的设计："><span class="nav-number">3.0.3.</span> <span class="nav-text">Kafka的设计：</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

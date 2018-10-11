@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Bugs">
 <meta property="og:description" content="介绍做过的相关系统，特别是分布式的系统  redis缓存，过期时间设置，缓存如何更新，  数据库如何分库分表？原则是什么？如何联合查询？  mysql中binlog如何使用？  kafka中break和topic介绍，消费者和partition的关系，消费者组与topic的关系，partition的作用  kafka的流程，为什么使用消息中间件？  为什么使用es？优点是什么  序列化和反序列化">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-05T06:51:26.655Z">
+<meta property="og:updated_time" content="2018-10-08T02:49:33.952Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试前准备">
 <meta name="twitter:description" content="介绍做过的相关系统，特别是分布式的系统  redis缓存，过期时间设置，缓存如何更新，  数据库如何分库分表？原则是什么？如何联合查询？  mysql中binlog如何使用？  kafka中break和topic介绍，消费者和partition的关系，消费者组与topic的关系，partition的作用  kafka的流程，为什么使用消息中间件？  为什么使用es？优点是什么  序列化和反序列化">
@@ -333,6 +333,37 @@
           
 
           
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
 
           
 
@@ -371,6 +402,55 @@
 <li><p>多数据库如何处理？</p>
 </li>
 <li><p>多源数据库如何取topN的数据？</p>
+</li>
+</ol>
+<p>二面</p>
+<ol>
+<li><p>面向对象三大特性</p>
+</li>
+<li><p>线程池-corepoolsize到达后如何增大到maxpoolsize</p>
+</li>
+</ol>
+<p>核心方法：addWorker</p>
+<ul>
+<li>首先ctl是一个原子量，同时它里面包含了两个field，一个是workerCount，另一个是runState<ul>
+<li>workerCount表示当前有效的线程数，也就是Worker的数量</li>
+<li>runState表示当前线程池的状态<br>首先workerCount是占据着一个atomic integer的后29位的，而状态占据了前3位</li>
+<li>所以，workerCount上限是(2^29)-1。</li>
+<li>runState是整个线程池的运行生命周期，有如下取值：</li>
+<li><ol>
+<li>RUNNING：可以新加线程，同时可以处理queue中的线程。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>SHUTDOWN：不增加新线程，但是处理queue中的线程。</li>
+</ol>
+</li>
+<li>3.STOP 不增加新线程，同时不处理queue中的线程。</li>
+<li>4.TIDYING 所有的线程都终止了（queue中），同时workerCount为0，那么此时进入TIDYING</li>
+<li>5.terminated()方法结束，变为TERMINATED</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li><p>并发编程</p>
+</li>
+<li><p>volatile &amp;&amp; synchronized</p>
+</li>
+<li><p>hashMap &amp; ConcurrentHashMap</p>
+</li>
+<li><p>JMM&amp;垃圾回收</p>
+</li>
+<li><p>设计模式-单列</p>
+</li>
+<li><p>类加载过程</p>
+</li>
+</ol>
+<p>Class的加载、验证、准备、解析、初始化</p>
+<ol start="9">
+<li><p>编程实现队列</p>
+</li>
+<li><p>青蛙过河</p>
 </li>
 </ol>
 
@@ -414,8 +494,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/bugs/2018/09/12/语言/Java/Java SPI 机制详解/" rel="next" title="Java SPI 机制详解">
-                <i class="fa fa-chevron-left"></i> Java SPI 机制详解
+              <a href="/bugs/2018/09/16/面试/饿了么/面试前准备/" rel="next" title="面试前准备">
+                <i class="fa fa-chevron-left"></i> 面试前准备
               </a>
             
           </div>
@@ -424,8 +504,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/bugs/2018/09/16/面试/饿了么/面试前准备/" rel="prev" title="面试前准备">
-                面试前准备 <i class="fa fa-chevron-right"></i>
+              <a href="/bugs/2018/09/18/语言/Java/Java内存/" rel="prev" title="Java GC详解">
+                Java GC详解 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
