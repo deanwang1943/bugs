@@ -130,8 +130,7 @@
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/6/5/163ce4122fec6125?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/6/5/163ce4122e9e450e?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/6/5/163ce412472feff4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/6/5/163ce412545eb155?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:updated_time" content="2018-10-05T08:28:41.996Z">
+<meta property="og:updated_time" content="2018-10-11T16:27:34.457Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="什么是分布式锁？">
 <meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b16148a518825136137c8db    ————— 第二天 —————            ————————————       分布式锁的实现有哪些？ 1.Memcached 分布式锁 利用 Memcached 的 add 命令。此命令是原子性操作，只有在 key 不存在的情况下，">
@@ -145,7 +144,7 @@
     root: '/bugs/',
     scheme: 'Mist',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -206,7 +205,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">微笑的周末</p>
+        <h1 class="site-subtitle" itemprop="description">微笑的周末</h1>
       
   </div>
 
@@ -232,6 +231,16 @@
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="https://github.com/deanwang1943/blog/blob/master/blog/%E7%AE%80%E5%8E%86.md" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
@@ -262,6 +271,16 @@
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/deanwang1943" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+            
+            github
           </a>
         </li>
       
@@ -315,7 +334,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">什么是分布式锁？</h1>
+          <h2 class="post-title" itemprop="name headline">什么是分布式锁？</h2>
         
 
         <div class="post-meta">
@@ -381,7 +400,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  1.5k 字
                 </span>
               
 
@@ -397,7 +416,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  5 分钟
                 </span>
               
             </div>
@@ -528,8 +547,6 @@
 <p><strong>几点补充：</strong></p>
 <p><strong>本漫画纯属娱乐，还请大家尽量珍惜当下的工作，切勿模仿小灰的行为哦。</strong></p>
 <p>—————END—————</p>
-<p>喜欢本文的朋友们，欢迎长按下图关注订阅号<strong>程序员小灰</strong>，收看更多精彩内容</p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/6/5/163ce412545eb155?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
 
       
     </div>
@@ -549,10 +566,18 @@
     </div>
 
     
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/path/to/your/wechatqcode ex. /uploads/wechat-qcode.jpg" alt="Dean Wang wechat" style="width: 200px; max-width: 100%;"/>
+    <div></div>
+</div>
+
+      </div>
+    
 
     
 
-        
+    
 
     <footer class="post-footer">
       
@@ -573,8 +598,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/" rel="next" title="从新浪微博分析高性能高并发网络架构的设计">
-                <i class="fa fa-chevron-left"></i> 从新浪微博分析高性能高并发网络架构的设计
+              <a href="/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/" rel="next" title="垃圾回收的基础算法">
+                <i class="fa fa-chevron-left"></i> 垃圾回收的基础算法
               </a>
             
           </div>
@@ -643,7 +668,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">Dean Wang</p>
-              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+              <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
           <nav class="site-state motion-element">
@@ -653,7 +678,7 @@
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -675,7 +700,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/bugs/tags/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -717,6 +742,11 @@
       
 
       
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
 
     </div>
   </aside>
@@ -734,6 +764,15 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Dean Wang</span>
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">239.6k</span>
   
 </div>
 
@@ -763,11 +802,6 @@
       </div>
     </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
     

@@ -103,8 +103,7 @@
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/28/1661f3b76cd8ac05?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/28/1661f3b76dfc400b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/28/1661f3b79ca85a8c?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/9/27/16619e66b78a3d58?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:updated_time" content="2018-10-05T06:42:30.632Z">
+<meta property="og:updated_time" content="2018-10-11T16:33:55.917Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="垃圾回收的基础算法">
 <meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5bade237e51d450ea401fd71?utm_source=gold_browser_extension  《对象搜索算法与回收算法》介绍了垃圾回收的基础算法，相当于垃圾回收的方法论。接下来就详细看看垃圾回收的具体实现。 上文提到过现代的商用虚拟机的都是采用分代收集的，不同的区域用不同的收">
@@ -118,7 +117,7 @@
     root: '/bugs/',
     scheme: 'Mist',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -179,7 +178,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">微笑的周末</p>
+        <h1 class="site-subtitle" itemprop="description">微笑的周末</h1>
       
   </div>
 
@@ -205,6 +204,16 @@
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="https://github.com/deanwang1943/blog/blob/master/blog/%E7%AE%80%E5%8E%86.md" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
@@ -235,6 +244,16 @@
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/deanwang1943" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+            
+            github
           </a>
         </li>
       
@@ -288,7 +307,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">垃圾回收的基础算法</h1>
+          <h2 class="post-title" itemprop="name headline">垃圾回收的基础算法</h2>
         
 
         <div class="post-meta">
@@ -354,7 +373,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.9k 字
                 </span>
               
 
@@ -370,7 +389,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  10 分钟
                 </span>
               
             </div>
@@ -469,8 +488,6 @@
 </blockquote>
 <p>ZGC 虽然目前还在 JDK 11 还在实验阶段，但由于算法与思想是一个非常大的提升，相信在未来不久会成为主流的 GC 收集器使用。</p>
 <hr>
-<p>更多技术文章、精彩干货，请关注 博客：<a href="https://link.juejin.im?target=http%3A%2F%2Fzackku.com" target="_blank" rel="noopener">zackku.com</a> 微信公众号：Zack 说码</p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/9/27/16619e66b78a3d58?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""></p>
 
       
     </div>
@@ -490,10 +507,18 @@
     </div>
 
     
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/path/to/your/wechatqcode ex. /uploads/wechat-qcode.jpg" alt="Dean Wang wechat" style="width: 200px; max-width: 100%;"/>
+    <div></div>
+</div>
+
+      </div>
+    
 
     
 
-        
+    
 
     <footer class="post-footer">
       
@@ -524,8 +549,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/" rel="prev" title="从新浪微博分析高性能高并发网络架构的设计">
-                从新浪微博分析高性能高并发网络架构的设计 <i class="fa fa-chevron-right"></i>
+              <a href="/bugs/2018/10/05/架构师系列/什么是分布式锁？/" rel="prev" title="什么是分布式锁？">
+                什么是分布式锁？ <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -593,7 +618,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">Dean Wang</p>
-              <p class="site-description motion-element" itemprop="description">Java Python 大数据</p>
+              <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
           <nav class="site-state motion-element">
@@ -603,7 +628,7 @@
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -625,7 +650,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/bugs/tags/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -683,6 +708,11 @@
       
 
       
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
 
     </div>
   </aside>
@@ -700,6 +730,15 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Dean Wang</span>
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">239.6k</span>
   
 </div>
 
@@ -729,11 +768,6 @@
       </div>
     </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
     
