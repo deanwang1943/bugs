@@ -86,44 +86,48 @@
 
 
 
-<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https://new.qq.com/omn/20180827/20180827A0NEVH.html   作者 小灰 如需转载，请联系原作者授权。       时间复杂度的意义 究竟什么是时间复杂度呢？让我们来想象一个场景： 某一天，小灰和大黄同时加入了一个公司……  一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。 大黄的代码">
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https://new.qq.com/omn/20180827/20180827A0NEVH.html   作者 小灰 如需转载，请联系原作者授权。         时间复杂度的意义 究竟什么是时间复杂度呢？让我们来想象一个场景：某一天，小灰和大黄同时加入了一个公司……  一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。大黄的代码">
 <meta name="keywords" content="算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="程序员科普：什么是时间复杂度？">
 <meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/10/15/算法/程序员科普：什么是时间复杂度？/index.html">
 <meta property="og:site_name" content="Bugs">
-<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://new.qq.com/omn/20180827/20180827A0NEVH.html   作者 小灰 如需转载，请联系原作者授权。       时间复杂度的意义 究竟什么是时间复杂度呢？让我们来想象一个场景： 某一天，小灰和大黄同时加入了一个公司……  一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。 大黄的代码">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://new.qq.com/omn/20180827/20180827A0NEVH.html   作者 小灰 如需转载，请联系原作者授权。         时间复杂度的意义 究竟什么是时间复杂度呢？让我们来想象一个场景：某一天，小灰和大黄同时加入了一个公司……  一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。大黄的代码">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/5008852660/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/2253586357/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100274/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100275/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100277/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100278/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100279/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100280/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100281/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100283/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100284/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100285/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100286/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100287/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100288/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100289/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100290/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100291/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100293/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100295/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100296/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100297/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100298/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100300/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100301/1000">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/4993100302/1000">
-<meta property="og:updated_time" content="2018-10-15T14:49:44.183Z">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_gif/Pn4Sm0RsAug5zOzy32A3RIVhRwowK5ogg1hJ631uGyu9zOMKfTddDnSrsxicbCQNm59Qeo3lDYCvF70I9ibGvA9g/640?wx_fmt=gif">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VunscrOibG7a43p7vkgwIkzYy8UhXtZ5vKazu2p83tQDY3YE1pr3ruDQ/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VHqhNicrJ02BzlB42JicrehwMpdYErk7NDGzHUJCj0mUdfh9W96HnoNHQ/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VsbLJMEZSTczt4Lz9wOI1Jico0Miay2qEiarKZhxcLcdfk0cSWulT857gw/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VSVG8Q8Hmz23DY96OdsOXX3E42v3GIJW1zlOT9vTnia3DJDHRz0FGaRA/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VRqY0gPQtoKBWYeAxxBEPZDJSUjDaNQF2zkNay8wddvxyCyQpo63otw/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VyCGMviaqd71ic1sMJmeEpkWP3ZHCO6HRzgiagwDsia2oXS9q0gJHoSrF8A/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/Pn4Sm0RsAuhSvZMAt2zKcxGQN3l1NV4LXSAriayI15u06ibNNlXzIcor2tTtgJBKFxkIicJ8tiaRKRaictbrQEssdSg/640?wx_fmt=png">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VM9sttibY7UO1dia9JdoSzwCv0ibRkiaeG1StbrdNGn4URv6sVvicGdbXY0A/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VsBPqOMLeoKIt9U07MGw7YTC6IicoBaX3FSWq4eK3wvf6BrpfGViaMxibA/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VPbuUsJmIPI3icBstGVApqmugm27enU7LcL3NpWZ3PRyT1KzB6HdPjLg/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5V5kYbkvRF3H4X64DfkXrW4cZtOcqMspiaKRqRHL5EoU8OmucGibI66B1w/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGopymSxX82TYJAG3yVicFua4Mg05FiaLStPcIc5774ogQGELGcibHL9ibK4ic4vnr7NQQgzlrBPDEF3EPg/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/Pn4Sm0RsAuhSvZMAt2zKcxGQN3l1NV4LwYnW1VvkaHWiaL6W1Mr1yiaNLQpxwhyqice9F1yJzMHticssPX515qyvog/640?wx_fmt=png">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VylonGQ8jRBvOnjfic0JNVHyYZoYY76mbbwTiaUVvSyWpALp9mgJzzzsQ/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5V3zHPGOd11oh6aEjuHpmYshhWr9Vx1VTUUBtqo9KFzyCMOJrJGe364g/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGopymSxX82TYJAG3yVicFua4OTJRrp7VBoL10yNT8646SPIRVbaNlYujvTB5ib4SFC2XRKuhQYrjnzQ/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/Pn4Sm0RsAuhSvZMAt2zKcxGQN3l1NV4Lb4ybNEVGnaAvEDwENKzW27LUKFDGZPKcBneWwTaTpaJyG2C3em7libQ/640?wx_fmt=png">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGr5TbqYMtwehLa57z6LnNO4uTQXN0vcsN4M8sQaKlfowL2TeldyfKQ4pAabhKjJoq1nSzYxlHGdyQ/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGr5TbqYMtwehLa57z6LnNO4sHfsuEIuSKic7rupMehZ8wRVHES5bEs0mPWKYZPMCO818J15KI6noBA/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/NtO5sialJZGpPGwIGDDiacicGKHeCfUWZ2E3BIEgTbtB7Fz93PzU67YKhCzwKTyYibWd6ic1icCcS5rrr7icksanorEEA/640?wx_fmt=png">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/NtO5sialJZGpPGwIGDDiacicGKHeCfUWZ2ESFD4kT4vPWzDdeO0NmuoTOsNqbYOx2wAG10m0EYwN2Kwvnaa3WPib7Q/640?wx_fmt=png">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/NtO5sialJZGpPGwIGDDiacicGKHeCfUWZ2EPXicdZhUfpUOBhicUUUkFwzYl1zMqTK6N8XIqjic0sOu9O2hvaTjlFGYw/640?wx_fmt=png">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/NtO5sialJZGpPGwIGDDiacicGKHeCfUWZ2E2wYp8V2UYPvfeY6GvWLYJa4Ea5icUZgSB1w8zgriaTQaTCECa8NAXHmQ/640?wx_fmt=png">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/NtO5sialJZGpPGwIGDDiacicGKHeCfUWZ2Ehx2GT9ib55qEgoMWGAicwUib1GazWiaAe2m9GXDG43jrX1sbK9gwrZqia8w/640?wx_fmt=png">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/Pn4Sm0RsAuhSvZMAt2zKcxGQN3l1NV4LLqyf6BY4rMfY2LsU81MibFjicKDLjMjib5R23h8uo6GtGDY8OufWJfpEw/640?wx_fmt=png">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGr5TbqYMtwehLa57z6LnNO4sT0a5Rhz2ga64q6Aw5QwzeTek5nic9CibFFYyic4ChDEFKU6acibqQ6ewA/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGr5TbqYMtwehLa57z6LnNO44XNVJyicAgKFNrfnqiaQgTuV4TxFAETgTGtWF3fJey0eo9R2zWSby8fQ/640?wx_fmt=jpeg">
+<meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/NtO5sialJZGr5TbqYMtwehLa57z6LnNO4pib3UXqUiaJIIJOZ8FZNFwxNK1d6Fdhv2AJPGytz3HLwksj6LRDEYKBg/640?wx_fmt=png">
+<meta property="og:updated_time" content="2018-10-15T14:58:21.352Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="程序员科普：什么是时间复杂度？">
-<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://new.qq.com/omn/20180827/20180827A0NEVH.html   作者 小灰 如需转载，请联系原作者授权。       时间复杂度的意义 究竟什么是时间复杂度呢？让我们来想象一个场景： 某一天，小灰和大黄同时加入了一个公司……  一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。 大黄的代码">
+<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://new.qq.com/omn/20180827/20180827A0NEVH.html   作者 小灰 如需转载，请联系原作者授权。         时间复杂度的意义 究竟什么是时间复杂度呢？让我们来想象一个场景：某一天，小灰和大黄同时加入了一个公司……  一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。大黄的代码">
 <meta name="twitter:image" content="https://inews.gtimg.com/newsapp_bt/0/5008852660/1000">
 
 
@@ -390,7 +394,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.7k 字
+                  1.9k 字
                 </span>
               
 
@@ -406,7 +410,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6 分钟
+                  7 分钟
                 </span>
               
             </div>
@@ -434,110 +438,117 @@
 <p>作者</p>
 <p>小灰</p>
 <p>如需转载，请联系原作者授权。</p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/2253586357/1000" alt=""></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100274/1000" alt=""></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100275/1000" alt=""></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100277/1000" alt=""></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100278/1000" alt=""></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100279/1000" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_gif/Pn4Sm0RsAug5zOzy32A3RIVhRwowK5ogg1hJ631uGyu9zOMKfTddDnSrsxicbCQNm59Qeo3lDYCvF70I9ibGvA9g/640?wx_fmt=gif" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VunscrOibG7a43p7vkgwIkzYy8UhXtZ5vKazu2p83tQDY3YE1pr3ruDQ/640?wx_fmt=jpeg" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VHqhNicrJ02BzlB42JicrehwMpdYErk7NDGzHUJCj0mUdfh9W96HnoNHQ/640?wx_fmt=jpeg" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VsbLJMEZSTczt4Lz9wOI1Jico0Miay2qEiarKZhxcLcdfk0cSWulT857gw/640?wx_fmt=jpeg" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VSVG8Q8Hmz23DY96OdsOXX3E42v3GIJW1zlOT9vTnia3DJDHRz0FGaRA/640?wx_fmt=jpeg" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VRqY0gPQtoKBWYeAxxBEPZDJSUjDaNQF2zkNay8wddvxyCyQpo63otw/640?wx_fmt=jpeg" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VyCGMviaqd71ic1sMJmeEpkWP3ZHCO6HRzgiagwDsia2oXS9q0gJHoSrF8A/640?wx_fmt=jpeg" alt=""></p>
+<p><strong><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/Pn4Sm0RsAuhSvZMAt2zKcxGQN3l1NV4LXSAriayI15u06ibNNlXzIcor2tTtgJBKFxkIicJ8tiaRKRaictbrQEssdSg/640?wx_fmt=png" alt=""></strong></p>
 <p><strong>时间复杂度的意义</strong></p>
-<p>究竟什么是时间复杂度呢？让我们来想象一个场景：</p>
-<p>某一天，小灰和大黄同时加入了一个公司……</p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100280/1000" alt=""></p>
-<p>一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。</p>
-<p>大黄的代码运行一次要花 <strong>100 毫秒</strong>，内存占用 <strong>5MB</strong>。</p>
-<p>小灰的代码运行一次要花 <strong>100 秒</strong>，内存占用 <strong>500MB</strong>。</p>
-<p>于是……</p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100281/1000" alt=""></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100283/1000" alt=""></p>
-<p>由此可见，衡量代码的好坏包括两个非常重要的指标：</p>
-<p><strong>1. 运行时间</strong></p>
-<p><strong>2. 占用空间</strong></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100284/1000" alt=""></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100285/1000" alt=""></p>
+<p>究竟什么是时间复杂度呢？让我们来想象一个场景：某一天，小灰和大黄同时加入了一个公司……</p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VM9sttibY7UO1dia9JdoSzwCv0ibRkiaeG1StbrdNGn4URv6sVvicGdbXY0A/640?wx_fmt=jpeg" alt=""></p>
+<p>一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。大黄的代码运行一次要花 100 毫秒，内存占用 5MB。小灰的代码运行一次要花 100 秒，内存占用 500MB。于是……</p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VsBPqOMLeoKIt9U07MGw7YTC6IicoBaX3FSWq4eK3wvf6BrpfGViaMxibA/640?wx_fmt=jpeg" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VPbuUsJmIPI3icBstGVApqmugm27enU7LcL3NpWZ3PRyT1KzB6HdPjLg/640?wx_fmt=jpeg" alt=""></p>
+<p>由此可见，衡量代码的好坏，包括两个非常重要的指标：</p>
+<p>1. 运行时间；</p>
+<p>2. 占用空间。</p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5V5kYbkvRF3H4X64DfkXrW4cZtOcqMspiaKRqRHL5EoU8OmucGibI66B1w/640?wx_fmt=jpeg" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGopymSxX82TYJAG3yVicFua4Mg05FiaLStPcIc5774ogQGELGcibHL9ibK4ic4vnr7NQQgzlrBPDEF3EPg/640?wx_fmt=jpeg" alt=""></p>
+<p><strong><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/Pn4Sm0RsAuhSvZMAt2zKcxGQN3l1NV4LwYnW1VvkaHWiaL6W1Mr1yiaNLQpxwhyqice9F1yJzMHticssPX515qyvog/640?wx_fmt=png" alt=""></strong></p>
 <p><strong>基本操作执行次数</strong></p>
-<p>关于代码的基本操作执行次数，我们用四个生活中的场景来做一下比喻：</p>
-<p><strong>场景 1.</strong> 给小灰一条长 10 寸的面包，小灰每 3 天吃掉 1 寸，那么吃掉整个面包需要几天？</p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100286/1000" alt=""></p>
+<p>关于代码的基本操作执行次数，我们用四个生活中的场景，来做一下比喻：</p>
+<p><strong>场景 1：</strong>给小灰一条长 10 寸的面包，小灰每 3 天吃掉 1 寸，那么吃掉整个面包需要几天？</p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VylonGQ8jRBvOnjfic0JNVHyYZoYY76mbbwTiaUVvSyWpALp9mgJzzzsQ/640?wx_fmt=jpeg" alt=""></p>
 <p>答案自然是 3 X 10 = 30 天。</p>
 <p>如果面包的长度是 N 寸呢？</p>
 <p>此时吃掉整个面包，需要 3 X n = 3n 天。</p>
-<p>如果用一个函数来表达这个相对时间，可以记作 <strong>T（n） = 3n</strong>。</p>
-<p><strong>场景 2.</strong> 给小灰一条长 16 寸的面包，小灰每 5 天吃掉面包剩余长度的一半，第一次吃掉 8 寸，第二次吃掉 4 寸，第三次吃掉 2 寸…… 那么小灰把面包吃得只剩下 1 寸，需要多少天呢？</p>
+<p>如果用一个函数来表达这个相对时间，可以记作 T（n） = 3n。</p>
+<p><strong>场景 2：</strong>给小灰一条长 16 寸的面包，小灰每 5 天吃掉面包剩余长度的一半，第一次吃掉 8 寸，第二次吃掉 4 寸，第三次吃掉 2 寸…… 那么小灰把面包吃得只剩下 1 寸，需要多少天呢？</p>
 <p>这个问题翻译一下，就是数字 16 不断地除以 2，除几次以后的结果等于 1？这里要涉及到数学当中的对数，以 2 位底，16 的对数，可以简写为 log16。</p>
 <p>因此，把面包吃得只剩下 1 寸，需要 5 X log16 = 5 X 4 = 20 天。</p>
 <p>如果面包的长度是 N 寸呢？</p>
-<p>需要 5 X logn = 5logn 天，记作 <strong>T（n） = 5logn</strong>。</p>
-<p><strong>场景 3.</strong> 给小灰一条长 10 寸的面包和一个鸡腿，小灰每 2 天吃掉一个鸡腿。那么小灰吃掉整个鸡腿需要多少天呢？</p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100287/1000" alt=""></p>
-<p>答案自然是 2 天。因为只说是吃掉鸡腿，和 10 寸的面包没有关系。</p>
+<p>需要 5 X logn = 5logn 天，记作 T（n） = 5logn。</p>
+<p><strong>场景 3：</strong>给小灰一条长 10 寸的面包和一个鸡腿，小灰每 2 天吃掉一个鸡腿。那么小灰吃掉整个鸡腿需要多少天呢？</p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5V3zHPGOd11oh6aEjuHpmYshhWr9Vx1VTUUBtqo9KFzyCMOJrJGe364g/640?wx_fmt=jpeg" alt=""></p>
+<p>答案自然是 2 天。因为只说是吃掉鸡腿，和 10 寸的面包没有关系 。</p>
 <p>如果面包的长度是 N 寸呢？</p>
-<p>无论面包有多长，吃掉鸡腿的时间仍然是 2 天，记作 <strong>T（n） = 2</strong>。</p>
-<p><strong>场景 4.</strong> 给小灰一条长 10 寸的面包，小灰吃掉第一个一寸需要 1 天时间，吃掉第二个一寸需要 2 天时间，吃掉第三个一寸需要 3 天时间….. 每多吃一寸，所花的时间也多一天。那么小灰吃掉整个面包需要多少天呢？</p>
+<p>无论面包有多长，吃掉鸡腿的时间仍然是 2 天，记作 T（n） = 2。</p>
+<p><strong>场景 4：</strong>给小灰一条长 10 寸的面包，小灰吃掉第一个一寸需要 1 天时间，吃掉第二个一寸需要 2 天时间，吃掉第三个一寸需要 3 天时间….. 每多吃一寸，所花的时间也多一天。那么小灰吃掉整个面包需要多少天呢？</p>
 <p>答案是从 1 累加到 10 的总和，也就是 55 天。</p>
 <p>如果面包的长度是 N 寸呢？</p>
 <p>此时吃掉整个面包，需要 1+2+3+……+ n-1 + n = (1+n)*n/2 = 0.5n^2 + 0.5n。</p>
-<p>记作 <strong>T（n） = 0.5n^2 + 0.5n</strong>。</p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100288/1000" alt=""></p>
-<p>上面所讲的是吃东西所花费的相对时间，这一思想同样适用于对程序<strong>基本操作执行次数</strong>的统计。刚才的四个场景，分别对应了程序中最常见的四种执行方式：</p>
-<p>场景 1， T（n） = 3n，执行次数是<strong>线性</strong>的。</p>
-<p>场景 2， T（n） = 5logn，执行次数是<strong>对数</strong>的。</p>
-<p>场景 3，T（n） = 2，执行次数是<strong>常量</strong>的。</p>
-<p>场景 4，T（n） = 0.5n^2 + 0.5n，执行次数是一个<strong>多项式</strong>。</p>
+<p>记作 T（n） = 0.5n^2 + 0.5n。</p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGopymSxX82TYJAG3yVicFua4OTJRrp7VBoL10yNT8646SPIRVbaNlYujvTB5ib4SFC2XRKuhQYrjnzQ/640?wx_fmt=jpeg" alt=""></p>
+<p>上面所讲的是吃东西所花费的相对时间，这一思想同样适用于对程序基本操作执行次数的统计。刚才的四个场景，分别对应了程序中最常见的四种执行方式：</p>
+<p><strong>场景 1：</strong>T（n） = 3n，执行次数是线性的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void eat1(int n)&#123;    for(int i=0; i&lt;n; i++)&#123;;        System.out.println(&quot;等待一天&quot;);        System.out.println(&quot;等待一天&quot;);        System.out.println(&quot;吃一寸面包&quot;);    &#125;&#125;vo</span><br></pre></td></tr></table></figure>
+<p><strong>场景 2：</strong>T（n） = 5logn，执行次数是对数的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void eat2(int n)&#123;   for(int i=1; i&lt;n; i*=2)&#123;       System.out.println(&quot;等待一天&quot;);       System.out.println(&quot;等待一天&quot;);       System.out.println(&quot;等待一天&quot;);       System.out.println(&quot;等待一天&quot;);       System.out.println(&quot;吃一半面包&quot;);   &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>场景 3：</strong>T（n） = 2，执行次数是常量的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void eat3(int n)&#123;   System.out.println(&quot;等待一天&quot;);   System.out.println(&quot;吃一个鸡腿&quot;);&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>场景 4：</strong>T（n） = 0.5n^2 + 0.5n，执行次数是一个多项式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void eat4(int n)&#123;   for(int i=0; i&lt;n; i++)&#123;       for(int j=0; j&lt;i; j++)&#123;           System.out.println(&quot;等待一天&quot;);       &#125;       System.out.println(&quot;吃一寸面包&quot;);   &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/Pn4Sm0RsAuhSvZMAt2zKcxGQN3l1NV4Lb4ybNEVGnaAvEDwENKzW27LUKFDGZPKcBneWwTaTpaJyG2C3em7libQ/640?wx_fmt=png" alt=""></strong></p>
 <p><strong>渐进时间复杂度</strong></p>
 <p>有了基本操作执行次数的函数 T（n），是否就可以分析和比较一段代码的运行时间了呢？还是有一定的困难。</p>
 <p>比如算法 A 的相对时间是 T（n）= 100n，算法 B 的相对时间是 T（n）= 5n^2，这两个到底谁的运行时间更长一些？这就要看 n 的取值了。</p>
-<p>所以，这时候有了<strong>渐进**</strong>时间复杂度（asymptotic time complectiy）**的概念，官方的定义如下：</p>
-<p><strong>若存在函数 f（n），使得当 n 趋近于无穷大时，T（n）/ f（n）的极限值为不等于零的常数，则称 f（n）是 T（n）的同数量级函数。</strong></p>
-<p><strong>记作</strong> <strong>T（n）= O（f（n）），称 O（f（n））为算法的渐进时间复杂度，简称时间复杂度。</strong></p>
-<p>渐进时间复杂度用大写 O 来表示，所以也被称为<strong>大 O 表示法</strong>。</p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100289/1000" alt=""></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100290/1000" alt=""></p>
-<p>如何推导出时间复杂度呢？有如下几个原则：</p>
-<p>让我们回头看看刚才的四个场景。</p>
-<p>场景 1：</p>
-<p>T（n） = 3n</p>
+<p>所以，这时候有了渐进时间复杂度（asymptotic time complectiy）的概念，官方的定义如下：</p>
+<p>若存在函数 f（n），使得当 n 趋近于无穷大时，T（n）/ f（n）的极限值为不等于零的常数，则称 f（n）是 T（n）的同数量级函数。</p>
+<p>记作 T（n）= O（f（n）），称 O（f（n）） 为算法的渐进时间复杂度，简称时间复杂度。</p>
+<p>渐进时间复杂度用大写 O 来表示，所以也被称为大 O 表示法。</p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGr5TbqYMtwehLa57z6LnNO4uTQXN0vcsN4M8sQaKlfowL2TeldyfKQ4pAabhKjJoq1nSzYxlHGdyQ/640?wx_fmt=jpeg" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGr5TbqYMtwehLa57z6LnNO4sHfsuEIuSKic7rupMehZ8wRVHES5bEs0mPWKYZPMCO818J15KI6noBA/640?wx_fmt=jpeg" alt=""></p>
+<p><strong>如何推导出时间复杂度呢？有如下几个原则：</strong></p>
+<ol>
+<li><p>如果运行时间是常数量级，用常数 1 表示；</p>
+</li>
+<li><p>只保留时间函数中的最高阶项；</p>
+</li>
+<li><p>如果最高阶项存在，则省去最高阶项前面的系数。</p>
+</li>
+</ol>
+<p><strong>让我们回头看看刚才的四个场景。</strong></p>
+<p><strong>场景 1：</strong></p>
+<p>T（n） = 3n </p>
 <p>最高阶项为 3n，省去系数 3，转化的时间复杂度为：</p>
-<p><strong>T（n） = O（n）</strong></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100291/1000" alt=""></p>
-<p>场景 2：</p>
-<p>T（n） = 5logn</p>
+<p>T（n） =  O（n）</p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/NtO5sialJZGpPGwIGDDiacicGKHeCfUWZ2E3BIEgTbtB7Fz93PzU67YKhCzwKTyYibWd6ic1icCcS5rrr7icksanorEEA/640?wx_fmt=png" alt=""></p>
+<p><strong>场景 2：</strong></p>
+<p>T（n） = 5logn </p>
 <p>最高阶项为 5logn，省去系数 5，转化的时间复杂度为：</p>
-<p><strong>T（n） = O（logn）</strong></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100293/1000" alt=""></p>
-<p>场景 3：</p>
+<p>T（n） =  O（logn）</p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/NtO5sialJZGpPGwIGDDiacicGKHeCfUWZ2ESFD4kT4vPWzDdeO0NmuoTOsNqbYOx2wAG10m0EYwN2Kwvnaa3WPib7Q/640?wx_fmt=png" alt=""></p>
+<p><strong>场景 3：</strong></p>
 <p>T（n） = 2</p>
 <p>只有常数量级，转化的时间复杂度为：</p>
-<p><strong>T（n） = O（1）</strong></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100295/1000" alt=""></p>
-<p>场景 4：</p>
+<p>T（n） =  O（1）</p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/NtO5sialJZGpPGwIGDDiacicGKHeCfUWZ2EPXicdZhUfpUOBhicUUUkFwzYl1zMqTK6N8XIqjic0sOu9O2hvaTjlFGYw/640?wx_fmt=png" alt=""></p>
+<p><strong>场景 4：</strong></p>
 <p>T（n） = 0.5n^2 + 0.5n</p>
 <p>最高阶项为 0.5n^2，省去系数 0.5，转化的时间复杂度为：</p>
-<p><strong>T（n） = O（n^2）</strong></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100296/1000" alt=""></p>
+<p>T（n） =  O（n^2）</p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/NtO5sialJZGpPGwIGDDiacicGKHeCfUWZ2E2wYp8V2UYPvfeY6GvWLYJa4Ea5icUZgSB1w8zgriaTQaTCECa8NAXHmQ/640?wx_fmt=png" alt=""></p>
 <p>这四种时间复杂度究竟谁用时更长，谁节省时间呢？稍微思考一下就可以得出结论：</p>
-<p><strong>O（1）O（logn）O（n）O（n^2）</strong></p>
+<p>O（1）&lt; O（logn）&lt; O（n）&lt; O（n^2）</p>
 <p>在编程的世界中有着各种各样的算法，除了上述的四个场景，还有许多不同形式的时间复杂度，比如：</p>
-<p><strong>O（nlogn）,O（n^3）,O（m*n），O（2^n），O（n！）</strong></p>
+<p>O（nlogn）, O（n^3）, O（m*n），O（2^n），O（n！）</p>
 <p>今后遨游在代码的海洋里，我们会陆续遇到上述时间复杂度的算法。</p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100297/1000" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/NtO5sialJZGpPGwIGDDiacicGKHeCfUWZ2Ehx2GT9ib55qEgoMWGAicwUib1GazWiaAe2m9GXDG43jrX1sbK9gwrZqia8w/640?wx_fmt=png" alt=""></p>
+<p><strong><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/Pn4Sm0RsAuhSvZMAt2zKcxGQN3l1NV4LLqyf6BY4rMfY2LsU81MibFjicKDLjMjib5R23h8uo6GtGDY8OufWJfpEw/640?wx_fmt=png" alt=""></strong></p>
 <p><strong>时间复杂度的巨大差异</strong></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100298/1000" alt=""></p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100300/1000" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGr5TbqYMtwehLa57z6LnNO4sT0a5Rhz2ga64q6Aw5QwzeTek5nic9CibFFYyic4ChDEFKU6acibqQ6ewA/640?wx_fmt=jpeg" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGr5TbqYMtwehLa57z6LnNO44XNVJyicAgKFNrfnqiaQgTuV4TxFAETgTGtWF3fJey0eo9R2zWSby8fQ/640?wx_fmt=jpeg" alt=""></p>
 <p>我们来举过一个栗子：</p>
 <p>算法 A 的相对时间规模是 T（n）= 100n，时间复杂度是 O(n)</p>
-<p>算法 B 的相对时间规模是 T（n）= 5n^2，时间复杂度是 O(n^2)，</p>
+<p>算法 B 的相对时间规模是 T（n）= 5n^2，时间复杂度是 O(n^2)</p>
 <p>算法 A 运行在小灰家里的老旧电脑上，算法 B 运行在某台超级计算机上，运行速度是老旧电脑的 100 倍。</p>
 <p>那么，随着输入规模 n 的增长，两种算法谁运行更快呢？</p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100301/1000" alt=""></p>
+<p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/NtO5sialJZGr5TbqYMtwehLa57z6LnNO4pib3UXqUiaJIIJOZ8FZNFwxNK1d6Fdhv2AJPGytz3HLwksj6LRDEYKBg/640?wx_fmt=png" alt=""></p>
 <p>从表格中可以看出，当 n 的值很小的时候，算法 A 的运行用时要远大于算法 B；当 n 的值达到 1000 左右，算法 A 和算法 B 的运行时间已经接近；当 n 的值越来越大，达到十万、百万时，算法 A 的优势开始显现，算法 B 则越来越慢，差距越来越明显。</p>
 <p>这就是不同时间复杂度带来的差距。</p>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/4993100302/1000" alt=""></p>
-<p><strong>几点补充：</strong></p>
-<p>小灰写这篇时间复杂度的科普时才意识到，对于基础概念的讲解，比讲解具体算法要困难得多。希望大家对本文多提出宝贵意见，感谢大家！</p>
-<ul>
-<li>The End -</li>
-</ul>
 
       
     </div>
@@ -587,8 +598,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/bugs/2018/10/15/算法/漫画算法：最小栈的实现/" rel="next" title="漫画算法：最小栈的实现">
-                <i class="fa fa-chevron-left"></i> 漫画算法：最小栈的实现
+              <a href="/bugs/2018/10/15/算法/漫画：什么是冒泡排序？/" rel="next" title="漫画：什么是冒泡排序？">
+                <i class="fa fa-chevron-left"></i> 漫画：什么是冒泡排序？
               </a>
             
           </div>
@@ -596,10 +607,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/bugs/2018/10/15/算法/八种排序算法原理及 Java 实现/" rel="prev" title="八种排序算法原理及 Java 实现">
-                八种排序算法原理及 Java 实现 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -761,7 +768,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">257.1k</span>
+    <span title="Site words total count">257.3k</span>
   
 </div>
 

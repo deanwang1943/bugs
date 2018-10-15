@@ -280,7 +280,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/07/11/bigdata/hadoop/搭建Hadoop之一/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -299,7 +299,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/" itemprop="url">Hadoop 一</a></h2>
+                <a class="post-title-link" href="/bugs/2018/07/11/bigdata/hadoop/搭建Hadoop之一/" itemprop="url">搭建Hadoop之一</a></h2>
         
 
         <div class="post-meta">
@@ -365,7 +365,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  174 字
+                  111 字
                 </span>
               
 
@@ -404,46 +404,26 @@
       
         
           
-          简介
-三大组件：HDFS, MR, YARN，相互不关联
-HDFS：存储大数据文件，可以分成多份存储，采用类似bash的命令方式管理HDFS
-MR：用于离线数据计算，主要过程：输入-&gt;默认分割按行-&gt;进行自定义Map操作-&gt;shiffe分割-&gt;自定义reduce合并-&gt;输出
-YARN：调度框架，根据配置进行job和资源的调度操作
+          设置相互访问的使用名称代替ip的配置编辑/etc/hostname
+1master
+编辑/etc/hosts
+1172.17.0.2 master
+多服务器之间ssh免密登录配置启动ssh服务/etc/init.d/ssh start
+设置ssh登录配置
+编辑 /etc/ssh/sshd_config 添加
+1PermitRootLogin yes
+运行生成密码命令：
+ssh-keygen -t rsa
+回车完成密码创建
+12cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keysssh-copy-id root@slave1
 
-
-物理架构/逻辑架构
-Master / Salve
-NameNode / DataNode(N)
-
-
-运行模式
-单机模式
-伪分布式
-分布式
-
-
-配置文件
-
-核心配置文件
-1core-site.xml
-
-HDFS配置文件
-1hdfs-site.xml
-
-MR配置文件
-1mapred-site.xml
-
-YARN调度配置文件
-1yarn-site.xml
-
-
-
+使用passwd来重新设置密码
 
 
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/07/11/bigdata/hadoop/搭建Hadoop之一/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -820,7 +800,7 @@ type
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">257.1k</span>
+    <span title="Site words total count">257.3k</span>
   
 </div>
 
