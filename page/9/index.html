@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="hadoop,大数据," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -86,18 +86,17 @@
 
 
 
-<meta name="description" content="设置名称编辑/etc/hosts 1172.17.0.2 master 编辑/etc/hostname 1master ssh免密登录启动ssh服务/etc/init.d/ssh start 设置ssh登录配置 编辑 /etc/ssh/sshd_config 添加1PermitRootLogin yes 运行生成密码命令： ssh-keygen -t rsa 回车完成密码创建cat ~/.ssh/">
-<meta name="keywords" content="hadoop,大数据">
-<meta property="og:type" content="article">
-<meta property="og:title" content="搭建">
-<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/07/11/bigdata/hadoop/搭建/index.html">
+<meta name="description" content="Java Python 大数据">
+<meta name="keywords" content="Java Python 大数据">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bugs">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/page/9/index.html">
 <meta property="og:site_name" content="Bugs">
-<meta property="og:description" content="设置名称编辑/etc/hosts 1172.17.0.2 master 编辑/etc/hostname 1master ssh免密登录启动ssh服务/etc/init.d/ssh start 设置ssh登录配置 编辑 /etc/ssh/sshd_config 添加1PermitRootLogin yes 运行生成密码命令： ssh-keygen -t rsa 回车完成密码创建cat ~/.ssh/">
+<meta property="og:description" content="Java Python 大数据">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-19T14:31:41.866Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="搭建">
-<meta name="twitter:description" content="设置名称编辑/etc/hosts 1172.17.0.2 master 编辑/etc/hostname 1master ssh免密登录启动ssh服务/etc/init.d/ssh start 设置ssh登录配置 编辑 /etc/ssh/sshd_config 添加1PermitRootLogin yes 运行生成密码命令： ssh-keygen -t rsa 回车完成密码创建cat ~/.ssh/">
+<meta name="twitter:title" content="Bugs">
+<meta name="twitter:description" content="Java Python 大数据">
 
 
 
@@ -127,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/07/11/bigdata/hadoop/搭建/"/>
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/page/9/"/>
 
 
 
 
 
-  <title>搭建 | Bugs</title>
+  <title>Bugs</title>
   
 
 
@@ -152,7 +151,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -265,9 +265,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -280,7 +280,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/07/11/bigdata/hadoop/搭建/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -297,7 +297,9 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">搭建</h2>
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/" itemprop="url">Hadoop 一</a></h2>
         
 
         <div class="post-meta">
@@ -309,7 +311,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-11T00:36:03+00:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-11T08:36:03+08:00">
                 2018-07-11
               </time>
             
@@ -363,7 +365,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  90 字
+                  174 字
                 </span>
               
 
@@ -400,20 +402,53 @@
       
 
       
-        <h2 id="设置名称"><a href="#设置名称" class="headerlink" title="设置名称"></a>设置名称</h2><p>编辑<code>/etc/hosts</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">172.17.0.2 master</span><br></pre></td></tr></table></figure>
-<p>编辑<code>/etc/hostname</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">master</span><br></pre></td></tr></table></figure>
-<h2 id="ssh免密登录"><a href="#ssh免密登录" class="headerlink" title="ssh免密登录"></a>ssh免密登录</h2><p>启动ssh服务<code>/etc/init.d/ssh start</code></p>
-<p>设置ssh登录配置</p>
-<p>编辑 <code>/etc/ssh/sshd_config</code> 添加<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PermitRootLogin yes</span><br></pre></td></tr></table></figure></p>
-<p>运行生成密码命令：</p>
-<p><code>ssh-keygen -t rsa</code></p>
-<p>回车完成密码创建<br><code>cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</code><br><code>ssh-copy-id root@slave1</code></p>
-<blockquote>
-<p>使用passwd来重新设置密码</p>
-</blockquote>
+        
+          
+          简介
+三大组件：HDFS, MR, YARN，相互不关联
+HDFS：存储大数据文件，可以分成多份存储，采用类似bash的命令方式管理HDFS
+MR：用于离线数据计算，主要过程：输入-&gt;默认分割按行-&gt;进行自定义Map操作-&gt;shiffe分割-&gt;自定义reduce合并-&gt;输出
+YARN：调度框架，根据配置进行job和资源的调度操作
 
+
+物理架构/逻辑架构
+Master / Salve
+NameNode / DataNode(N)
+
+
+运行模式
+单机模式
+伪分布式
+分布式
+
+
+配置文件
+
+核心配置文件
+1core-site.xml
+
+HDFS配置文件
+1hdfs-site.xml
+
+MR配置文件
+1mapred-site.xml
+
+YARN调度配置文件
+1yarn-site.xml
+
+
+
+
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
       
     </div>
     
@@ -422,23 +457,8 @@
 
     <div>
       
-        <div>
-    
-        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
-    
-</div>
-
-      
     </div>
 
-    
-      <div>
-        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
-    <img id="wechat_subscriber_qcode" src="/path/to/your/wechatqcode ex. /uploads/wechat-qcode.jpg" alt="Dean Wang wechat" style="width: 200px; max-width: 100%;"/>
-    <div></div>
-</div>
-
-      </div>
     
 
     
@@ -447,42 +467,14 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/bugs/tags/hadoop/" rel="tag"><i class="fa fa-tag"></i> hadoop</a>
-          
-            <a href="/bugs/tags/大数据/" rel="tag"><i class="fa fa-tag"></i> 大数据</a>
-          
-        </div>
+
+      
+
       
 
       
       
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/bugs/2018/07/10/Git提交规范/" rel="next" title="Git提交规范">
-                <i class="fa fa-chevron-left"></i> Git提交规范
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/bugs/2018/07/11/bigdata/hadoop/Hadoop(一)/" rel="prev" title="Hadoop 一">
-                Hadoop 一 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -492,11 +484,205 @@
   </article>
 
 
+    
+      
 
-    <div class="post-spread">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/07/10/Git提交规范/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/07/10/Git提交规范/" itemprop="url">Git提交规范</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T08:36:03+08:00">
+                2018-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/规范/" itemprop="url" rel="index">
+                    <span itemprop="name">规范</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.1k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          一、为什么需要规范？无规矩不成方圆，编程也一样。
+如果你有一个项目，从始至终都是自己写，那么你想怎么写都可以，没有人可以干预你。可是如果在团队协作中，大家都张扬个性，那么代码将会是一团糟，好好的项目就被糟践了。不管是开发还是日后维护，都将是灾难。
+这时候，有人提出了何不统一标准，大家都按照这个标准来。于是 ESLint，JSHint 等代码工具如雨后春笋般涌现，成为了项目构建的必备良品。
+Git Commit 规范可能并没有那么夸张，但如果你在版本回退的时候看到一大段糟心的 Commit，恐怕会懊恼不已吧。所以，严格遵守规范，利人利己。
+二、具体规则先来看看公式：1&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+
+type
+用于说明 commit 的类别，只允许使用下面7个标识。
+1234567feat：新功能（feature）fix：修补bugdocs：文档（documentation）style： 格式（不影响代码运行的变动）refactor
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/07/10/Git提交规范/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
       
     </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/bugs/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/bugs/">1</a><span class="space">&hellip;</span><a class="page-number" href="/bugs/page/8/">8</a><span class="page-number current">9</span>
+  </nav>
+
 
 
           </div>
@@ -504,10 +690,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -528,17 +710,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -553,7 +726,7 @@
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-count">82</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -615,22 +788,6 @@
       </section>
 
       
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#设置名称"><span class="nav-number">1.</span> <span class="nav-text">设置名称</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssh免密登录"><span class="nav-number">2.</span> <span class="nav-text">ssh免密登录</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
 
       
         <div class="back-to-top">
@@ -663,7 +820,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">242.9k</span>
+    <span title="Site words total count">257.1k</span>
   
 </div>
 
@@ -772,10 +929,6 @@
   
 
   
-  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
