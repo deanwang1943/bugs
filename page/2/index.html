@@ -280,6 +280,196 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/11/语言/Java/Java 内存模型 JMM 浅析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/10/11/语言/Java/Java 内存模型 JMM 浅析/" itemprop="url">Java 内存模型 JMM 浅析</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-11T16:36:03+08:00">
+                2018-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4.4k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  17 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 https://liuzhengyang.github.io/2017/05/12/javamemorymodel/
+
+JMM 简介Java Memory Model 简称 JMM, 是一系列的 Java 虚拟机平台对开发者提供的多线程环境下的内存可见性、是否可以重排序等问题的无关具体平台的统一的保证。(可能在术语上与 Java 运行时内存分布有歧义，后者指堆、方法区、线程栈等内存区域)。并发编程有多种风格，除了 CSP(通信顺序进程)、Actor 等模型外，大家最熟悉的应该是基于线程和锁的共享内存模型了。在多线程编程中，需要注意三类并发问题:
+
+原子性
+可见性
+重排序原子性涉及到，一个线程执行一个复合操作的时候，其他线程是否能够看到中间的状态、或进行干扰。典型的就是 i++ 的问题了，两个线程同时对共享的堆内存执行 ++ 操作，而 ++ 操作在 JVM、运行时、CPU 中的实现都可能是一个复合操作, 例如在 JVM 指令的角度来看是将
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/10/11/语言/Java/Java 内存模型 JMM 浅析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/11/framework/redis/基于 redis 的分布式锁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -422,196 +612,6 @@ Memcached
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/bugs/2018/10/11/framework/redis/基于 redis 的分布式锁/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/11/语言/Java/Java 内存模型 JMM 浅析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/10/11/语言/Java/Java 内存模型 JMM 浅析/" itemprop="url">Java 内存模型 JMM 浅析</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-11T16:36:03+08:00">
-                2018-10-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  4.4k 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  17 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 https://liuzhengyang.github.io/2017/05/12/javamemorymodel/
-
-JMM 简介Java Memory Model 简称 JMM, 是一系列的 Java 虚拟机平台对开发者提供的多线程环境下的内存可见性、是否可以重排序等问题的无关具体平台的统一的保证。(可能在术语上与 Java 运行时内存分布有歧义，后者指堆、方法区、线程栈等内存区域)。并发编程有多种风格，除了 CSP(通信顺序进程)、Actor 等模型外，大家最熟悉的应该是基于线程和锁的共享内存模型了。在多线程编程中，需要注意三类并发问题:
-
-原子性
-可见性
-重排序原子性涉及到，一个线程执行一个复合操作的时候，其他线程是否能够看到中间的状态、或进行干扰。典型的就是 i++ 的问题了，两个线程同时对共享的堆内存执行 ++ 操作，而 ++ 操作在 JVM、运行时、CPU 中的实现都可能是一个复合操作, 例如在 JVM 指令的角度来看是将
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/10/11/语言/Java/Java 内存模型 JMM 浅析/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -855,196 +855,6 @@ JMM 简介Java Memory Model 简称 JMM, 是一系列的 Java 虚拟机平台对�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/11/算法/（数据结构）时间复杂度（算法的时间复杂度）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/10/11/算法/（数据结构）时间复杂度（算法的时间复杂度）/" itemprop="url">时间复杂度</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-11T08:36:03+08:00">
-                2018-10-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  2k 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  8 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 https://www.jianshu.com/p/f4cca5ce055a
-
-我们假设计算机运行一行基础代码需要执行一次运算。
-1234int aFunc(void) &#123;    printf(&quot;Hello, World!\n&quot;);      //  需要执行 1 次    return 0;       // 需要执行 1 次&#125;
-那么上面这个方法需要执行 2 次运算
-123456int aFunc(int n) &#123;    for(int i = 0; i&lt;n; i++) &#123;         // 需要执行 (n + 1) 次        printf(&quot;Hello, World!\n&quot;);      // 需要执行 n 次    &#125;    return 0;       // 需要执行 1 次&#125;
-这个方法需要 (n + 1 + 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/10/11/算法/（数据结构）时间复杂度（算法的时间复杂度）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/11/算法/Java 实现：数据结构之排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1191,6 +1001,196 @@ Java 实现：数据结构之排序0. 概述
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/bugs/2018/10/11/算法/Java 实现：数据结构之排序/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/11/算法/（数据结构）时间复杂度（算法的时间复杂度）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/10/11/算法/（数据结构）时间复杂度（算法的时间复杂度）/" itemprop="url">时间复杂度</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-11T08:36:03+08:00">
+                2018-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 https://www.jianshu.com/p/f4cca5ce055a
+
+我们假设计算机运行一行基础代码需要执行一次运算。
+1234int aFunc(void) &#123;    printf(&quot;Hello, World!\n&quot;);      //  需要执行 1 次    return 0;       // 需要执行 1 次&#125;
+那么上面这个方法需要执行 2 次运算
+123456int aFunc(int n) &#123;    for(int i = 0; i&lt;n; i++) &#123;         // 需要执行 (n + 1) 次        printf(&quot;Hello, World!\n&quot;);      // 需要执行 n 次    &#125;    return 0;       // 需要执行 1 次&#125;
+这个方法需要 (n + 1 + 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/10/11/算法/（数据结构）时间复杂度（算法的时间复杂度）/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1641,197 +1641,6 @@ Spark REPL（spa
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dean Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/bugs/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bugs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/" itemprop="url">从新浪微博分析高性能高并发网络架构的设计</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-05T08:36:03+08:00">
-                2018-10-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/架构/" itemprop="url" rel="index">
-                    <span itemprop="name">架构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  7k 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  23 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-本文由 简悦 SimpRead 转码， 原文地址 http://www.3xmq.com/article/1515685180389
-
-
-作者 | 卫向军来自 | cnblogs
-
-架构以及我理解中架构的本质
-在开始谈我对架构本质的理解之前，先谈谈对今天技术沙龙主题的个人见解，千万级规模的网站感觉数量级是非常大的，对这个数量级我们战略上 要重 视 它 ， 战术上又 要 藐 视 它。先举个例子感受一下千万级到底是什么数量级？现在很流行的优步 (Uber)，从媒体公布的信息看，它每天接单量平均在百万左右， 假如每天有 10 个小时的服务时间，平均 QPS 只有 30 左右。对于一个后台服务器，单机的平均 QPS 可以到达 800-1000，单独看写的业务量很简单 。为什么我们又不能说轻视它？第一，我们看它的数据存储，每天一百万的话，一年数据量的规模是多少？其次，刚才说的订单量，每一个订单要推送给附近的司机、司机要并发抢单，后面业务场景的访问量往往是前者的上百倍，轻松就超过上亿级别了。
-今天
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    <div>
-      
-    </div>
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/架构师系列/分布式系统 --- 幂等性设计/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2018,7 +1827,7 @@ Spark REPL（spa
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/架构师系列/什么是分布式锁？/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -2037,7 +1846,197 @@ Spark REPL（spa
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/10/05/架构师系列/什么是分布式锁？/" itemprop="url">什么是分布式锁？</a></h2>
+                <a class="post-title-link" href="/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/" itemprop="url">垃圾回收的基础算法</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-05T08:36:03+08:00">
+                2018-10-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.9k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5bade237e51d450ea401fd71?utm_source=gold_browser_extension
+
+《对象搜索算法与回收算法》介绍了垃圾回收的基础算法，相当于垃圾回收的方法论。接下来就详细看看垃圾回收的具体实现。
+上文提到过现代的商用虚拟机的都是采用分代收集的，不同的区域用不同的收集器。常用的 7 种收集器，其适用的范围如图所示
+ Serial、ParNew、Parallel Scavenge 用于新生代；CMS、Serial Old、Paralled Old 用于老年代。 并且他们相互之间以相对固定的组合使用（具体组合关系如上图）。G1 是一个独立的收集器不依赖其他 6 种收集器。ZGC 是目前 JDK 11 的实验收集器。
+下面来看看各个收集器的特性
+Serial 收集器Serial，是单线程执行垃圾回收的。当需要执行垃圾回收时，程序会暂停一切手上的工作，然后单线程执
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/" itemprop="url">从新浪微博分析高性能高并发网络架构的设计</a></h2>
         
 
         <div class="post-meta">
@@ -2103,7 +2102,7 @@ Spark REPL（spa
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.5k 字
+                  7k 字
                 </span>
               
 
@@ -2119,7 +2118,7 @@ Spark REPL（spa
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5 分钟
+                  23 分钟
                 </span>
               
             </div>
@@ -2143,42 +2142,18 @@ Spark REPL（spa
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b16148a518825136137c8db
+本文由 简悦 SimpRead 转码， 原文地址 http://www.3xmq.com/article/1515685180389
 
 
+作者 | 卫向军来自 | cnblogs
 
-————— 第二天 —————
-
-
-
-
-
-
-
-
-
-
-
-————————————
-
-
-
-
-
-
-分布式锁的实现有哪些？
-1.Memcached 分布式锁
-利用 Memcached 的 add 命令。此命令是原子性操作，只有在 key 不存在的情况下，才能 add 成功，也就意味着线程得到了锁。
-2.Redis 分布式锁
-和 Memcached 的方式类似，利用 Redis 的 setnx 命令。此命令同样是原子性操作，只有在 key 不存在的情况下，才能 set 成功。（setnx 命令并不完善，后续会介绍替代方案）
-3.Zookeeper 分布式锁
-利用 Zookeeper 的顺序临时节点，来实现分布式锁和等待队列。Zookeeper 设计的初衷，就是为了实现分布式锁服务的。
-4.Chubby
-Google 公司实现的粗粒度分布式锁服务，
+架构以及我理解中架构的本质
+在开始谈我对架构本质的理解之前，先谈谈对今天技术沙龙主题的个人见解，千万级规模的网站感觉数量级是非常大的，对这个数量级我们战略上 要重 视 它 ， 战术上又 要 藐 视 它。先举个例子感受一下千万级到底是什么数量级？现在很流行的优步 (Uber)，从媒体公布的信息看，它每天接单量平均在百万左右， 假如每天有 10 个小时的服务时间，平均 QPS 只有 30 左右。对于一个后台服务器，单机的平均 QPS 可以到达 800-1000，单独看写的业务量很简单 。为什么我们又不能说轻视它？第一，我们看它的数据存储，每天一百万的话，一年数据量的规模是多少？其次，刚才说的订单量，每一个订单要推送给附近的司机、司机要并发抢单，后面业务场景的访问量往往是前者的上百倍，轻松就超过上亿级别了。
+今天
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/10/05/架构师系列/什么是分布式锁？/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/10/05/架构师系列/从新浪微博分析高性能高并发网络架构的设计/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2364,7 +2339,7 @@ Google 公司实现的粗粒度分布式锁服务，
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">278.2k</span>
+    <span title="Site words total count">279.2k</span>
   
 </div>
 

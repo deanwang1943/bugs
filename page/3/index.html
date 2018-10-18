@@ -280,7 +280,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/05/架构师系列/什么是分布式锁？/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -299,7 +299,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/" itemprop="url">垃圾回收的基础算法</a></h2>
+                <a class="post-title-link" href="/bugs/2018/10/05/架构师系列/什么是分布式锁？/" itemprop="url">什么是分布式锁？</a></h2>
         
 
         <div class="post-meta">
@@ -334,8 +334,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/bugs/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
                   </a>
                 </span>
 
@@ -365,7 +365,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2.9k 字
+                  1.5k 字
                 </span>
               
 
@@ -381,7 +381,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  10 分钟
+                  5 分钟
                 </span>
               
             </div>
@@ -405,17 +405,42 @@
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5bade237e51d450ea401fd71?utm_source=gold_browser_extension
+本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b16148a518825136137c8db
 
-《对象搜索算法与回收算法》介绍了垃圾回收的基础算法，相当于垃圾回收的方法论。接下来就详细看看垃圾回收的具体实现。
-上文提到过现代的商用虚拟机的都是采用分代收集的，不同的区域用不同的收集器。常用的 7 种收集器，其适用的范围如图所示
- Serial、ParNew、Parallel Scavenge 用于新生代；CMS、Serial Old、Paralled Old 用于老年代。 并且他们相互之间以相对固定的组合使用（具体组合关系如上图）。G1 是一个独立的收集器不依赖其他 6 种收集器。ZGC 是目前 JDK 11 的实验收集器。
-下面来看看各个收集器的特性
-Serial 收集器Serial，是单线程执行垃圾回收的。当需要执行垃圾回收时，程序会暂停一切手上的工作，然后单线程执
+
+
+————— 第二天 —————
+
+
+
+
+
+
+
+
+
+
+
+————————————
+
+
+
+
+
+
+分布式锁的实现有哪些？
+1.Memcached 分布式锁
+利用 Memcached 的 add 命令。此命令是原子性操作，只有在 key 不存在的情况下，才能 add 成功，也就意味着线程得到了锁。
+2.Redis 分布式锁
+和 Memcached 的方式类似，利用 Redis 的 setnx 命令。此命令同样是原子性操作，只有在 key 不存在的情况下，才能 set 成功。（setnx 命令并不完善，后续会介绍替代方案）
+3.Zookeeper 分布式锁
+利用 Zookeeper 的顺序临时节点，来实现分布式锁和等待队列。Zookeeper 设计的初衷，就是为了实现分布式锁服务的。
+4.Chubby
+Google 公司实现的粗粒度分布式锁服务，
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/10/05/语言/Java/一文了解 JVM 全部垃圾回收器，从 Serial 到 ZGC/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/10/05/架构师系列/什么是分布式锁？/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1704,7 +1729,7 @@ Spark SQL, DataFrames 以及 Datasets 编程指南概要Spark SQL 是 Spark 中�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/25/framework/redis/互联网公司面试必问的 Redis 题目/">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/09/25/语言/Java/Java 8 中的 Streams API 详解 Java 8 中的 Streams API 详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dean Wang">
@@ -1723,7 +1748,7 @@ Spark SQL, DataFrames 以及 Datasets 编程指南概要Spark SQL 是 Spark 中�
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/bugs/2018/09/25/framework/redis/互联网公司面试必问的 Redis 题目/" itemprop="url">互联网公司面试必问的 Redis 题目</a></h2>
+                <a class="post-title-link" href="/bugs/2018/09/25/语言/Java/Java 8 中的 Streams API 详解 Java 8 中的 Streams API 详解/" itemprop="url">Java 8 中的 Streams API 详解 Java 8 中的 Streams API 详解</a></h2>
         
 
         <div class="post-meta">
@@ -1758,8 +1783,8 @@ Spark SQL, DataFrames 以及 Datasets 编程指南概要Spark SQL 是 Spark 中�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/bugs/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
+                  <a href="/bugs/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -1789,7 +1814,7 @@ Spark SQL, DataFrames 以及 Datasets 编程指南概要Spark SQL 是 Spark 中�
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3k 字
+                  6.1k 字
                 </span>
               
 
@@ -1805,7 +1830,7 @@ Spark SQL, DataFrames 以及 Datasets 编程指南概要Spark SQL 是 Spark 中�
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  11 分钟
+                  25 分钟
                 </span>
               
             </div>
@@ -1829,11 +1854,14 @@ Spark SQL, DataFrames 以及 Datasets 编程指南概要Spark SQL 是 Spark 中�
         
           
           
-本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/post/5b99d4bce51d450e7a24b66e?utm_source=gold_browser_extension![](https://user-gold-cdn.xitu.io/2018/9/13/165d0e6e66786d76?imageView2/0/w/1280/h/960/format/webp/ignore-error/1) Redis 是一个非常火的非关系型数据库，火到什么程度呢？只要是一个互联网公司都会使用到。Redis 相关的问题可以说是面试必问的, 下面我从个人当面试官的经验，总结几个必须要掌握的知识点。 介绍：Redis 是一个开源的使用 ANSI C 语言编写、遵守 BSD 协议、支持网络、可基于内存亦可持久化的日志型、Key-Value 数据库，并提供多种语言的 API 的非关系型数据库。 传统数据库遵循 ACID 规则。而 Nosql（Not Only SQ
+本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/entry/5ba09f97e51d450e6c74affe?utm_source=gold_browser_extension
+
+Java 8 中的 Streams API 详解Streams 的背景，以及 Java 8 中的使用详解
+为什么需要 StreamStream 作为 Java 8 的一大亮点，它与 java.io 包里的 InputStream 和 OutputStream 是完全不同的概念。它也不同于 StAX 对 XML 解析的 Stream，也不是 Amazon Kinesis 对大数据实时处理的 Stream。Java 8 中的 Stream 是对集合（Collection）对象功能的增强，它专注于对集合对象进行各种非常便利、高效的聚合操作（aggregate operation），或者大批量数据操作 (bulk data operation)。Stream API 借助于同样新
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/bugs/2018/09/25/framework/redis/互联网公司面试必问的 Redis 题目/#more" rel="contents">
+            <a class="btn" href="/bugs/2018/09/25/语言/Java/Java 8 中的 Streams API 详解 Java 8 中的 Streams API 详解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2405,7 +2433,7 @@ Java 7提供了ForkJoinPool，支持了Java 8提供的Stream。
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">278.2k</span>
+    <span title="Site words total count">279.2k</span>
   
 </div>
 
