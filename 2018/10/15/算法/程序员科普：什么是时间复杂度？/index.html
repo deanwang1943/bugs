@@ -86,15 +86,14 @@
 
 
 
-<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https://new.qq.com/omn/20180827/20180827A0NEVH.html   作者 小灰 如需转载，请联系原作者授权。         时间复杂度的意义 究竟什么是时间复杂度呢？让我们来想象一个场景：某一天，小灰和大黄同时加入了一个公司……  一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。大黄的代码">
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https://new.qq.com/omn/20180827/20180827A0NEVH.html  作者小灰 如需转载，请联系原作者授权。         时间复杂度的意义 究竟什么是时间复杂度呢？让我们来想象一个场景：某一天，小灰和大黄同时加入了一个公司……  一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。大黄的代码运行">
 <meta name="keywords" content="算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="程序员科普：什么是时间复杂度？">
 <meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/10/15/算法/程序员科普：什么是时间复杂度？/index.html">
 <meta property="og:site_name" content="Bugs">
-<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://new.qq.com/omn/20180827/20180827A0NEVH.html   作者 小灰 如需转载，请联系原作者授权。         时间复杂度的意义 究竟什么是时间复杂度呢？让我们来想象一个场景：某一天，小灰和大黄同时加入了一个公司……  一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。大黄的代码">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://new.qq.com/omn/20180827/20180827A0NEVH.html  作者小灰 如需转载，请联系原作者授权。         时间复杂度的意义 究竟什么是时间复杂度呢？让我们来想象一个场景：某一天，小灰和大黄同时加入了一个公司……  一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。大黄的代码运行">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://inews.gtimg.com/newsapp_bt/0/5008852660/1000">
 <meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_gif/Pn4Sm0RsAug5zOzy32A3RIVhRwowK5ogg1hJ631uGyu9zOMKfTddDnSrsxicbCQNm59Qeo3lDYCvF70I9ibGvA9g/640?wx_fmt=gif">
 <meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VunscrOibG7a43p7vkgwIkzYy8UhXtZ5vKazu2p83tQDY3YE1pr3ruDQ/640?wx_fmt=jpeg">
 <meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VHqhNicrJ02BzlB42JicrehwMpdYErk7NDGzHUJCj0mUdfh9W96HnoNHQ/640?wx_fmt=jpeg">
@@ -124,11 +123,11 @@
 <meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGr5TbqYMtwehLa57z6LnNO4sT0a5Rhz2ga64q6Aw5QwzeTek5nic9CibFFYyic4ChDEFKU6acibqQ6ewA/640?wx_fmt=jpeg">
 <meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGr5TbqYMtwehLa57z6LnNO44XNVJyicAgKFNrfnqiaQgTuV4TxFAETgTGtWF3fJey0eo9R2zWSby8fQ/640?wx_fmt=jpeg">
 <meta property="og:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_png/NtO5sialJZGr5TbqYMtwehLa57z6LnNO4pib3UXqUiaJIIJOZ8FZNFwxNK1d6Fdhv2AJPGytz3HLwksj6LRDEYKBg/640?wx_fmt=png">
-<meta property="og:updated_time" content="2018-10-15T14:58:21.352Z">
+<meta property="og:updated_time" content="2018-10-15T15:03:02.123Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="程序员科普：什么是时间复杂度？">
-<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://new.qq.com/omn/20180827/20180827A0NEVH.html   作者 小灰 如需转载，请联系原作者授权。         时间复杂度的意义 究竟什么是时间复杂度呢？让我们来想象一个场景：某一天，小灰和大黄同时加入了一个公司……  一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。大黄的代码">
-<meta name="twitter:image" content="https://inews.gtimg.com/newsapp_bt/0/5008852660/1000">
+<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://new.qq.com/omn/20180827/20180827A0NEVH.html  作者小灰 如需转载，请联系原作者授权。         时间复杂度的意义 究竟什么是时间复杂度呢？让我们来想象一个场景：某一天，小灰和大黄同时加入了一个公司……  一天过后，小灰和大黄各自交付了代码，两端代码实现的功能都差不多。大黄的代码运行">
+<meta name="twitter:image" content="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_gif/Pn4Sm0RsAug5zOzy32A3RIVhRwowK5ogg1hJ631uGyu9zOMKfTddDnSrsxicbCQNm59Qeo3lDYCvF70I9ibGvA9g/640?wx_fmt=gif">
 
 
 
@@ -434,9 +433,7 @@
         <blockquote>
 <p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="https://new.qq.com/omn/20180827/20180827A0NEVH.html" target="_blank" rel="noopener">https://new.qq.com/omn/20180827/20180827A0NEVH.html</a></p>
 </blockquote>
-<p><img src="https://inews.gtimg.com/newsapp_bt/0/5008852660/1000" alt=""></p>
-<p>作者</p>
-<p>小灰</p>
+<p>作者<br>小灰</p>
 <p>如需转载，请联系原作者授权。</p>
 <p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_gif/Pn4Sm0RsAug5zOzy32A3RIVhRwowK5ogg1hJ631uGyu9zOMKfTddDnSrsxicbCQNm59Qeo3lDYCvF70I9ibGvA9g/640?wx_fmt=gif" alt=""></p>
 <p><img src="https://ss.csdn.net/p?https://mmbiz.qpic.cn/mmbiz_jpg/NtO5sialJZGpD6lroZXQeUS2MUIWFNL5VunscrOibG7a43p7vkgwIkzYy8UhXtZ5vKazu2p83tQDY3YE1pr3ruDQ/640?wx_fmt=jpeg" alt=""></p>
@@ -598,8 +595,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/bugs/2018/10/15/算法/漫画：什么是冒泡排序？/" rel="next" title="漫画：什么是冒泡排序？">
-                <i class="fa fa-chevron-left"></i> 漫画：什么是冒泡排序？
+              <a href="/bugs/2018/10/15/算法/八种排序算法原理及 Java 实现/" rel="next" title="八种排序算法原理及 Java 实现">
+                <i class="fa fa-chevron-left"></i> 八种排序算法原理及 Java 实现
               </a>
             
           </div>
@@ -607,6 +604,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/10/15/语言/Java/JDK 并发 AQS 系列 (二)/" rel="prev" title="JDK 并发 AQS 系列 (二)">
+                JDK 并发 AQS 系列 (二) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -674,7 +675,7 @@
               
                 <a href="/bugs/archives/">
               
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">87</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -685,7 +686,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/bugs/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -696,7 +697,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/bugs/tags/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -768,7 +769,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">257.3k</span>
+    <span title="Site words total count">278.2k</span>
   
 </div>
 
