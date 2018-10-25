@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/bugs/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/bugs/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/bugs/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/bugs/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/bugs/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/bugs/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/bugs/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/bugs/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/bugs/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="hive,大数据," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/entry/5bd118415188252734475184?utm_source=gold_browser_extension  0x00 前言 本文将会谈一谈在数据仓库中拉链表相关的内容，包括它的原理、设计、以及在我们大数据场景下的实现方式。  全文由下面几个部分组成：  先分享一下拉链表的用途、什么是拉链">
+<meta name="keywords" content="hive,大数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="漫谈数据仓库之拉链表（原理、设计以及在 Hive 中的实现）">
+<meta property="og:url" content="https://deanwang1943.github.io/bugs/2018/10/25/bigdata/漫谈数据仓库之拉链表（原理、设计以及在 Hive 中的实现）/index.html">
+<meta property="og:site_name" content="Bugs">
+<meta property="og:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/entry/5bd118415188252734475184?utm_source=gold_browser_extension  0x00 前言 本文将会谈一谈在数据仓库中拉链表相关的内容，包括它的原理、设计、以及在我们大数据场景下的实现方式。  全文由下面几个部分组成：  先分享一下拉链表的用途、什么是拉链">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-25T13:47:28.048Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="漫谈数据仓库之拉链表（原理、设计以及在 Hive 中的实现）">
+<meta name="twitter:description" content="本文由 简悦 SimpRead 转码， 原文地址 https://juejin.im/entry/5bd118415188252734475184?utm_source=gold_browser_extension  0x00 前言 本文将会谈一谈在数据仓库中拉链表相关的内容，包括它的原理、设计、以及在我们大数据场景下的实现方式。  全文由下面几个部分组成：  先分享一下拉链表的用途、什么是拉链">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/bugs/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://deanwang1943.github.io/bugs/2018/10/25/bigdata/漫谈数据仓库之拉链表（原理、设计以及在 Hive 中的实现）/"/>
+
+
+
+
+
+  <title>漫谈数据仓库之拉链表（原理、设计以及在 Hive 中的实现） | Bugs</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/bugs/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bugs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">微笑的周末</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/bugs/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="https://github.com/deanwang1943/blog/blob/master/blog/%E7%AE%80%E5%8E%86.md" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/bugs/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/bugs/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/bugs/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/deanwang1943" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+            
+            github
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deanwang1943.github.io/bugs/bugs/2018/10/25/bigdata/漫谈数据仓库之拉链表（原理、设计以及在 Hive 中的实现）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dean Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/bugs/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bugs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">漫谈数据仓库之拉链表（原理、设计以及在 Hive 中的实现）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-25T00:36:03+00:00">
+                2018-10-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/bugs/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.3k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="https://juejin.im/entry/5bd118415188252734475184?utm_source=gold_browser_extension" target="_blank" rel="noopener">https://juejin.im/entry/5bd118415188252734475184?utm_source=gold_browser_extension</a></p>
+</blockquote>
+<h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><blockquote>
+<p>本文将会谈一谈在数据仓库中拉链表相关的内容，包括它的原理、设计、以及在我们大数据场景下的实现方式。</p>
+</blockquote>
+<p>全文由下面几个部分组成：</p>
+<ol>
+<li>先分享一下拉链表的用途、什么是拉链表。</li>
+<li>通过一些小的使用场景来对拉链表做近一步的阐释，以及拉链表和常用的切片表的区别。</li>
+<li>举一个具体的应用场景，来设计并实现一份拉链表，最后并通过一些例子说明如何使用我们设计的这张表（因为现在 Hive 的大规模使用，<strong>我们会以 Hive 场景下的设计为例</strong>）。</li>
+<li>分析一下拉链表的优缺点，并对前面的提到的一些内容进行补充说明，比如说拉链表和流水表的区别。</li>
+</ol>
+<h2 id="0x01-什么是拉链表"><a href="#0x01-什么是拉链表" class="headerlink" title="0x01 什么是拉链表"></a>0x01 什么是拉链表</h2><p>拉链表是针对数据仓库设计中表存储数据的方式而定义的，顾名思义，所谓拉链，就是记录历史。记录一个事物从开始，一直到当前状态的所有变化的信息。</p>
+<p>我们先看一个示例，这就是一张拉链表，存储的是用户的最基本信息以及每条记录的生命周期。我们可以使用这张表拿到最新的当天的最新数据以及之前的历史数据。</p>
+<table>
+<thead>
+<tr>
+<th>注册日期</th>
+<th>用户编号</th>
+<th>手机号码</th>
+<th>t_start_date</th>
+<th>t_end_date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2017-01-01</td>
+<td>001</td>
+<td>111111</td>
+<td>2017-01-01</td>
+<td>9999-12-31</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>002</td>
+<td>222222</td>
+<td>2017-01-01</td>
+<td>2017-01-01</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>002</td>
+<td>233333</td>
+<td>2017-01-02</td>
+<td>9999-12-31</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>003</td>
+<td>333333</td>
+<td>2017-01-01</td>
+<td>9999-12-31</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>004</td>
+<td>444444</td>
+<td>2017-01-01</td>
+<td>2017-01-01</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>004</td>
+<td>432432</td>
+<td>2017-01-02</td>
+<td>2017-01-02</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>004</td>
+<td>432432</td>
+<td>2017-01-03</td>
+<td>9999-12-31</td>
+</tr>
+<tr>
+<td>2017-01-02</td>
+<td>005</td>
+<td>555555</td>
+<td>2017-01-02</td>
+<td>2017-01-02</td>
+</tr>
+<tr>
+<td>2017-01-02</td>
+<td>005</td>
+<td>115115</td>
+<td>2017-01-03</td>
+<td>9999-12-31</td>
+</tr>
+<tr>
+<td>2017-01-03</td>
+<td>006</td>
+<td>666666</td>
+<td>2017-01-03</td>
+<td>9999-12-31</td>
+</tr>
+</tbody>
+</table>
+<p>我们暂且不对这张表做细致的讲解，后文会专门来阐述怎么来设计、实现和使用它。</p>
+<h3 id="拉链表的使用场景"><a href="#拉链表的使用场景" class="headerlink" title="拉链表的使用场景"></a>拉链表的使用场景</h3><p>在数据仓库的数据模型设计过程中，经常会遇到下面这种表的设计：</p>
+<ol>
+<li>有一些表的数据量很大，比如一张用户表，大约 10 亿条记录，50 个字段，这种表，即使使用 ORC 压缩，单张表的存储也会超过 100G，在 HDFS 使用双备份或者三备份的话就更大一些。</li>
+<li>表中的部分字段会被 update 更新操作，如用户联系方式，产品的描述信息，订单的状态等等。</li>
+<li>需要查看某一个时间点或者时间段的历史快照信息，比如，查看某一个订单在历史某一个时间点的状态。</li>
+<li>表中的记录变化的比例和频率不是很大，比如，总共有 10 亿的用户，每天新增和发生变化的有 200 万左右，变化的比例占的很小。</li>
+</ol>
+<p>那么对于这种表我该如何设计呢？下面有几种方案可选：</p>
+<ul>
+<li>方案一：每天只留最新的一份，比如我们每天用 Sqoop 抽取最新的一份全量数据到 Hive 中。</li>
+<li>方案二：每天保留一份全量的切片数据。</li>
+<li>方案三：使用拉链表。</li>
+</ul>
+<h3 id="为什么使用拉链表"><a href="#为什么使用拉链表" class="headerlink" title="为什么使用拉链表"></a>为什么使用拉链表</h3><p>现在我们对前面提到的三种进行逐个的分析。</p>
+<p><strong>方案一</strong></p>
+<p>这种方案就不用多说了，实现起来很简单，每天 drop 掉前一天的数据，重新抽一份最新的。</p>
+<p>优点很明显，节省空间，一些普通的使用也很方便，不用在选择表的时候加一个时间分区什么的。</p>
+<p>缺点同样明显，没有历史数据，先翻翻旧账只能通过其它方式，比如从流水表里面抽。</p>
+<p><strong>方案二</strong></p>
+<p>每天一份全量的切片是一种比较稳妥的方案，而且历史数据也在。</p>
+<p>缺点就是存储空间占用量太大太大了，如果对这边表每天都保留一份全量，那么每次全量中会保存很多不变的信息，对存储是极大的浪费，这点我感触还是很深的……</p>
+<p>当然我们也可以做一些取舍，比如只保留近一个月的数据？但是，需求是无耻的，数据的生命周期不是我们能完全左右的。</p>
+<p><strong>拉链表</strong></p>
+<p>拉链表在使用上基本兼顾了我们的需求。</p>
+<p>首先它在空间上做了一个取舍，虽说不像方案一那样占用量那么小，但是它每日的增量可能只有方案二的千分之一甚至是万分之一。</p>
+<p>其实它能满足方案二所能满足的需求，既能获取最新的数据，也能添加筛选条件也获取历史的数据。</p>
+<p>所以我们还是很有必要来使用拉链表的。</p>
+<h2 id="0x02-拉链表的设计和实现"><a href="#0x02-拉链表的设计和实现" class="headerlink" title="0x02 拉链表的设计和实现"></a>0x02 拉链表的设计和实现</h2><h3 id="如何设计一张拉链表"><a href="#如何设计一张拉链表" class="headerlink" title="如何设计一张拉链表"></a>如何设计一张拉链表</h3><p>下面我们来举个栗子详细看一下拉链表。</p>
+<p>我们接上在<a href="https://link.juejin.im?target=https%3A%2F%2Fwww.jianshu.com%2Fp%2F17baa9f96ca7" target="_blank" rel="noopener">《漫谈数据仓库之维度建模》</a>中的电商网站的例子，现在以用户的拉链表来说明。</p>
+<p>我们先看一下在 Mysql 关系型数据库里的 user 表中信息变化。</p>
+<p>在 2017-01-01 这一天表中的数据是：</p>
+<table>
+<thead>
+<tr>
+<th>注册日期</th>
+<th>用户编号</th>
+<th>手机号码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2017-01-01</td>
+<td>001</td>
+<td>111111</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>002</td>
+<td>222222</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>003</td>
+<td>333333</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>004</td>
+<td>444444</td>
+</tr>
+</tbody>
+</table>
+<p>在 2017-01-02 这一天表中的数据是， 用户 002 和 004 资料进行了修改，005 是新增用户：</p>
+<table>
+<thead>
+<tr>
+<th>注册日期</th>
+<th>用户编号</th>
+<th>手机号码</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2017-01-01</td>
+<td>001</td>
+<td>111111</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>002</td>
+<td>233333</td>
+<td>（由 222222 变成 233333）</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>003</td>
+<td>333333</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>004</td>
+<td>432432</td>
+<td>（由 444444 变成 432432）</td>
+</tr>
+<tr>
+<td>2017-01-02</td>
+<td>005</td>
+<td>555555</td>
+<td>（2017-01-02 新增）</td>
+</tr>
+</tbody>
+</table>
+<p>在 2017-01-03 这一天表中的数据是， 用户 004 和 005 资料进行了修改，006 是新增用户：</p>
+<table>
+<thead>
+<tr>
+<th>注册日期</th>
+<th>用户编号</th>
+<th>手机号码</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2017-01-01</td>
+<td>001</td>
+<td>111111</td>
+<td></td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>002</td>
+<td>233333</td>
+<td></td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>003</td>
+<td>333333</td>
+<td></td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>004</td>
+<td>654321</td>
+<td>（由 432432 变成 654321）</td>
+</tr>
+<tr>
+<td>2017-01-02</td>
+<td>005</td>
+<td>115115</td>
+<td>（由 555555 变成 115115）</td>
+</tr>
+<tr>
+<td>2017-01-03</td>
+<td>006</td>
+<td>666666</td>
+<td>（2017-01-03 新增）</td>
+</tr>
+</tbody>
+</table>
+<p>如果在数据仓库中设计成历史拉链表保存该表，则会有下面这样一张表，这是最新一天（即 2017-01-03）的数据：</p>
+<table>
+<thead>
+<tr>
+<th>注册日期</th>
+<th>用户编号</th>
+<th>手机号码</th>
+<th>t_start_date</th>
+<th>t_end_date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2017-01-01</td>
+<td>001</td>
+<td>111111</td>
+<td>2017-01-01</td>
+<td>9999-12-31</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>002</td>
+<td>222222</td>
+<td>2017-01-01</td>
+<td>2017-01-01</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>002</td>
+<td>233333</td>
+<td>2017-01-02</td>
+<td>9999-12-31</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>003</td>
+<td>333333</td>
+<td>2017-01-01</td>
+<td>9999-12-31</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>004</td>
+<td>444444</td>
+<td>2017-01-01</td>
+<td>2017-01-01</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>004</td>
+<td>432432</td>
+<td>2017-01-02</td>
+<td>2017-01-02</td>
+</tr>
+<tr>
+<td>2017-01-01</td>
+<td>004</td>
+<td>654321</td>
+<td>2017-01-03</td>
+<td>9999-12-31</td>
+</tr>
+<tr>
+<td>2017-01-02</td>
+<td>005</td>
+<td>555555</td>
+<td>2017-01-02</td>
+<td>2017-01-02</td>
+</tr>
+<tr>
+<td>2017-01-02</td>
+<td>005</td>
+<td>115115</td>
+<td>2017-01-03</td>
+<td>9999-12-31</td>
+</tr>
+<tr>
+<td>2017-01-03</td>
+<td>006</td>
+<td>666666</td>
+<td>2017-01-03</td>
+<td>9999-12-31</td>
+</tr>
+</tbody>
+</table>
+<p><strong>说明</strong></p>
+<ul>
+<li>t_start_date 表示该条记录的生命周期开始时间，t_end_date 表示该条记录的生命周期结束时间。</li>
+<li>t_end_date = ‘9999-12-31’表示该条记录目前处于有效状态。</li>
+<li>如果查询当前所有有效的记录，则 select * from user where t_end_date = ‘9999-12-31’。</li>
+<li>如果查询 2017-01-02 的历史快照，则 select * from user where t_start_date &lt;= ‘2017-01-02’ and t_end_date&gt;= ‘2017-01-02’。（<strong>此处要好好理解，是拉链表比较重要的一块。</strong>）</li>
+</ul>
+<h3 id="在-Hive-中实现拉链表"><a href="#在-Hive-中实现拉链表" class="headerlink" title="在 Hive 中实现拉链表"></a>在 Hive 中实现拉链表</h3><p>在现在的大数据场景下，大部分的公司都会选择以 Hdfs 和 Hive 为主的数据仓库架构。目前的 Hdfs 版本来讲，其文件系统中的文件是不能做改变的，也就是说 Hive 的表智能进行删除和添加操作，而不能进行 update。基于这个前提，我们来实现拉链表。</p>
+<p>还是以上面的用户表为例，我们要实现用户的拉链表。在实现它之前，我们需要先确定一下我们有哪些数据源可以用。</p>
+<ol>
+<li>我们需要一张 ODS 层的用户全量表。至少需要用它来初始化。</li>
+<li>每日的用户更新表。</li>
+</ol>
+<p><strong>而且我们要确定拉链表的时间粒度，比如说拉链表每天只取一个状态，也就是说如果一天有 3 个状态变更，我们只取最后一个状态，这种天粒度的表其实已经能解决大部分的问题了。</strong></p>
+<p>另外，补充一下每日的用户更新表该怎么获取，据笔者的经验，有 3 种方式拿到或者间接拿到每日的用户增量，因为它比较重要，所以详细说明：</p>
+<ol>
+<li>我们可以监听 Mysql 数据的变化，比如说用 Canal，最后合并每日的变化，获取到最后的一个状态。</li>
+<li>假设我们每天都会获得一份切片数据，我们可以通过取两天切片数据的不同来作为每日更新表，这种情况下我们可以对所有的字段先进行 concat，再取 md5，这样就 ok 了。</li>
+<li>流水表！有每日的变更流水表。</li>
+</ol>
+<p><strong>ods 层的 user 表</strong></p>
+<p>现在我们来看一下我们 ods 层的用户资料切片表的结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CREATE EXTERNAL TABLE ods.user (</span><br><span class="line">  user_num STRING COMMENT &apos;用户编号&apos;,</span><br><span class="line">  mobile STRING COMMENT &apos;手机号码&apos;,</span><br><span class="line">  reg_date STRING COMMENT &apos;注册日期&apos;</span><br><span class="line">COMMENT &apos;用户资料表&apos;</span><br><span class="line">PARTITIONED BY (dt string)</span><br><span class="line">ROW FORMAT DELIMITED FIELDS TERMINATED BY &apos;\t&apos; LINES TERMINATED BY &apos;\n&apos;</span><br><span class="line">STORED AS ORC</span><br><span class="line">LOCATION &apos;/ods/user&apos;;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p><strong>ods 层的 user_update 表</strong></p>
+<p>然后我们还需要一张用户每日更新表，前面已经分析过该如果得到这张表，现在我们假设它已经存在。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CREATE EXTERNAL TABLE ods.user_update (</span><br><span class="line">  user_num STRING COMMENT &apos;用户编号&apos;,</span><br><span class="line">  mobile STRING COMMENT &apos;手机号码&apos;,</span><br><span class="line">  reg_date STRING COMMENT &apos;注册日期&apos;</span><br><span class="line">COMMENT &apos;每日用户资料更新表&apos;</span><br><span class="line">PARTITIONED BY (dt string)</span><br><span class="line">ROW FORMAT DELIMITED FIELDS TERMINATED BY &apos;\t&apos; LINES TERMINATED BY &apos;\n&apos;</span><br><span class="line">STORED AS ORC</span><br><span class="line">LOCATION &apos;/ods/user_update&apos;;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p><strong>拉链表</strong></p>
+<p>现在我们创建一张拉链表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CREATE EXTERNAL TABLE dws.user_his (</span><br><span class="line">  user_num STRING COMMENT &apos;用户编号&apos;,</span><br><span class="line">  mobile STRING COMMENT &apos;手机号码&apos;,</span><br><span class="line">  reg_date STRING COMMENT &apos;用户编号&apos;,</span><br><span class="line">  t_start_date ,</span><br><span class="line">  t_end_date</span><br><span class="line">COMMENT &apos;用户资料拉链表&apos;</span><br><span class="line">ROW FORMAT DELIMITED FIELDS TERMINATED BY &apos;\t&apos; LINES TERMINATED BY &apos;\n&apos;</span><br><span class="line">STORED AS ORC</span><br><span class="line">LOCATION &apos;/dws/user_his&apos;;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p><strong>实现 sql 语句</strong></p>
+<p>然后初始化的 sql 就不写了，其实就相当于是拿一天的 ods 层用户表过来就行，我们写一下每日的更新语句。</p>
+<p>现在我们假设我们已经已经初始化了 2017-01-01 的日期，然后需要更新 2017-01-02 那一天的数据，我们有了下面的 Sql。</p>
+<p>然后把两个日期设置为变量就可以了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">INSERT OVERWRITE TABLE dws.user_his</span><br><span class="line">SELECT * FROM</span><br><span class="line">(</span><br><span class="line">    SELECT A.user_num,</span><br><span class="line">           A.mobile,</span><br><span class="line">           A.reg_date,</span><br><span class="line">           A.t_start_time,</span><br><span class="line">           CASE</span><br><span class="line">                WHEN A.t_end_time = &apos;9999-12-31&apos; AND B.user_num IS NOT NULL THEN &apos;2017-01-01&apos;</span><br><span class="line">                ELSE A.t_end_time</span><br><span class="line">           END AS t_end_time</span><br><span class="line">    FROM dws.user_his AS A</span><br><span class="line">    LEFT JOIN ods.user_update AS B</span><br><span class="line">    ON A.user_num = B.user_num</span><br><span class="line">UNION</span><br><span class="line">    SELECT C.user_num,</span><br><span class="line">           C.mobile,</span><br><span class="line">           C.reg_date,</span><br><span class="line">           &apos;2017-01-02&apos; AS t_start_time,</span><br><span class="line">           &apos;9999-12-31&apos; AS t_end_time</span><br><span class="line">    FROM ods.user_update AS C</span><br><span class="line">) AS T</span><br></pre></td></tr></table></figure>
+<h2 id="0x03-补充"><a href="#0x03-补充" class="headerlink" title="0x03 补充"></a>0x03 补充</h2><p>好了，我们分析了拉链表的原理、设计思路、并且在 Hive 环境下实现了一份拉链表，下面对拉链表做一些小的补充。</p>
+<h3 id="拉链表和流水表"><a href="#拉链表和流水表" class="headerlink" title="拉链表和流水表"></a>拉链表和流水表</h3><p>流水表存放的是一个用户的变更记录，比如在一张流水表中，一天的数据中，会存放一个用户的每条修改记录，但是在拉链表中只有一条记录。</p>
+<p>这是拉链表设计时需要注意的一个粒度问题。我们当然也可以设置的粒度更小一些，一般按天就足够。</p>
+<h3 id="查询性能"><a href="#查询性能" class="headerlink" title="查询性能"></a>查询性能</h3><p>拉链表当然也会遇到查询性能的问题，比如说我们存放了 5 年的拉链数据，那么这张表势必会比较大，当查询的时候性能就比较低了，个人认为两个思路来解决：</p>
+<ol>
+<li>在一些查询引擎中，我们对 start_date 和 end_date 做索引，这样能提高不少性能。</li>
+<li>保留部分历史数据，比如说我们一张表里面存放全量的拉链表数据，然后再对外暴露一张只提供近 3 个月数据的拉链表。</li>
+</ol>
+<h2 id="0xFF-总结"><a href="#0xFF-总结" class="headerlink" title="0xFF 总结"></a>0xFF 总结</h2><p>我们在这篇文章里面详细地分享了一下和拉链表相关的知识点，但是仍然会有一会遗漏。欢迎交流。</p>
+<p>在后面的使用中又有了一些心得，补充进来：</p>
+<ol>
+<li><p>使用拉链表的时候可以不加 t_end_date，即失效日期，但是加上之后，能优化很多查询。</p>
+</li>
+<li><p>可以加上当前行状态标识，能快速定位到当前状态。</p>
+</li>
+<li><p>在拉链表的设计中可以加一些内容，因为我们每天保存一个状态，如果我们在这个状态里面加一个字段，比如如当天修改次数，那么拉链表的作用就会更大。</p>
+</li>
+</ol>
+<hr>
+<p>作者：<a href="https://link.juejin.im?target=https%3A%2F%2Flink.jianshu.com%3Ft%3Dhttp%3A%2F%2Fdantezhao.com" target="_blank" rel="noopener"><strong>dantezhao</strong></a> | <a href="https://link.juejin.im?target=https%3A%2F%2Fwww.jianshu.com%2Fu%2F2453cf172ab4" target="_blank" rel="noopener">简书</a> | <a href="https://link.juejin.im?target=https%3A%2F%2Flink.jianshu.com%3Ft%3Dhttp%3A%2F%2Fblog.csdn.net%2Fzhaodedong" target="_blank" rel="noopener">CSDN</a> | <a href="https://link.juejin.im?target=https%3A%2F%2Flink.jianshu.com%3Ft%3Dhttps%3A%2F%2Fgithub.com%2Fdantezhao" target="_blank" rel="noopener">GITHUB</a></p>
+<p>个人主页：<a href="https://link.juejin.im?target=https%3A%2F%2Flink.jianshu.com%3Ft%3Dhttp%3A%2F%2Fdantezhao.com" target="_blank" rel="noopener">dantezhao.com</a><br><em>文章可以转载, 但必须以超链接形式标明文章原始出处和作者信息</em></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/path/to/your/wechatqcode ex. /uploads/wechat-qcode.jpg" alt="Dean Wang wechat" style="width: 200px; max-width: 100%;"/>
+    <div></div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/bugs/tags/hive/" rel="tag"><i class="fa fa-tag"></i> hive</a>
+          
+            <a href="/bugs/tags/大数据/" rel="tag"><i class="fa fa-tag"></i> 大数据</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/bugs/2018/10/23/架构师系列/责任连模式/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/bugs/2018/10/25/数据库/数据库 SQL 优化大总结之：百万级数据库优化方案/" rel="prev" title="数据库 SQL 优化大总结之：百万级数据库优化方案">
+                数据库 SQL 优化大总结之：百万级数据库优化方案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dean Wang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/bugs/archives/">
+              
+                  <span class="site-state-item-count">92</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/bugs/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/bugs/tags/index.html">
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/deanwang1943" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wangjingxin1986@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-前言"><span class="nav-number">1.</span> <span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-什么是拉链表"><span class="nav-number">2.</span> <span class="nav-text">0x01 什么是拉链表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#拉链表的使用场景"><span class="nav-number">2.1.</span> <span class="nav-text">拉链表的使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么使用拉链表"><span class="nav-number">2.2.</span> <span class="nav-text">为什么使用拉链表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-拉链表的设计和实现"><span class="nav-number">3.</span> <span class="nav-text">0x02 拉链表的设计和实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何设计一张拉链表"><span class="nav-number">3.1.</span> <span class="nav-text">如何设计一张拉链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-Hive-中实现拉链表"><span class="nav-number">3.2.</span> <span class="nav-text">在 Hive 中实现拉链表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-补充"><span class="nav-number">4.</span> <span class="nav-text">0x03 补充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#拉链表和流水表"><span class="nav-number">4.1.</span> <span class="nav-text">拉链表和流水表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询性能"><span class="nav-number">4.2.</span> <span class="nav-text">查询性能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFF-总结"><span class="nav-number">5.</span> <span class="nav-text">0xFF 总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dean Wang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">292.5k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/bugs/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/bugs/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/bugs/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/bugs/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/bugs/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
